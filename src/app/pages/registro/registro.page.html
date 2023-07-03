@@ -1,0 +1,148 @@
+<ion-content [fullscreen]="true">
+  <app-header [textoBoton]="'Iniciar Sesión'" [opcion]="2" [tipoCabecera]="2"></app-header>
+
+  <br><br>
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col size="10">
+      <div style="text-align: center;">
+        <span class="titulos"> <b>Registro</b> </span>
+
+
+        <!-- <span class="titulos"> <b> {{networkStatus | json }} </b> </span> -->
+
+
+      </div>
+
+      <form [formGroup]="form" autocomplete="off">
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off" maxlength="60"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.nombre">
+          <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
+            autocomplete="off" maxlength="60"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
+          <ng-container
+            *ngIf="apellidoPaterno!.hasError(error.type) && (apellidoPaterno!.dirty || apellidoPaterno!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
+            autocomplete="off" maxlength="60"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
+          <ng-container
+            *ngIf="apellidoMaterno!.hasError(error.type) && (apellidoMaterno!.dirty || apellidoMaterno!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-select formControlName="estado" placeholder="Seleccione un Estado" autocomplete="off">
+            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
+              {{ item.nombre | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.estado">
+          <ng-container *ngIf="estado!.hasError(error.type) && (estado!.dirty || estado!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="text" formControlName="correo" placeholder="Correo electrónico"
+            autocomplete="off" maxlength="60"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.correo">
+          <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off" maxlength="10"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.telefono">
+          <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
+            autocomplete="off" maxlength="20"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
+          </ion-icon>
+          <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
+          </ion-icon>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.contrasenia">
+          <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
+            #inputPasswordConfirm autocomplete="off" maxlength="20"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasenaConfirm" (click)="mostrarContrasena(true)">
+          </ion-icon>
+          <ion-icon name="eye-outline" slot="end" *ngIf="verContrasenaConfirm" (click)="mostrarContrasena(true)">
+          </ion-icon>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.confirmacionContrasenia">
+          <ng-container
+            *ngIf="confirmacionContrasenia!.hasError(error.type) && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+        <div *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+          <ng-container>
+            <small class="errorValidation">*Las contraseñas capturadas no coinciden.</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item mode="md">
+          <span><ion-checkbox formControlName="heLeidoTerminosCondiciones" mode="ios"></ion-checkbox></span>
+          &nbsp;&nbsp;&nbsp;
+          <span><p style="font-size: 14px;color: #616161;display: inline;" (click)="prueba(heLeidoTerminosCondiciones)">He leído y acepto los </p><p style="font-size: 14px;color: #438EFF;display: inline" (click)="openTrasnparentModal(true)">Términos y condiciones </p> 
+          <p style="font-size: 14px;color: #616161;display: inline;">y el </p><p style="font-size: 14px;color: #438EFF;display: inline" (click)="openTrasnparentModal(false)">Aviso de privacidad</p>
+          </span> <br>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.heLeidoTerminosCondiciones">
+          <ng-container
+            *ngIf="heLeidoTerminosCondiciones!.hasError(error.type) && (heLeidoTerminosCondiciones!.dirty || heLeidoTerminosCondiciones!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-button mode="md" expand="full"><span style="font-size: 12px;" (click)="registrar()"> Registrar </span></ion-button>
+
+      </form>
+    </ion-col>
+  </ion-row>
+
+
+
+</ion-content>

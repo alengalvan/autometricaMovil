@@ -1,0 +1,7 @@
+{
+  "name": "autometrica",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

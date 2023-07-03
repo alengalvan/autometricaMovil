@@ -1,0 +1,37 @@
+ion-toolbar {
+    --background: transparent;
+    --border--style: none;
+}
+
+.content-modal {
+    // height: 85%;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 70%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+ion-button {
+    --background: #EC1C24;
+}
+
+.sutitulo{
+    color:#8D8B8B;
+    font-size: 12px;
+    text-align: justify;
+}
+
+.titulo{
+    color:#616161;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.mensaje-error{
+    font-size: 12px;
+    color: #000000;
+    text-align: center;
+    margin-top: 4px;
+}

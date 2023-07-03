@@ -1,0 +1,29 @@
+ion-toolbar {
+    --background: transparent;
+    --border--style: none;
+}
+
+.content-modal {
+    // height: 85%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10%;
+    background-color: white;
+}
+
+ion-button {
+    --background: #FF3E44;
+}
+
+.sutitulo{
+    color:#8D8B8B;
+    font-size: 12px;
+    text-align: justify;
+}
+
+.titulo{
+    color:#616161;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+}

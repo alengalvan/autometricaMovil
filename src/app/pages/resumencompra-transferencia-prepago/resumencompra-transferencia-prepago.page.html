@@ -1,0 +1,149 @@
+<ion-content [fullscreen]="true">
+  <app-header-title></app-header-title>
+
+  <br>
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col size="1">
+      <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="regresar()"> </ion-icon> &nbsp;&nbsp;
+    </ion-col>
+
+    <ion-col size="8">
+      <span style="font-size: 15px;color: #616161;margin-top: 3px;margin-left: 7px">Regresar</span>
+    </ion-col>
+  </ion-row>
+
+
+  <div *ngIf="id == '1' || id == '2'">
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: start;">
+          <span style="font-size: 30px;color: #616161;">Resumen de Compra</span><br><br>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row>
+      <ion-col size="2"></ion-col>
+      <ion-col size="8">
+        <div style="text-align: start;">
+          <span style="font-size: 20px;color:#616161;font-weight: 600;">
+            {{licenciaSeleccionada.name | titlecase }}
+          </span>
+          <br>
+          <span style="font-size: 13px;color:#616161;">
+            Costo: ${{licenciaSeleccionada.price}}
+          </span>
+          <br>
+          <span style="font-size: 10px;color:#616161;">
+            Edición: {{licenciaSeleccionada.mes}} {{licenciaSeleccionada.anio}}
+          </span>
+          <br>
+          <span style="color: #438EFF;font-size: 12px;font-weight: 500;" *ngIf="id == '1'">
+            Tarjeta de Prepago
+          </span>
+          <span style="color: #438EFF;font-size: 12px;font-weight: 500;" *ngIf="id == '2'">
+            Tarjeta de Crédito ({{tarjetaSeleccionada.card_number | slice:-4 }})
+          </span>
+          <br>
+          <hr style="background-color: #8A8A8A;">
+          <br>
+          <div style="text-align: end;">
+            <span style="font-size: 20px;color:#616161;"> Total: ${{licenciaSeleccionada.price}} </span>
+          </div>
+          <br>
+          <ion-button mode="md" expand="full" style=" --background: #FF3E44;" (click)="pagarTarjeta()">
+            <span style="font-size: 12px;">
+              Realizar Pago
+            </span>
+          </ion-button>
+
+          <br>
+          <ion-button mode="md" expand="full" style=" --background: #8A8A8A;">
+            <span style="font-size: 12px;">
+              Cancelar
+            </span>
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="id == '3'">
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/billete.svg" style="zoom: 3;"></ion-icon> <br>
+          <span style="font-size: 30px;color: #616161;">Depósito o Transferencia</span><br>
+          <span style="font-size: 12px;color: #438EFF;">{{usuario.email}} </span><br>
+        </div>
+
+        <br><br>
+        <div>
+          <span style="color: #000000;font-size: 14px;font-weight: 500;">Depósito bancario a nombre
+            de:</span><br>
+          <span style="color: #616161;font-size: 14px;font-weight: 500;">GUÍA AUTOMÉTRICA S.A. DE C.V.
+          </span><br><br><br>
+
+          <span style="color: #000000;font-size: 14px;font-weight: 500;">Banco:</span><br>
+          <span style="color: #616161;font-size: 14px;font-weight: 500;">BANCOMER Sucursal 3600 </span><br><br><br>
+
+          <span style="color: #000000;font-size: 14px;font-weight: 500;">Número de cuenta:</span><br>
+          <span style="color: #616161;font-size: 14px;font-weight: 500;">0110476706 </span><br><br><br>
+
+          <span style="color: #000000;font-size: 14px;font-weight: 500;">CLABE interbancaria:</span><br>
+          <span style="color: #616161;font-size: 14px;font-weight: 500;">012180001104767062</span><br><br><br>
+        </div>
+
+        <div style="text-align: center;">
+          <span style="color: #EC1C24;font-size: 12px;font-weight: 500;">
+            <b>
+              Para hacer efectivo su acceso:
+            </b>
+          </span><br><br>
+        </div>
+
+        <div style="text-align: center;">
+          <span style="color: #616161;font-size: 9px;font-weight: 500;">
+            Por favor incluya en un correo electrónico o WhatsApp su nombre, correo electrónico
+            registrado en la App y su comprobante de pago.
+            <br>
+            En caso de requerir factura por favor también adjunte su constancia de situación fiscal e
+            indique el uso del CFDI.
+          </span><br><br>
+        </div>
+
+        <div style="text-align: center;">
+          <span style="color: #438eff;font-size: 9px;font-weight: 500;">
+            suscripciones@autometrica.com.mx
+          </span><br><br>
+        </div>
+
+        <div>
+          <ion-row>
+            <ion-col size="6" style="text-align: end;">
+              <ion-icon name="logo-whatsapp" style="zoom: 2;color:#4ACB48"></ion-icon>
+            </ion-col>
+            <ion-col size="6" style="text-align: start;">
+              <span style="color: #616161;font-size: 9px;">55 1597 7343</span>
+            </ion-col>
+          </ion-row>
+        </div>
+        <br>
+        <div style="text-align: center;">
+          <ion-button mode="md" (click)="pagarConTranferencia()" style="--background:#EC1C24">
+            <span style="font-size: 12px;">
+              Finalizar Compra
+            </span>
+          </ion-button>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>

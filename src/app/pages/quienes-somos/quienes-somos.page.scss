@@ -1,0 +1,20 @@
+ion-content{
+    --background: url(../../../assets/imgs/fondo-quienes-somos.png);
+    --background-repeat: no-repeat;
+    --background-size: cover;  
+}
+
+.titulo{
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 42px;
+    color: #FFFFFF;
+}
+
+.descripcion{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    text-align: justify
+}

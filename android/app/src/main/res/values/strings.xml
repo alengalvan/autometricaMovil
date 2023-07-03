@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">autometrica</string>
+    <string name="title_activity_main">autometrica</string>
+    <string name="package_name">com.alen.autometrica</string>
+    <string name="custom_url_scheme">com.alen.autometrica</string>
+</resources>

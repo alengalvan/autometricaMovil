@@ -1,0 +1,130 @@
+<ion-content [fullscreen]="true">
+
+  <app-header-title></app-header-title>
+  <br><br>
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col size="10">
+      <div style="text-align: center;">
+        <span class="titulos"> <b>Datos generales</b> </span> <br>
+        <span style="font-size: 14px;color: #616161;">{{usuario.email}} </span>
+      </div>
+
+      <form [formGroup]="form" autocomplete="off">
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.nombre">
+          <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
+            autocomplete="off"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
+          <ng-container
+            *ngIf="apellidoPaterno!.hasError(error.type) && (apellidoPaterno!.dirty || apellidoPaterno!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
+            autocomplete="off"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
+          <ng-container
+            *ngIf="apellidoMaterno!.hasError(error.type) && (apellidoMaterno!.dirty || apellidoMaterno!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-select formControlName="estado" placeholder="Seleccione un Estado" autocomplete="off">
+            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
+              {{ item.nombre | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.estado">
+          <ng-container *ngIf="estado!.hasError(error.type) && (estado!.dirty || estado!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off"
+            maxlength="10"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.telefono">
+          <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
+            autocomplete="off"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
+          </ion-icon>
+          <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
+          </ion-icon>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.contrasenia">
+          <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input">
+          <ion-input type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
+            #inputPasswordConfirm autocomplete="off"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasenaConfirm" (click)="mostrarContrasena(true)">
+          </ion-icon>
+          <ion-icon name="eye-outline" slot="end" *ngIf="verContrasenaConfirm" (click)="mostrarContrasena(true)">
+          </ion-icon>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.confirmacionContrasenia">
+          <ng-container
+            *ngIf="confirmacionContrasenia!.hasError(error.type) && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+        <div
+          *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+          <ng-container>
+            <small class="errorValidation">*Las contraseñas capturadas no coinciden.</small>
+          </ng-container>
+        </div>
+
+
+        <br>
+
+        <ion-row>
+          <ion-col size="6">
+            <ion-button mode="md" expand="full" style="--background:#8A8A8A;"><span style="font-size: 12px;" (click)="cancelar()"> Cancelar
+              </span></ion-button>
+
+          </ion-col>
+          <ion-col size="6">
+            <ion-button mode="md" expand="full" style="--background: #FF3E44;"><span style="font-size: 12px;" (click)="registrar()"> Registrar
+              </span></ion-button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

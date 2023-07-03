@@ -1,0 +1,59 @@
+<ion-content [fullscreen]="true">
+  <app-header-title></app-header-title>
+
+  <br>
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col size="1">
+      <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="reygresar()"> </ion-icon> &nbsp;&nbsp;
+    </ion-col>
+
+    <ion-col size="8">
+      <span style="font-size: 15px;color: #616161;margin-top: 3px;margin-left: 7px">Regresar</span>
+    </ion-col>
+  </ion-row>
+
+  <div *ngFor="let tarjeta of listadoLicencias" class="contenedor-tarjetas">
+    <ion-row>
+      <ion-col size="10">
+        <span
+          style="color: #616161;font-size: 20px;font-family: Roboto;font-style: normal;font-weight: 600;line-height: normal;">
+          {{tarjeta.maskTarjeta}}
+        </span>
+      </ion-col>
+      <ion-col size="2" *ngIf="tarjeta.seleccionada">
+        <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 1.5;"> </ion-icon>
+      </ion-col>
+      <ion-col size="2" *ngIf="!tarjeta.seleccionada" (click)="seleccionarTarjeta(tarjeta)">
+        <ion-icon src="assets/icon/tarjetas-circulo-gris.svg" style="zoom: 1.5;"> </ion-icon>
+      </ion-col>
+
+    </ion-row>
+    <span style="color: #616161;font-size: 12px;font-weight: 500;">Tarjeta credito visa</span> <br>
+    <span style="color: #438EFF;font-size: 12px;font-weight: 500;" *ngIf="tarjeta.seleccionada">Tarjeta Seleccionada <br></span>
+    <span style="color: #438EFF;font-size: 12px;font-weight: 500;" *ngIf="!tarjeta.seleccionada" (click)="seleccionarTarjeta(tarjeta)">Seleccionar Tarjeta <br></span>
+    <span style="color: #EC1C24;font-size: 12px;font-weight: 500;" (click)="eliminarTarjeta(tarjeta)">Eliminar Tarjeta</span> <br>
+    <span style="color: #6943FF;font-size: 12px;font-weight: 500;" (click)="editarTarjeta(tarjeta)"> Editar Tarjeta </span>
+  </div>
+
+  <div class="contenedor-tarjetas">
+    <ion-row>
+      <ion-col size="10">
+        <span
+          style="color: #616161;font-size: 20px;font-family: Roboto;font-style: normal;font-weight: 600;line-height: normal;">
+          Otra Tarjeta
+        </span>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon src="assets/icon/tarjetas-circulo-gris.svg" style="zoom: 1.5;"> </ion-icon>
+      </ion-col>
+    </ion-row>
+    <span style="color: #616161;font-size: 12px;font-weight: 500;">Ingrese una tarjeta nueva</span> <br>
+    <span style="color: #438EFF;font-size: 12px;font-weight: 500;" (click)="altaNuevaTarjeta()">Ingresar Tarjeta <br></span>
+  </div>
+
+
+
+
+</ion-content>

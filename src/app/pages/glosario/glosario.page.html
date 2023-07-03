@@ -1,0 +1,440 @@
+<ion-content [fullscreen]="true">
+  <app-header-title></app-header-title>
+  <br>
+
+  <ion-segment [value]="valorSeleccionado" mode="md" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="glosario">
+      <ion-label>Glosario</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="kilometraje">
+      <ion-label>Kilometraje</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <br>
+
+  <div *ngIf="valorSeleccionado == 'glosario'">
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+
+        <span>
+          <p class="titulo">ENCABEZADOS DE COLUMNAS</p>
+        </span>
+
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            G/km: Grupo de kilometraje al que pertenece cada vehículo, la letra guarda relación con el impacto del
+            kilometraje recorrido.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            V: Precio promedio de venta al contado, en pesos, de automóviles usados.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            C: Precios de compra que pagan los profesionales del ramo en operaciones de contado.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Nota: Los precios de compra y venta de usados ya incluyen I.V.A., y la tenencia correspondiente debe estar
+            pagada a la fecha en que se haga la operación.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            PRECIO DE LISTA: Precio sugerido de venta al público en pesos, de unidades nuevas en las distribuidoras de
+            la marca correspondiente.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            PRECIO DE CONTADO: Precio por pago al contado para unidades nuevas en todas las concesionarias de la marca.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Nota: Ambos precios se obtienen a la fecha del cierre de edición, e incluyen todos los cargos varios e
+            impuestos, excepto el de tenencia y placas. Estos
+            precios están sujetos a cambios sin previo aviso y en algunos casos pueden ser diferentes en función del
+            nivel de equipamiento adicional de la versión.
+          </p>
+        </span>
+
+        <span>
+          <p class="titulo">SIGNOS Y ABREVIATURAS</p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ADVERTENCIA: Las siglas y números que anteceden a la descripción de algunos vehículos nuevos, corresponden
+            al número de catálogo
+            del fabricante y sirven para identificar el tipo y equipamiento de la unidad.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            a/ac.: Aire acondicionado.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            a/ac. aut.: Aire acondicionado automatizado.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ABS: Sistema de frenado anti-bloqueante de las ruedas.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Active Dinamic: Control dinámico de estabilidad en la suspensión.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ADAS: Sistemas avanzados de ayuda a la conducción.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ae: Asientos movidos con motor eléctricos.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ai: Asientos independientes delanteros.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            alerón: Deflector de aire trasero.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            B: Configuración de motor horizontal con cilindros opuestos
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            BA: Bolsas de aire frontales.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            BL: Bolsas de aire laterales.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            C.C.: Centímetros cúbicos.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            CD: Reproductor de discos compactos.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Cruise Control: Dispositivo que mantiene la velocidad del vehículo sin necesidad de acelerar.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            DA: Dirección asistida de modo hidráulico, eléctrico o ambos.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            DEE: Distancia entre ejes, medida de centro a centro de rueda.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            DVD: Reproductor discos de video.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            ee: Espejos exteriores eléctricos.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Eléc. (BEV): Vehículo que funciona exclusivamente con motor eléctrico.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            faldón: Deflector de aire en la parte baja del vehículo.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            FI: Sistema de inyección combustible.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            f.led: Faros led.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            GPS: Sistema de posicionamiento global.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            HB: Hatch back, la puerta trasera que da acceso al compartimento de equipaje incluye el cristal trasero o
+            medallón.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            HP: Caballos de potencia.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            HT: Hard top, toldo duro, el poste central de las puertas no sube hasta el toldo.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            L.: Configuración de cilindros de motor en línea.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            l: Cilindrada expresada en litros, si se multiplica por 1,000 se obtienen centímetros cúbicos, si éstos se
+            dividen entre 16.4, el
+            resultado son pulgadas cúbicas.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            m: Metros.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            PAS.: Pasajeros.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            paq.: Conjunto de elementos de equipo adicional que se ofrecen unificados.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            PHEV: Vehículo híbrido eléctrico enchufable.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            piel: Vestiduras en piel.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            PTS.: Puertas de pasajeros, excepto en hatch backs y algunas vagonetas.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            QC: Techo corredizo, ¨quemacocos¨.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            QCP: Techo corredizo, ¨quemacocos panorámico¨.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            R: Diámetro de la rueda expresado en pulgadas.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            RA: Ruedas de aleación como equipo original.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            RA crom.: Ruedas de aleación cromadas como equipo original.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            RD: Rodada doble en el eje trasero.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            RS: Rodada sencilla en el eje trasero.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            SC: Motor supercargado.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            SYNC: Sistema de entretenimiento y audio digital.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            T: Motor con turbo.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            TA: Transmisión automática.Dependiendo del fabricante puede ser:
+            Autostick, CVT, DSG, Dualogic, Geartronic, Multitronic, PDK,
+            R Tronic, Selespeed, SMG, S-Tronic, Tiptronic, etc.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            TD: Motor diesel con turbo.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            TDR: Toldo duro Retráctil.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            tela: Vestiduras en tela.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            TM: Transmisión manual, el número indica la cantidad de velocidades o
+            marchas hacia adelante.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            TP: Techo panorámico o toldo traslúcido, no movible, de gran amplitud.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            V: Configuración de cilindros de motor en V.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            VE: Eleva-vídrios eléctricos y cierre de puertas centralizado.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            VUD (SUV): Vehículo Utilitario Deportivo.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            W: Configuración de cilindros de motor en W.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            xenón: Faros xenón.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            4x2 Propulsión solamente en las 2 ruedas delanteras o traseras.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            4x4 Capacidad de tracción hasta en las 4 ruedas.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Línea Nueva: Cambio radical en la apariencia del vehículo.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Cambio de Línea: Cambios cosméticos a la línea anterior.
+          </p>
+        </span>
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Línea Anterior: Apariencia del vehículo sustituida por un cambio radical o cosmético.
+          </p>
+        </span>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div *ngIf="valorSeleccionado == 'kilometraje'">
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+
+        <span>
+          <p class="titulo">Kilometraje</p>
+        </span>
+
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            La letra que aparece al lado izquierdo de cada versión corresponde al grupo de kilometraje al que pertenece
+            y está
+            directamente relacionado con el impacto a favor o en contra del kilometraje recorrido por el vehículo.
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            EL importe que aparece como impacto en el kilometraje deberá añadirse a la versión correspondiente en caso
+            de carecer de
+            un signo (-) y deducirse si le precede dicho signo (-).
+          </p>
+        </span>
+
+        <span style="color:#8D8B8B;font-size: 12px;text-align: justify;">
+          <p>
+            Antes de aplicar el impacto del kilometraje, el usuario debe estar razonablemente seguro de que el odómetro
+            no haya sido
+            manipulado.
+          </p>
+        </span>
+
+
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+
+</ion-content>

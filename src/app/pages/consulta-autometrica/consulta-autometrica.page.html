@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <app-header-title></app-header-title>
+  <br><br>
+
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col size="10">
+      <form [formGroup]="form" autocomplete="off">
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-select formControlName="marca" placeholder="Marca" autocomplete="off">
+            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
+              {{ item.nombre | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.marca">
+          <ng-container *ngIf="marca!.hasError(error.type) && (marca!.dirty || marca!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-select formControlName="submarca" placeholder="Año" autocomplete="off">
+            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
+              {{ item.nombre | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.submarca">
+          <ng-container *ngIf="submarca!.hasError(error.type) && (submarca!.dirty || submarca!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+
+
+        <br>
+
+      </form>
+    </ion-col>
+  </ion-row>
+</ion-content>

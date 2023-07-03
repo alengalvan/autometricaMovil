@@ -1,0 +1,40 @@
+<ion-menu side="start" contentId="app-content" class="transparent-modal">
+  <ion-content>
+    <br><br><br><br><br><br>
+    <ion-menu-toggle auto-hide="false">
+      <ion-row *ngFor="let p of pages" class="item-menu" (click)="navegarMenu(p.url)">
+        <ion-col size="2">
+          <ion-icon [src]="p.icon" style="zoom: 1.5;"></ion-icon>
+        </ion-col>
+        <ion-col size="10" style="margin-top: 5px">
+          <span style="font-size: 14px;line-height: 20px;font-weight: 600;"> {{p.title}}</span>
+        </ion-col>
+      </ion-row>      
+    </ion-menu-toggle>
+  </ion-content>
+
+  <ion-footer>
+
+    <div style="text-align: center;">
+      <span style="color:#FFFFFF;font-size: 14px;line-height: 20px;font-weight: 600;" (click)="navegarMenu('terminos-condiciones')">
+        Aviso de Privacidad y<br>
+        Términos y Condiciones
+      </span>
+    </div>
+    <br><br>
+
+    <div style="text-align: center;" (click)="cerrarSesion()">
+      <span style="color:#EC1C24;font-size: 14px;line-height: 20px;font-weight: 600;" *ngIf="haySesion == true">
+        Cerrar sesión
+      </span>
+      <span style="color:#EC1C24;font-size: 14px;line-height: 20px;font-weight: 600;" *ngIf="haySesion == false">
+        Iniciar Sesión
+      </span>
+    </div>
+    <br><br><br>
+
+  </ion-footer>
+</ion-menu>
+
+
+<ion-router-outlet id="app-content"></ion-router-outlet>

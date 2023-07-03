@@ -1,0 +1,36 @@
+
+<ion-content [fullscreen]="true">
+  <app-header [textoBoton]="'Iniciar Sesión'" [opcion]="3" [tipoCabecera]="2"></app-header>
+
+  <div style="margin-top: 40%;">
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: center;">
+          <span class="titulos"> <b>Recuperar Contraseña</b> </span>
+        </div>
+        <div style="text-align: center;">
+          <span style="font-size: 10px;color: #616161;"> Se enviará un enlace a su correo para</span><br>
+          <span style="font-size: 10px;color: #616161;">Recuperar su contraseña.</span>
+        </div>
+        <form [formGroup]="form" autocomplete="off">
+          
+          <br><br>
+          <ion-item class="ion-item-input" mode="md">
+            <ion-input type="text" formControlName="correo" placeholder="Usuario"></ion-input>
+          </ion-item>
+          <div *ngFor="let error of mensajesValidacion.correo">
+            <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">
+              <small class="errorValidation">{{error.message}}</small>
+            </ng-container>
+          </div>
+          
+          <br>
+          <ion-button mode="md" expand="full"><span style="font-size: 12px;" (click)="recuperarContrasenia()"> Enviar </span></ion-button>
+
+        </form>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>

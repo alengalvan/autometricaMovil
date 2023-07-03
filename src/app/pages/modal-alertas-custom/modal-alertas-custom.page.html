@@ -1,0 +1,547 @@
+<ion-content [fullscreen]="true">
+
+  <div class="content-modal">
+
+    <!-- menu -->
+    <ion-row style="padding: 10px;border-radius: 10px;" *ngIf="opcionAlerta == 'menu-opciones-no-permitidas'">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="align-items: center;text-align: center;">
+          <span style="font-weight: 400; font-size: 12px;line-height: 14px;">
+            Para acceder a esta sección debe iniciar sesión.
+          </span>
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModal()">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;border-radius: 10px;" *ngIf="opcionAlerta == 'no-tiene-licencia-activa'">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="align-items: center;text-align: center;">
+          <span style="font-weight: 400; font-size: 12px;line-height: 14px;">
+            No tiene una licencia activa, <br>
+            por favor adquiera una licencia
+          </span>
+        </div>
+        <br>
+
+        <ion-row>
+          <ion-col size="6">
+            <ion-button mode="md" (click)="cerrarModal()" expand="full" style="--background: #8A8A8A">
+              <span style="font-size: 12px;">
+                Cancelar
+              </span>
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button mode="md" (click)="canjearAdquirir()" expand="full">
+              <span style="font-size: 12px;">
+                {{mensajeModalConsulta}}
+              </span>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- login -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'usuario-inactivo' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"
+          *ngIf="mensajeError != 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
+        <ion-icon src="assets/icon/alerta-mensaje.svg" style="zoom: 2;"
+          *ngIf="mensajeError == 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'login-cinco-intentos' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/candado-cinco-intentos-login.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'login-sesion-activa' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <ion-icon src="assets/icon/telefono-sesion-activa.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModal()">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'usuario-no-validado' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="reenviarCorreo()">
+          <span style="font-size: 12px;">
+            Reenviar
+          </span>
+        </ion-button>
+        <br>
+        <span style="color: #000;text-align: center;font-size: 10px;font-weight: 400;">
+          Si no encuentra el correo, revise su bandeja de spam.
+        </span>
+      </ion-col>
+    </ion-row>
+
+    <!-- recuperar contrasenia -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'recuperar-contrasenia-enviamos-enlace' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/mdi_email.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- restablecer contrasenia -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'restablecer-contrasenia-contrasenias-invalidas' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <ion-icon src="assets/icon/mdi_email.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModal()">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'restablecer-contrasenia-exitoso' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <!-- mi perfil -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'aviso-borrado-licencias' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Ahora no
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Descargar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'descarga-pendiente' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <br>
+        <div class="mensaje-error" style="text-align: center;" [innerHTML]="mensajeInner"></div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'descarga-datos' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error" [innerHTML]="mensajeInnerDatos"></div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Ahora no
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Descargar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'descarga-exitosa' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <br>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error" [innerHTML]="mensajeInnerDescargaExitosa"></div>
+        </div>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'modificaciones-exitosas' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+        </div>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'contrasenia-anterior' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <ion-icon src="assets/icon/candado-cinco-intentos-login.svg" style="zoom: 2;"></ion-icon><br>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModal()">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'cancelar-edicion' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Cancelar
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- tarjetas -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'registro-tarjeta-exitoso' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <br>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+        </div>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'registro-tarjeta-fallido' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'eliminar-metodo-pago' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <div style="text-align: center;">
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+          <br>
+          <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+            <span style="font-size: 12px;">
+              Ahora no
+            </span>
+          </ion-button>
+
+          <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+            <span style="font-size: 12px;">
+              Descargar
+            </span>
+          </ion-button>
+
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'eliminacion-correcta' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <br>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+        </div>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'confirmacion-cvv' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <div>
+          <div>
+            <span style="color: #616161;font-size: 15px;font-weight: 700;">
+              {{tarjetaSeleccionada.holder_name | titlecase}} <br>
+            </span>
+            <span style="color: #000;text-align: center;font-size: 12px;font-weight: 400;">
+              {{tarjetaSeleccionada.maskTarjeta}}
+            </span>
+          </div>
+          <br><br>
+          <form [formGroup]="formPago" autocomplete="on">
+            <ion-row>
+              <ion-col size="3"></ion-col>
+              <ion-col size="6">
+                <ion-item class="ion-item-input" mode="md">
+                  <ion-input type="number" formControlName="cvv" placeholder="CVV" maxlength="4"></ion-input>
+                </ion-item>
+                <div *ngFor="let error of mensajesValidacionPago.cvv">
+                  <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">
+                    <small class="errorValidation">{{error.message}}</small>
+                  </ng-container>
+                </div>
+              </ion-col>
+            </ion-row>
+          </form>
+          <br>
+          <div style="text-align: center;">
+            <span style="color: #000;font-size: 12px;font-weight: 400;">
+              Por favor ingrese el CVV para <br> continuar con su pago.
+            </span>
+          </div>
+
+          <br><br>
+        </div>
+
+        <ion-button mode="md" expand="full" [disabled]="!formPago.valid"
+          (click)="cerrarModalReturnData({exito: true, formulario: formPago.value})">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+
+        <br>
+
+        <ion-button mode="md" expand="full" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Cancelar
+          </span>
+        </ion-button>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-pago-prepago-tarjeta' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Cancelar
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Ir Métodos de Pago
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-pago-prepago' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'compra-exitosa' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal(true)"></ion-icon><br>
+        </div>
+        <br>
+        <div style="text-align: center;">
+          <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
+          <div class="mensaje-error" [innerHTML]="mensajeInnerCompraExitosa"></div>
+        </div>
+
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'ya-puede-consultar' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <!-- <div class="mensaje-error" [innerHTML]="mensajeInnerYaPuedeConsultar"></div> -->
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Ahora No
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Descargar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- pgos -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-general' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+
+  </div>
+
+</ion-content>

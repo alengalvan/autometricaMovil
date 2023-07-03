@@ -1,0 +1,163 @@
+<ion-content>
+  <app-header-title></app-header-title>
+  <br><br>
+
+
+  <!-- total cargados {{totalCargados}}
+  total descarga {{totalDescarga}}
+  esta cargando {{estaCargando}}
+  progreso {{progress}} -->
+  <div>
+    <ion-row (click)="navegarA('datos-generales-edicion')">
+      <ion-col size="1"></ion-col>
+      <ion-col size="9">
+        <span style="font-size: 20px;color: #616161;"><b>{{usuario.name | titlecase }} {{usuario.last_name | titlecase}}
+            {{usuario.last_name_mother | titlecase}}</b></span><br>
+        <span style="font-size: 12px;color: #616161;">{{usuario.email}} </span><br>
+        <span style="font-size: 12px;color: #438EFF;">Datos Generales</span><br>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon name="chevron-forward-outline" style="padding-top: 5px;zoom:2"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <br><br>
+
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
+        <span style="font-size: 20px;color: #616161;" *ngIf="licenciaActual.length > 0"><b>Licencias Vigentes</b></span>
+        <span style="font-size: 20px;color: #616161;" *ngIf="licenciaActual.length == 0"><b>Sin licencia</b></span>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <div>
+      <ion-row>
+        <ion-col size="1"></ion-col>
+        <ion-col size="10">
+          <div class="contenedor-licencias" *ngFor="let licencia of licenciaActual">
+            <ion-row>
+              <ion-col size="2">
+                <ion-icon src="assets/icon/perfil-persona.svg" style="zoom: 2;"></ion-icon>
+              </ion-col>
+              <ion-col size="8">
+                <span style="color: #8A8A8A;font-size: 20px;font-family: Roboto;font-weight: 600;"> <b>{{licencia?.name
+                    | titlecase }}</b></span><br>
+                <span style="font-size: 12px;color: #8A8A8A;"> Estatus: </span>
+                <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 1">Activa</span>
+                <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 2">Pendiente</span>
+                <br>
+                <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date}} </span>
+                <br>
+                <span style="font-size: 12px;color: #8A8A8A;"> Edición {{licencia.mes}} {{licencia.year_hire}} </span>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon src="assets/icon/perfil-insignia.svg" style="zoom: 2;"></ion-icon>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="1"></ion-col>
+              <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 1">
+
+                <div (click)="descargarBd(licencia)" *ngIf="!estaCargando">
+                  <ion-icon src="assets/icon/material-symbols_download-for-offline-rounded.svg"
+                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
+                  <span style="font-size: 12px;color: #4ACB48;"> Descargar la edición de {{licencia.mes}}
+                    {{licencia.year_hire}} </span>
+                </div>
+
+                <div *ngIf="estaCargando">
+                  <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
+                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
+                  <span style="font-size: 12px;color: #8A8A8A;"> Descargar la edición de {{licencia.mes}}
+                    {{licencia.year_hire}} </span>
+                  <br>
+                  <span style="color: #EC1C24;font-size: 9px;font-family: Roboto;font-weight: 500;"
+                    (click)="cancelarDescarga()">
+                    Cancelar descarga
+                  </span>
+                </div>
+
+              </ion-col>
+              <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 2">
+                <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
+                  style="zoom: 1;margin-bottom: -4px;"></ion-icon>
+                <span style="font-size: 12px;color: #8A8A8A;"> Descargar la edición de {{licencia.mes}}
+                  {{licencia.year_hire}} </span>
+              </ion-col>
+
+              <ion-col size="2" style="text-align: start;"
+                *ngIf="totalCargados > 0 && totalDescarga > 0 && estaCargando">
+                <div style="margin-top: -10px;">
+                  <circle-progress [percent]="progress" [radius]="15"
+                    [outerStrokeWidth]="2" [innerStrokeWidth]="2" [outerStrokeColor]="'#4ACB48'"
+                    [innerStrokeColor]="'#a4e4a3'" [animation]="true" [animationDuration]="300"></circle-progress>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div *ngIf="licenciaActual.length == 0">
+            <span style="size: 20x;color:#8A8A8A;">No cuenta con licencias activas.</span>
+          </div>
+
+        </ion-col>
+      </ion-row>
+
+      <br>
+
+      <ion-row>
+        <ion-col size="1"></ion-col>
+        <ion-col size="10">
+          <ion-button mode="md" expand="full">
+            <span style="font-size: 12px;" (click)="navegarA('pagos')" *ngIf="mostrarAdquirirLicencia">
+              Adquirir Licencia
+            </span>
+            <span style="font-size: 12px;" (click)="navegarA('hacer-transaccion')" *ngIf="!mostrarAdquirirLicencia">
+              Canjear Código
+            </span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+    <br>
+
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="9">
+        <span style="color:#616161;font-size: 16px;"><b>Historial de licencias</b></span>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon src="assets/icon/perfil-acodo.svg" style="zoom: .8;"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" *ngIf="historicoLicencias.length != 0">
+        <ion-row *ngFor="let licencia of historicoLicencias"
+          style="border: solid 1px #D9D9D9;margin-bottom: 5px;background-color: #FAFAFA;padding: 5px;">
+          <ion-col size="7">
+            <span style="color:#438EFF;font-size: 16px;"><b>{{licencia.name}}</b></span><br>
+            <span style="color:#616161;font-size: 10px;"><b>Periodo {{licencia.mes}}
+                {{licencia.year_hire}}</b></span><br>
+            <span style="color:#616161;font-size: 10px;"><b>Fecha de compra: {{licencia.date_hire | date:'dd/MM/yyyy'
+                }}</b></span>
+          </ion-col>
+          <ion-col size="5" style="text-align: end;padding-top: 20px;">
+            <span style="color:#A4A4A4;font-size: 16px;"><b>$ {{licencia.price}} MX</b></span><br>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+      <ion-col size="10" *ngIf="historicoLicencias.length == 0">
+        <span style="size: 20x;color:#8A8A8A;">No cuenta con historial de licencias</span>
+      </ion-col>
+    </ion-row>
+    <br>
+  </div>
+
+</ion-content>

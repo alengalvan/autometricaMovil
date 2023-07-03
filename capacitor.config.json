@@ -1,0 +1,6 @@
+{
+  "appId": "com.alen.autometrica",
+  "appName": "autometrica",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

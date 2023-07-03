@@ -1,0 +1,13 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.alen.autometrica",
+      "sha256_cert_fingerprints": [
+        "E1:D7:3A:59:38:16:F7:D4:63:C6:0B:46:CB:AA:9B:29:B7:A2:3C:5B:8F:D1:0B:14:9E:22:B9:31:AD:F3:88:9B"      ]
+    }
+  }
+]
