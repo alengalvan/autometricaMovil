@@ -24,7 +24,11 @@ export const API = {
       pagarPrepago: environment.proyectoBase + '/api/license/hire-prepaidcard-license',
       pagarTarjeta: environment.proyectoBase + '/api/payment',
       pagarTransferencia: environment.proyectoBase + '/api/license/hire-transfer-license',
-      validarMetodosPagos: environment.proyectoBase + '/api/license/list-payment-method'
+      validarMetodosPagos: environment.proyectoBase + '/api/license/list-payment-method',
+      listaMarcas: environment.proyectoBase + '/api/car/list-brand',
+      listaSubmarcas: environment.proyectoBase + '/api/car/list-subbrand',
+      listaAnios: environment.proyectoBase + '/api/car/list-year',
+      consultaAuto: environment.proyectoBase + '/api/car/consult-car'
     }
   };
   

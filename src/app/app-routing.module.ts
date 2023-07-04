@@ -103,6 +103,10 @@ const routes: Routes = [
   {
     path: 'resumencompra-transferencia-prepago/:id',
     loadChildren: () => import('./pages/resumencompra-transferencia-prepago/resumencompra-transferencia-prepago.module').then( m => m.ResumencompraTransferenciaPrepagoPageModule)
+  },
+  {
+    path: 'resultados-consulta',
+    loadChildren: () => import('./pages/resultados-consulta/resultados-consulta.module').then( m => m.ResultadosConsultaPageModule)
   }
 ];
 

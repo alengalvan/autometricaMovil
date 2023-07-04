@@ -541,6 +541,60 @@
       </ion-col>
     </ion-row>
 
+    <!-- consulta  -->
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'sin-informacion-descargada' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'kilometraje-vacio' ">
+      <br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div class="mensaje-error">
+          Kilometraje vacío <br>
+          {{mensajeError}}
+        </div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            Cancelar
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            Aceptar
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'campos-requeridos' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+        <ion-icon src="assets/icon/formulario.svg" style="zoom: 2;"></ion-icon>
+        <div class="mensaje-error">
+          {{mensajeError}}
+        </div>
+        <br>
+      </ion-col>
+    </ion-row>
+
 
   </div>
 

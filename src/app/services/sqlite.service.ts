@@ -123,6 +123,53 @@ export class sqliteService {
     }
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
+
+  //   let objeto = {
+  //     month: 1,
+  //     year: anio,
+  //     client_id: this.usuario.id
+  //   }
+
+  //   let respuesta = await this.webRestService.postAsync(API.endpoints.traerBD, objeto);
+  //   console.log(respuesta)
+  //   if (respuesta.status == true) {
+  //     if (diferentePerfil) {
+  //       this.navCtrl.navigateRoot("mi-perfil")
+  //     }
+  //     this.totalDescarga$.next((respuesta.lineals.length + respuesta.mileages.length + respuesta.images.length));
+  //     console.log(this.totalDescarga$)
+  //     this.estaGenerandoBase$.next(true);
+
+  //     if (respuesta.lineals.length > 0) {
+  //       await this.crearLineas(respuesta.lineals);
+  //     }
+  //     if (respuesta.mileages.length > 0) {
+  //       await this.crearMileages(respuesta.mileages);
+  //     }
+  //     if (respuesta.images.length > 0) {
+  //       await this.crearImages(respuesta.images);
+  //     }
+
+  //     this.estaGenerandoBase$.next(false);
+  //     this.totalDescarga$.next(0)
+  //     this.totalCargados$.next(0)
+  //     localStorage.setItem("opcionAlerta", "descarga-exitosa")
+  //     const modal = await this.modalController.create({
+  //       component: ModalAlertasCustomPage,
+  //       cssClass: 'transparent-modal',
+  //       componentProps: {
+  //         mensaje: ""
+  //       }
+  //     })
+  //     await modal.present();
+  //   } else {
+
+  //   }
+  // }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
 
     let objeto = {
@@ -137,23 +184,28 @@ export class sqliteService {
       if (diferentePerfil) {
         this.navCtrl.navigateRoot("mi-perfil")
       }
-      this.totalDescarga$.next((respuesta.lineals.length + respuesta.mileages.length + respuesta.images.length));
-      console.log(this.totalDescarga$)
-      this.estaGenerandoBase$.next(true);
 
-      if (respuesta.lineals.length > 0) {
-        await this.crearLineas(respuesta.lineals);
-      }
-      if (respuesta.mileages.length > 0) {
-        await this.crearMileages(respuesta.mileages);
-      }
-      if (respuesta.images.length > 0) {
-        await this.crearImages(respuesta.images);
-      }
+      localStorage.setItem("lineas", JSON.stringify(respuesta.lineals))
+      localStorage.setItem("millas", JSON.stringify(respuesta.mileages))
+      localStorage.setItem("imagenes", JSON.stringify(respuesta.images))
+      
+      // this.totalDescarga$.next((respuesta.lineals.length + respuesta.mileages.length + respuesta.images.length));
+      // console.log(this.totalDescarga$)
+      // this.estaGenerandoBase$.next(true);
 
-      this.estaGenerandoBase$.next(false);
-      this.totalDescarga$.next(0)
-      this.totalCargados$.next(0)
+      // if (respuesta.lineals.length > 0) {
+      //   await this.crearLineas(respuesta.lineals);
+      // }
+      // if (respuesta.mileages.length > 0) {
+      //   await this.crearMileages(respuesta.mileages);
+      // }
+      // if (respuesta.images.length > 0) {
+      //   await this.crearImages(respuesta.images);
+      // }
+
+      // this.estaGenerandoBase$.next(false);
+      // this.totalDescarga$.next(0)
+      // this.totalCargados$.next(0)
       localStorage.setItem("opcionAlerta", "descarga-exitosa")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,

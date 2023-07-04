@@ -7,24 +7,65 @@
     <ion-col size="1"></ion-col>
     <ion-col size="10">
       <form [formGroup]="form" autocomplete="off">
+
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-select formControlName="marca" placeholder="Marca" autocomplete="off">
-            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
-              {{ item.nombre | titlecase }}
+          <ion-select formControlName="marca" placeholder="Marca" autocomplete="off"
+            (ionChange)="cambiosSelectOnline('marca')" *ngIf="hayInternet">
+            <ion-select-option *ngFor="let item of marcasOnline" [value]="item.brand">
+              {{ item.brand | titlecase }}
             </ion-select-option>
           </ion-select>
+
+          <ion-select formControlName="marca" placeholder="Marca" autocomplete="off"
+            (ionChange)="cambiosSelect('marca')" *ngIf="!hayInternet">
+            <ion-select-option *ngFor="let item of marcasOffline" [value]="item">
+              {{ item | titlecase }}
+            </ion-select-option>
+          </ion-select>
+
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.marca">
           <ng-container *ngIf="marca!.hasError(error.type) && (marca!.dirty || marca!.touched)">
             <small class="errorValidation">{{error.message}}</small>
           </ng-container>
         </div>
+
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-select formControlName="submarca" placeholder="Año" autocomplete="off">
-            <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
-              {{ item.nombre | titlecase }}
+          <ion-select formControlName="anio" placeholder="Año" autocomplete="off" (ionChange)="cambiosSelectOnline('anio')"
+            *ngIf="hayInternet">
+            <ion-select-option *ngFor="let item of aniosOnline" [value]="item.year">
+              {{ item.year }}
+            </ion-select-option>
+          </ion-select>
+
+          <ion-select formControlName="anio" placeholder="Año" autocomplete="off" (ionChange)="cambiosSelect('anio')"
+            *ngIf="!hayInternet">
+            <ion-select-option *ngFor="let item of aniosOffline" [value]="item">
+              {{ item }}
+            </ion-select-option>
+          </ion-select>
+
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.anio">
+          <ng-container *ngIf="anio!.hasError(error.type) && (anio!.dirty || anio!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+
+        <br>
+        <ion-item class="ion-item-input" mode="md">
+
+          <ion-select formControlName="submarca" placeholder="Submarca" autocomplete="off" *ngIf="hayInternet">
+            <ion-select-option *ngFor="let item of subMarcasOnline" [value]="item.subbrand">
+              {{ item.subbrand }}
+            </ion-select-option>
+          </ion-select>
+
+          <ion-select formControlName="submarca" placeholder="Submarca" autocomplete="off" *ngIf="!hayInternet">
+            <ion-select-option *ngFor="let item of subMarcasOffline" [value]="item">
+              {{ item }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -34,9 +75,23 @@
           </ng-container>
         </div>
 
-
-
         <br>
+        <ion-item class="ion-item-input" mode="md">
+          <ion-input type="number" formControlName="kilometraje" placeholder="Kilometraje"
+            autocomplete="off"></ion-input>
+        </ion-item>
+        <div *ngFor="let error of mensajesValidacion.kilometraje">
+          <ng-container *ngIf="kilometraje!.hasError(error.type) && (kilometraje!.dirty || kilometraje!.touched)">
+            <small class="errorValidation">{{error.message}}</small>
+          </ng-container>
+        </div>
+        <br><br>
+
+        <ion-button mode="md" expand="full" style="--background: #FF3E44;">
+          <span style="font-size: 12px;" (click)="hayInternet ? realizarConsultaOnline() : realizarConsulta()">
+            Buscar
+          </span>
+        </ion-button>
 
       </form>
     </ion-col>
