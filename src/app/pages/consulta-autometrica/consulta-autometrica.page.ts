@@ -7,6 +7,7 @@ import { sqliteService } from 'src/app/services/sqlite.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { Network, ConnectionStatus } from '@capacitor/network'
 import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-custom.page';
+import { Device } from '@capacitor/device';
 @Component({
   selector: 'app-consulta-autometrica',
   templateUrl: './consulta-autometrica.page.html',
@@ -281,7 +282,7 @@ export class ConsultaAutometricaPage implements OnInit {
               sub_brand: submarca,
               mileage: 0,
               year_car: anio,
-              mobile_identifier: 'dnaibdayb82u31'
+              mobile_identifier: (await Device.getId()).identifier
             }
 
             let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
@@ -306,7 +307,7 @@ export class ConsultaAutometricaPage implements OnInit {
         sub_brand: submarca,
         mileage: kilometraje,
         year_car: anio,
-        mobile_identifier: 'dnaibdayb82u31'
+        mobile_identifier: (await Device.getId()).identifier
       }
 
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)

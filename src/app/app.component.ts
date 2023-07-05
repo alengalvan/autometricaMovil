@@ -10,7 +10,7 @@ import { Capacitor } from '@capacitor/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LoginPage } from './pages/login/login.page';
 import { UserService } from './services/user.service';
-
+import { Device } from '@capacitor/device';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -112,7 +112,7 @@ export class AppComponent  {
     this.licenciaActiva = false;
     let objeto = {
       client_id: JSON.parse(localStorage.getItem('usuario')!).id,
-      mobile_identifier: "dnaibdayb82u31"
+      mobile_identifier: (await Device.getId()).identifier
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
     console.log(respuesta)

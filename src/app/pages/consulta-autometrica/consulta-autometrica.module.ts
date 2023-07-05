@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ConsultaAutometricaPageRoutingModule } from './consulta-autometrica-routing.module';
 import { ConsultaAutometricaPage } from './consulta-autometrica.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TrimDirective } from 'src/app/trim.directive';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -14,8 +14,9 @@ import { TrimDirective } from 'src/app/trim.directive';
     IonicModule,
     ConsultaAutometricaPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DirectivesModule
   ],
-  declarations: [ConsultaAutometricaPage, TrimDirective]
+  declarations: [ConsultaAutometricaPage]
 })
 export class ConsultaAutometricaPageModule {}

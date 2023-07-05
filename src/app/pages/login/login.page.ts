@@ -5,13 +5,12 @@ import { API } from 'src/app/endpoints';
 import { WebRestService } from 'src/app/services/crud-rest.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-custom.page';
-
 import { Http, HttpDownloadFileResult } from '@capacitor-community/http';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { HttpClient } from '@angular/common/http'
 import { BehaviorSubject } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-
+import { Device } from '@capacitor/device';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +27,7 @@ export class LoginPage implements OnInit {
     contrasenia: [null, [Validators.required, Validators.pattern(this.regexContrasenia)]],
     recordarContrasenia: [null]
   });
+  public idMobile: any = "";
   fileName: any;
 
   get usuario() {
@@ -59,6 +59,7 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    this.idMobile = (await Device.getId()).identifier;
     await this.utilitiesService.obtenerInfo();
     let datosPersonales = JSON.parse(localStorage.getItem('datosPersonales')!);
     console.log(datosPersonales)
@@ -97,7 +98,7 @@ export class LoginPage implements OnInit {
     let objeto: any = {
       email: this.form.controls['usuario'].value,
       password: this.form.controls['contrasenia'].value,
-      mobile_identifier: "dnaibdayb82u31",
+      mobile_identifier: this.idMobile,
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.login, objeto)
     console.log(respuesta)

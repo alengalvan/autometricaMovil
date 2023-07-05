@@ -6,7 +6,7 @@ import { UtilitiesService } from 'src/app/services/utilities.service';
 import { sqliteService } from 'src/app/services/sqlite.service';
 import { Subscription } from 'rxjs';
 import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-custom.page';
-
+import { Device } from '@capacitor/device'
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.page.html',
@@ -74,7 +74,7 @@ export class MiPerfilPage implements OnInit {
   public async obtenerHistoricoLicencias() {
     let objeto = {
       client_id: this.usuario.id,
-      mobile_identifier: "dnaibdayb82u31"
+      mobile_identifier: (await Device.getId()).identifier
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
     console.log(respuesta)

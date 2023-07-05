@@ -8,7 +8,7 @@ import { RestablecerContraseniaPageRoutingModule } from './restablecer-contrasen
 
 import { RestablecerContraseniaPage } from './restablecer-contrasenia.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TrimDirective } from 'src/app/trim.directive';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -17,8 +17,9 @@ import { TrimDirective } from 'src/app/trim.directive';
     IonicModule,
     RestablecerContraseniaPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DirectivesModule
   ],
-  declarations: [RestablecerContraseniaPage, TrimDirective]
+  declarations: [RestablecerContraseniaPage]
 })
 export class RestablecerContraseniaPageModule {}

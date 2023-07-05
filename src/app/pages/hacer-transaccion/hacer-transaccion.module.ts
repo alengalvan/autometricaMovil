@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HacerTransaccionPageRoutingModule } from './hacer-transaccion-routing.module';
 import { HacerTransaccionPage } from './hacer-transaccion.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TrimDirective } from 'src/app/trim.directive';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -14,8 +14,9 @@ import { TrimDirective } from 'src/app/trim.directive';
     IonicModule,
     HacerTransaccionPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DirectivesModule
   ],
-  declarations: [HacerTransaccionPage, TrimDirective]
+  declarations: [HacerTransaccionPage]
 })
 export class HacerTransaccionPageModule {}
