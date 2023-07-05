@@ -26,22 +26,22 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 
-.transparent-modal{
-    --background: #0000005c;
-  
-    ion-content{
-      --background: transparent;
-    }
-   }
-  
-   ion-modal::part(content){
-    backdrop-filter: blur(12px);
-   }
+.transparent-modal {
+  --background: #0000005c;
 
-.botonAceptar{
+  ion-content {
+    --background: transparent;
+  }
+}
+
+ion-modal::part(content) {
+  backdrop-filter: blur(12px);
+}
+
+.botonAceptar {
   --background: #FF3E44;
 }
 
-.botonCancelar{
+.botonCancelar {
   --background: #8A8A8A;
 }

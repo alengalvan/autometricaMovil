@@ -17,7 +17,7 @@
           
           <br><br>
           <ion-item class="ion-item-input" mode="md">
-            <ion-input type="text" formControlName="correo" placeholder="Usuario"></ion-input>
+            <ion-input appTrim type="text" formControlName="correo" placeholder="Usuario"></ion-input>
           </ion-item>
           <div *ngFor="let error of mensajesValidacion.correo">
             <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">

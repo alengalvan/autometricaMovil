@@ -8,6 +8,7 @@ import { RecuperarContraseniaPageRoutingModule } from './recuperar-contrasenia-r
 
 import { RecuperarContraseniaPage } from './recuperar-contrasenia.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     RecuperarContraseniaPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [RecuperarContraseniaPage]
+  declarations: [RecuperarContraseniaPage, TrimDirective]
 })
 export class RecuperarContraseniaPageModule {}

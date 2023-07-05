@@ -18,7 +18,7 @@
       <form [formGroup]="form" autocomplete="off">
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off" maxlength="60"></ion-input>
+          <ion-input appTrim type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.nombre">
           <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
@@ -28,7 +28,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
+          <ion-input appTrim type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
@@ -40,7 +40,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
+          <ion-input appTrim type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
@@ -66,7 +66,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="text" formControlName="correo" placeholder="Correo electrónico"
+          <ion-input appTrim type="text" formControlName="correo" placeholder="Correo electrónico"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.correo">
@@ -77,7 +77,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off" maxlength="10"></ion-input>
+          <ion-input appTrim type="number" formControlName="telefono" placeholder="Teléfono (Opcional)" autocomplete="off" maxlength="10"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.telefono">
           <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
@@ -87,7 +87,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
+          <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
             autocomplete="off" maxlength="20"></ion-input>
           <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
           </ion-icon>
@@ -102,7 +102,7 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-input type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
+          <ion-input appTrim type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
             #inputPasswordConfirm autocomplete="off" maxlength="20"></ion-input>
           <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasenaConfirm" (click)="mostrarContrasena(true)">
           </ion-icon>
@@ -125,8 +125,8 @@
         <ion-item mode="md">
           <span><ion-checkbox formControlName="heLeidoTerminosCondiciones" mode="ios"></ion-checkbox></span>
           &nbsp;&nbsp;&nbsp;
-          <span><p style="font-size: 14px;color: #616161;display: inline;" (click)="prueba(heLeidoTerminosCondiciones)">He leído y acepto los </p><p style="font-size: 14px;color: #438EFF;display: inline" (click)="openTrasnparentModal(true)">Términos y condiciones </p> 
-          <p style="font-size: 14px;color: #616161;display: inline;">y el </p><p style="font-size: 14px;color: #438EFF;display: inline" (click)="openTrasnparentModal(false)">Aviso de privacidad</p>
+          <span><p style="font-size: 14px;color: #616161;display: inline;" (click)="prueba(heLeidoTerminosCondiciones)">He leído y acepto los </p><p style="font-size: 14px;color: #000;display: inline" (click)="openTrasnparentModal(true)"><b>Términos y condiciones</b></p> 
+          <p style="font-size: 14px;color: #616161;display: inline;">y el </p><p style="font-size: 14px;color: #000;display: inline" (click)="openTrasnparentModal(false)"><b>Aviso de privacidad.</b></p>
           </span> <br>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.heLeidoTerminosCondiciones">

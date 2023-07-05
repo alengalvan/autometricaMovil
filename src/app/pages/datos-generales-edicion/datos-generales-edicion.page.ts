@@ -79,7 +79,7 @@ export class DatosGeneralesEdicionPage implements OnInit {
     ],
     correo: [
       { type: "required", message: "*Por favor ingrese su correo electrónico" },
-      { type: "pattern", message: "*Por favor ingrese su correo electrónico valido" },
+      { type: "pattern", message: "*Por favor ingrese su correo electrónico válido" },
     ],
     telefono: [
       { type: "pattern", message: "*El número de teléfono debe tener 10 caracteres" },

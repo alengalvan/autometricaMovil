@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { AltaNuevaTarjetaPageRoutingModule } from './alta-nueva-tarjeta-routing.module';
 import { AltaNuevaTarjetaPage } from './alta-nueva-tarjeta.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [AltaNuevaTarjetaPage]
+  declarations: [AltaNuevaTarjetaPage, TrimDirective]
 })
 export class AltaNuevaTarjetaPageModule {}

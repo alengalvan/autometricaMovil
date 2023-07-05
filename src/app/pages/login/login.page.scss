@@ -5,3 +5,13 @@ ion-icon {
 ion-button {
     --background: #FF3E44;
 }
+
+ion-checkbox {
+    --size: 20px;
+    --checkbox-background-checked: #4ACB48;
+  }
+  
+  ion-checkbox::part(container) {
+    border-radius: 6px;
+    border: 2px solid #4ACB48;
+  }

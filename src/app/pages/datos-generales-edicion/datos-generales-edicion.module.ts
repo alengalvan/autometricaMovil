@@ -8,6 +8,7 @@ import { DatosGeneralesEdicionPageRoutingModule } from './datos-generales-edicio
 
 import { DatosGeneralesEdicionPage } from './datos-generales-edicion.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [DatosGeneralesEdicionPage]
+  declarations: [DatosGeneralesEdicionPage, TrimDirective]
 })
 export class DatosGeneralesEdicionPageModule {}

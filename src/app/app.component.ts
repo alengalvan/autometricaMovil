@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { MenuController, ModalController, NavController, Platform } from '@ionic/angular';
 import { UtilitiesService } from './services/utilities.service';
 import { Router } from '@angular/router';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
@@ -32,7 +32,8 @@ export class AppComponent  {
     public modalController: ModalController,
     public platform: Platform,
     public webService: WebRestService,
-    public userService: UserService) {
+    public userService: UserService,
+    private menu: MenuController) {
     this.initializeApp();
   }
 
@@ -110,7 +111,7 @@ export class AppComponent  {
   public async obtenerHistoricoLicencias() {
     this.licenciaActiva = false;
     let objeto = {
-      client_id: this.usuario.id,
+      client_id: JSON.parse(localStorage.getItem('usuario')!).id,
       mobile_identifier: "dnaibdayb82u31"
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
@@ -147,7 +148,7 @@ export class AppComponent  {
       {
         title: '¿Quiénes somos?',
         url: 'quienes-somos',
-        icon: 'assets/icon/quienes_somos.svg'
+        icon: 'assets/icon/carbon_book.svg'
       },
       {
         title: 'Consulta',
@@ -165,7 +166,7 @@ export class AppComponent  {
         icon: 'assets/icon/a.svg'
       },
       {
-        title: 'Contáctanos',
+        title: 'Contacto',
         url: 'contactanos',
         icon: 'assets/icon/menu-contacto.svg'
       },
@@ -228,9 +229,13 @@ export class AppComponent  {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async cerrarSesion() {
+
     localStorage.clear();
     this.userService.cerrarSesion();
     await this.navCtrl.navigateRoot('/login');
+    setTimeout(() => {
+      this.menu.close();
+    }, 1000);
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

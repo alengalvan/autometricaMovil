@@ -24,7 +24,7 @@ export class RecuperarContraseniaPage implements OnInit {
   public mensajesValidacion = {
     correo: [
       { type: "required", message: "*Por favor ingrese su correo electrónico." },
-      { type: "pattern", message: "*Por favor ingrese su correo electrónico valido." },
+      { type: "pattern", message: "*Por favor ingrese su correo electrónico válido." },
     ]
   };
 

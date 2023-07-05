@@ -14,7 +14,7 @@
       <form [formGroup]="form" autocomplete="off">
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off"></ion-input>
+          <ion-input appTrim type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.nombre">
           <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
@@ -24,7 +24,7 @@
 
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
+          <ion-input appTrim type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
             autocomplete="off"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
@@ -36,7 +36,7 @@
 
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
+          <ion-input appTrim type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
             autocomplete="off"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
@@ -62,7 +62,7 @@
 
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off"
+          <ion-input appTrim type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off"
             maxlength="10"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.telefono">
@@ -73,7 +73,7 @@
 
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
+          <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
             autocomplete="off"></ion-input>
           <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
           </ion-icon>
@@ -88,7 +88,7 @@
 
         <br>
         <ion-item class="ion-item-input">
-          <ion-input type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
+          <ion-input appTrim type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
             #inputPasswordConfirm autocomplete="off"></ion-input>
           <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasenaConfirm" (click)="mostrarContrasena(true)">
           </ion-icon>

@@ -14,7 +14,7 @@
 
           <br><br>
           <ion-item class="ion-item-input" mode="md">
-            <ion-input type="text" formControlName="usuario" placeholder="Usuario"></ion-input>
+            <ion-input appTrim type="text" formControlName="usuario" placeholder="Usuario"></ion-input>
           </ion-item>
           <div *ngFor="let error of mensajesValidacion.usuario">
             <ng-container *ngIf="usuario!.hasError(error.type) && (usuario!.dirty || usuario!.touched)">
@@ -24,7 +24,7 @@
 
           <br><br>
           <ion-item class="ion-item-input" mode="md">
-            <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña"
+            <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña"
               #inputPassword></ion-input>
             <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
             </ion-icon>
@@ -38,10 +38,16 @@
           </div>
 
           <br>
-          <ion-item mode="md">
-            <span><ion-checkbox formControlName="recordarContrasenia" mode="md"></ion-checkbox></span> &nbsp;&nbsp;
-            <span style="color: #616161;font-size: 12px;">Recordar contraseña</span>
-          </ion-item>
+          <!-- <ion-item mode="md"> -->
+          <div>
+            <ion-checkbox formControlName="recordarContrasenia" mode="md" labelPlacement="end">
+              <span style="color: #616161;font-size: 12px;">
+                Recordar contraseña
+              </span>
+            </ion-checkbox>
+          </div>
+
+          <!-- </ion-item> -->
 
           <br>
           <ion-button mode="md" expand="full">

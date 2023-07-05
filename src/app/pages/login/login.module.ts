@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ReactiveFormsModule,
   ],
   providers: [],
-  declarations: [LoginPage]
+  declarations: [LoginPage, TrimDirective]
 })
 export class LoginPageModule {}

@@ -34,7 +34,7 @@ export class RegistroPage implements OnInit {
     confirmacionContrasenia: [null, Validators.required],
     heLeidoTerminosCondiciones: [false, Validators.pattern('true')]
   });
-  public networkStatus: ConnectionStatus | undefined ;
+  public networkStatus: ConnectionStatus | undefined;
 
   public estados: any = [];
 
@@ -85,17 +85,17 @@ export class RegistroPage implements OnInit {
       { type: "required", message: "*Por favor ingrese su segundo apellido." },
     ],
     estado: [
-      { type: "required", message: "*Es necesario que seleccione un estado." },
+      { type: "required", message: "*Es necesario que seleccione un Estado." },
     ],
     correo: [
       { type: "required", message: "*Por favor ingrese su correo electrónico." },
-      { type: "pattern", message: "*Correo electrónico no valido." },
+      { type: "pattern", message: "*Correo electrónico no válido." },
     ],
     telefono: [
-      { type: "pattern", message: "*El número de teléfono debe tener 10 caracteres." },
+      { type: "pattern", message: "El número de teléfono debe tener 10 caracteres." },
     ],
     contrasenia: [
-      { type: "required", message: "*Por favor ingrese su correo electrónico." },
+      { type: "required", message: "*Por favor ingrese su contraseña." },
       { type: "pattern", message: "*La contraseña debe tener al menos 8 caracteres, un número, un carácter especial, una letra mayúscula y letras minúsculas." },
 
     ],
@@ -117,7 +117,7 @@ export class RegistroPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
-    if(Network){
+    if (Network) {
       Network.getStatus().then((status) => {
         this.networkStatus = status
       })
@@ -237,8 +237,10 @@ export class RegistroPage implements OnInit {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public revisarInternet(){
+  public revisarInternet() { }
 
-  }
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async quitarEspacios() {}
+
 
 }

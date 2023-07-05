@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HacerTransaccionPageRoutingModule } from './hacer-transaccion-routing.module';
 import { HacerTransaccionPage } from './hacer-transaccion.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [HacerTransaccionPage]
+  declarations: [HacerTransaccionPage, TrimDirective]
 })
 export class HacerTransaccionPageModule {}

@@ -410,7 +410,7 @@
               <ion-col size="3"></ion-col>
               <ion-col size="6">
                 <ion-item class="ion-item-input" mode="md">
-                  <ion-input type="number" formControlName="cvv" placeholder="CVV" maxlength="4"></ion-input>
+                  <ion-input appTrim type="number" formControlName="cvv" placeholder="CVV" maxlength="4"></ion-input>
                 </ion-item>
                 <div *ngFor="let error of mensajesValidacionPago.cvv">
                   <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">

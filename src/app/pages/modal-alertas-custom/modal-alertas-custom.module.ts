@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ModalAlertasCustomPageRoutingModule } from './modal-alertas-custom-routing.module';
 import { ModalAlertasCustomPage } from './modal-alertas-custom.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TrimDirective } from 'src/app/trim.directive';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [ModalAlertasCustomPage]
+  declarations: [ModalAlertasCustomPage, TrimDirective]
 })
 export class ModalAlertasCustomPageModule {}

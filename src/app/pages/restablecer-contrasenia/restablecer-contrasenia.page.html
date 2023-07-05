@@ -16,7 +16,7 @@
 
           <br><br>
           <ion-item class="ion-item-input" mode="md">
-            <ion-input type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
+            <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
               autocomplete="off"></ion-input>
             <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasena" (click)="mostrarContrasena()">
             </ion-icon>
@@ -31,7 +31,7 @@
 
           <br><br>
           <ion-item class="ion-item-input" mode="md">
-            <ion-input type="password" formControlName="confirmarContrasenia" placeholder="Confirmar contraseña"
+            <ion-input appTrim type="password" formControlName="confirmarContrasenia" placeholder="Confirmar contraseña"
               #inputPasswordConfirm autocomplete="off"></ion-input>
             <ion-icon name="eye-off-outline" slot="end" *ngIf="!verContrasenaConfirm" (click)="mostrarContrasena(true)">
             </ion-icon>
