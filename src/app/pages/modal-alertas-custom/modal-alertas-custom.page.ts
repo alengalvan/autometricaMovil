@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { API } from 'src/app/endpoints';
 import { WebRestService } from 'src/app/services/crud-rest.service';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
   selector: 'app-modal-alertas-custom',
@@ -39,7 +40,7 @@ export class ModalAlertasCustomPage implements OnInit {
   public mensajeModalConsulta = localStorage.getItem('mensaje-modal-consulta');
 
   public formPago: FormGroup = this.formBuilder.group({
-    cvv: [null, Validators.required],
+    cvv: [null,  [Validators.required, Validators.minLength(3), Validators.pattern("[0-9]+$"), Validators.maxLength(4)]],
   });
 
   get cvv() {
@@ -49,6 +50,9 @@ export class ModalAlertasCustomPage implements OnInit {
   public mensajesValidacionPago = {
     cvv: [
       { type: "required", message: "*Ingrese el CVV." },
+      { type: "minlength", message: "*El cvv debe tener un mínimo de 3 caracteres." },
+      { type: "maxlength", message: "*El cvv debe tener un máximo de 4 caracteres." },
+      { type: "pattern", message: "*El cvv solo acepta números" },
     ]
   };
 
@@ -56,7 +60,8 @@ export class ModalAlertasCustomPage implements OnInit {
     navParams: NavParams,
     public webRestService: WebRestService,
     private formBuilder: FormBuilder,
-    public navCtrl: NavController) {
+    public navCtrl: NavController,
+    public utilitiesService: UtilitiesService) {
     this.mensajeError = navParams.data['mensaje'];
   }
 
@@ -100,5 +105,17 @@ export class ModalAlertasCustomPage implements OnInit {
 
   }
 
+  public async cerrarModalReturnDataForm(data: any){
+    
+    await this.utilitiesService.validaCamposFormulario([this.formPago])
+    
+    if(String(this.formPago.controls['cvv'].value).length >= 3 && String(this.formPago.controls['cvv'].value).length <= 4){
+      console.log("si")
+      this.modalController.dismiss(data);
+    }else{
+      console.log("no")
+    }
+   
+  }
 
 }

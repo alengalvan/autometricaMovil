@@ -6,7 +6,8 @@
   <ion-row>
     <ion-col size="1"></ion-col>
     <ion-col size="1">
-      <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="reygresar('metodos-pago')"> </ion-icon> &nbsp;&nbsp;
+      <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="reygresar('metodos-pago')"> </ion-icon>
+      &nbsp;&nbsp;
     </ion-col>
 
     <ion-col size="8">
@@ -22,10 +23,10 @@
         <ion-icon src="assets/icon/billete.svg" style="zoom: 3;"></ion-icon> <br>
         <span style="color: #616161;font-size: 30px;font-weight: 600;">Tarjeta de Prepago</span> <br>
         <span style="color: #616161;text-align: center;font-size: 20px;font-weight: 600;" *ngIf="!id">
-          Edición {{licenciaSeleccionada.mes}} {{licenciaSeleccionada.anio}} 
+          Edición {{licenciaSeleccionada.mes}} {{licenciaSeleccionada.anio}}
         </span>
         <span style="color: #616161;text-align: center;font-size: 20px;font-weight: 600;" *ngIf="id">
-          Edición {{mes}} {{anio}} 
+          Edición {{mes}} {{anio}}
         </span>
       </div>
 
@@ -34,12 +35,11 @@
         <div>
           <ion-row>
             <ion-col size="12">
-              <ion-item class="ion-item-input" mode="md">
-                <ion-input appTrim type="text" formControlName="codigo" placeholder="Código"></ion-input>
-              </ion-item>
+              <input appTrim credit-card type="text" formControlName="codigo"
+               placeholder="Código" maxlength="9"
+                style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;">
               <div *ngFor="let error of mensajesValidacion.codigo">
-                <ng-container
-                  *ngIf="codigo!.hasError(error.type) && (codigo!.dirty || codigo!.touched)">
+                <ng-container *ngIf="codigo!.hasError(error.type) && (codigo!.dirty || codigo!.touched)">
                   <small class="errorValidation">{{error.message}}</small>
                 </ng-container>
               </div>
@@ -52,15 +52,15 @@
         </span>
 
         <br><br><br>
-        
+
         <ion-button mode="md" expand="full" style=" --background: #FF3E44;" (click)="pagarPrepago()">
-          <span style="font-size: 12px;"> 
+          <span style="font-size: 12px;">
             Canjear
           </span>
         </ion-button>
         <br>
         <ion-button mode="md" expand="full" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-          (click)="reygresar('metodos-pago')"> Cancelar
+            (click)="reygresar('metodos-pago')"> Cancelar
           </span></ion-button>
       </form>
 

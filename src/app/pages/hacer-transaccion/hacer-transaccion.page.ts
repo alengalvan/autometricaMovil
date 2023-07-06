@@ -23,6 +23,7 @@ export class HacerTransaccionPage implements OnInit {
   public mensajesValidacion = {
     codigo: [
       { type: "required", message: "*Campo obligatorio." },
+      { type: "minlength", message: "*El código debe tener un mínimo de 8 caracteres." },
     ]
   };
   mes: any;
