@@ -101,7 +101,7 @@ export class PagosPage implements OnInit {
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: "Error inesperado por favor intente más tarde." }
+        componentProps: { mensaje: respuesta.error.message }
       })
       this.navCtrl.navigateRoot("mi-perfil")
       await modal.present();
