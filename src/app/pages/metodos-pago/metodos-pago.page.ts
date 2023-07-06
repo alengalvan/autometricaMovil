@@ -30,7 +30,7 @@ export class MetodosPagoPage implements OnInit {
         this.tiposFormasPago.push(
           {
             id: 1,
-            nombre: 'Tarjeta Prepago',
+            nombre: 'Tarjeta de Prepago',
             desc: 'Si no cuenta con tarjeta de prepago por favor contacte a su vendedor.',
             textoTarjeta: 'Seleccionar Tarjeta'
           }
@@ -41,7 +41,7 @@ export class MetodosPagoPage implements OnInit {
         this.tiposFormasPago.push(
           {
             id: 2,
-            nombre: 'Tarjeta de Crédito o débito',
+            nombre: 'Tarjeta de Crédito o Débito',
             desc: 'Ingrese la tarjeta de crédito o débito con la que se realizará su pago.',
             textoTarjeta: 'Ingresar Tarjeta'
           }

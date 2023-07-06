@@ -60,13 +60,13 @@ export class AdministracionTarjetasPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async seleccionarTarjeta(tarjeta: any) {
     if (!tarjeta.seleccionada) {
-      for (let i = 0; i < this.listadoLicencias.length; i++) {
-        if (tarjeta.card_number == this.listadoLicencias[i].card_number) {
-          this.listadoLicencias[i].seleccionada = true;
-        } else {
-          this.listadoLicencias[i].seleccionada = false;
-        }
-      }
+      // for (let i = 0; i < this.listadoLicencias.length; i++) {
+      //   if (tarjeta.card_number == this.listadoLicencias[i].card_number) {
+      //     this.listadoLicencias[i].seleccionada = true;
+      //   } else {
+      //     this.listadoLicencias[i].seleccionada = false;
+      //   }
+      // }
       localStorage.setItem("tarjetaSeleccionada", JSON.stringify(tarjeta))
       localStorage.setItem("opcionAlerta", "confirmacion-cvv")
       const modal = await this.modalController.create({
@@ -93,7 +93,7 @@ export class AdministracionTarjetasPage implements OnInit {
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
       cssClass: 'transparent-modal',
-      componentProps: { mensaje: "¿Estas seguro de eliminar el método de pago?" }
+      componentProps: { mensaje: "¿Está seguro de que desea eliminar su método de pago?" }
     })
     modal.onDidDismiss().then(async (data) => {
       if (data.data) {

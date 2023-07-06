@@ -59,11 +59,10 @@
               </ng-container>
             </div>
           </ion-col>
-          <ion-col size="12">
-            <ion-item class="ion-item-input" mode="md">
-              <ion-input appTrim type="text" formControlName="nombreTarjeta" placeholder="Número de Tarjeta" maxlength="16"
-                x-autocompletetype="cc-number"></ion-input>
-            </ion-item>
+          <ion-col size="12" (click)="prueba()">
+            <input appTrim credit-card type="text"
+              style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
+              formControlName="nombreTarjeta" placeholder="Número de Tarjeta" maxlength="21" credit-card>
             <div *ngFor="let error of mensajesValidacionPago.nombreTarjeta">
               <ng-container
                 *ngIf="nombreTarjeta!.hasError(error.type) && (nombreTarjeta!.dirty || nombreTarjeta!.touched)">
@@ -72,10 +71,9 @@
             </div>
           </ion-col>
           <ion-col size="6">
-            <ion-item class="ion-item-input" mode="md">
-              <ion-input appTrim type="text" formControlName="fechaVencimiento" placeholder="Fecha de Vencimiento"
-                maxlength="7"></ion-input>
-            </ion-item>
+            <input appTrim fecha-vencimiento type="text" formControlName="fechaVencimiento"
+              style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
+              placeholder="Fecha de Vencimiento" maxlength="7">
             <div *ngFor="let error of mensajesValidacionPago.fechaVencimiento">
               <ng-container
                 *ngIf="fechaVencimiento!.hasError(error.type) && (fechaVencimiento!.dirty || fechaVencimiento!.touched)">
@@ -84,9 +82,10 @@
             </div>
           </ion-col>
           <ion-col size="6">
-            <ion-item class="ion-item-input" mode="md">
-              <ion-input appTrim type="number" formControlName="cvv" placeholder="CVV" maxlength="4"></ion-input>
-            </ion-item>
+
+            <input appTrim type="number" formControlName="cvv" placeholder="CVV"
+              style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
+              maxlength="4">
             <div *ngFor="let error of mensajesValidacionPago.cvv">
               <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">
                 <small class="errorValidation">{{error.message}}</small>

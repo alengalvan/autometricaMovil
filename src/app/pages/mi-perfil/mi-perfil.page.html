@@ -35,7 +35,7 @@
       <ion-row>
         <ion-col size="1"></ion-col>
         <ion-col size="10">
-          <div class="contenedor-licencias" *ngFor="let licencia of licenciaActual">
+          <div class="contenedor-licencias" *ngFor="let licencia of licenciaActual" style="margin-bottom: 10px">
             <ion-row>
               <ion-col size="2">
                 <ion-icon src="assets/icon/perfil-persona.svg" style="zoom: 2;"></ion-icon>
@@ -47,9 +47,9 @@
                 <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 1">Activa</span>
                 <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 2">Pendiente</span>
                 <br>
-                <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date}} </span>
+                <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date | date:'dd/MM/yyyy' }} </span>
                 <br>
-                <span style="font-size: 12px;color: #8A8A8A;"> Edición {{licencia.mes}} {{licencia.year_hire}} </span>
+                <span style="font-size: 12px;color: #8A8A8A;"> Edición {{licencia.mes | lowercase }} {{licencia.year_hire}} </span>
               </ion-col>
               <ion-col size="2">
                 <ion-icon src="assets/icon/perfil-insignia.svg" style="zoom: 2;"></ion-icon>
@@ -96,6 +96,7 @@
                 </div>
               </ion-col>
             </ion-row>
+            <br>
           </div>
 
           <div *ngIf="licenciaActual.length == 0">
@@ -142,7 +143,7 @@
           style="border: solid 1px #D9D9D9;margin-bottom: 5px;background-color: #FAFAFA;padding: 5px;">
           <ion-col size="7">
             <span style="color:#438EFF;font-size: 16px;"><b>{{licencia.name}}</b></span><br>
-            <span style="color:#616161;font-size: 10px;"><b>Periodo {{licencia.mes}}
+            <span style="color:#616161;font-size: 10px;"><b>Edición: {{licencia.mes | lowercase }}
                 {{licencia.year_hire}}</b></span><br>
             <span style="color:#616161;font-size: 10px;"><b>Fecha de compra: {{licencia.date_hire | date:'dd/MM/yyyy'
                 }}</b></span>

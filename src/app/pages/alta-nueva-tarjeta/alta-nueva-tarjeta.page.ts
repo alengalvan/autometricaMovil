@@ -13,13 +13,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./alta-nueva-tarjeta.page.scss'],
 })
 export class AltaNuevaTarjetaPage implements OnInit {
-  public usuario = JSON.parse(localStorage.getItem('usuario')!)
+ public usuario = JSON.parse(localStorage.getItem('usuario')!)
   public tarjetaEditar = JSON.parse(localStorage.getItem('tarjetaEditar')!)
   public formPago: FormGroup = this.formBuilder.group({
     nombreTitular: [null, Validators.required],
-    nombreTarjeta: [null, Validators.required],
-    fechaVencimiento: [null, Validators.required],
-    cvv: [null, Validators.required],
+    nombreTarjeta: [null,  [Validators.required, Validators.minLength(19), Validators.pattern("[0-9-]+$")]],
+    fechaVencimiento: [null, [Validators.required, Validators.minLength(4), Validators.pattern("[0-9/]+$")]],
+    cvv: [null,  [Validators.required, Validators.minLength(3), Validators.pattern("[0-9]+$"), Validators.maxLength(4)]],
   });
   public mensajesValidacionPago = {
     nombreTitular: [
@@ -27,12 +27,19 @@ export class AltaNuevaTarjetaPage implements OnInit {
     ],
     nombreTarjeta: [
       { type: "required", message: "*Ingrese el número de tarjeta." },
+      { type: "minlength", message: "*El número de tarjeta debe tener un mínimo de 16 caracteres." },
+      { type: "pattern", message: "*El número de tarjeta solo acepta números" },
     ],
     fechaVencimiento: [
       { type: "required", message: "*Ingrese la fecha de vencimiento." },
+      { type: "minlength", message: "*La fecha de vencimiento debe tener un mínimo de 7 caracteres." },
+      { type: "pattern", message: "*La fecha de vencimiento solo acepta números" },
     ],
     cvv: [
       { type: "required", message: "*Ingrese el CVV." },
+      { type: "minlength", message: "*El cvv debe tener un mínimo de 3 caracteres." },
+      { type: "maxlength", message: "*El cvv debe tener un máximo de 4 caracteres." },
+      { type: "pattern", message: "*El cvv solo acepta números" },
     ]
   };
   public id = this.route.snapshot.paramMap.get('id');
@@ -73,23 +80,21 @@ export class AltaNuevaTarjetaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   public async altaTarjeta() {
-
     if(!this.formPago.valid){
       this.utilitiesServices.validaCamposFormulario([this.formPago]);
       return;
     }
-    console.log(this.formPago)
-
+    
+    let tarjeta = this.formPago.controls['nombreTarjeta'].value.split("-").join('');
+    
     let objeto = {
       name: this.formPago.controls['nombreTitular'].value,
-      number_card: this.formPago.controls['nombreTarjeta'].value,
+      number_card: tarjeta,
       cvv2: this.formPago.controls['cvv'].value,
-      month_expiration: this.formPago.controls['fechaVencimiento'].value.substring(0, 2),
-      year_expiration: this.formPago.controls['fechaVencimiento'].value.substring(2, 4),
+      month_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[0],
+      year_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[1],
       id_client: this.usuario.id,
     }
-
-    console.log(objeto)
 
     let respuesta = await this.webRestService.postAsync(API.endpoints.agregarTarjeta, objeto);
 
@@ -104,12 +109,12 @@ export class AltaNuevaTarjetaPage implements OnInit {
       this.navCtrl.navigateRoot("administracion-tarjetas")
     }
 
-    if (respuesta.status == false) {
+    if (respuesta.status == false || respuesta.status == 401) {
       localStorage.setItem("opcionAlerta", "registro-tarjeta-fallido")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: "No se pudo guardar la tarjeta." }
+        componentProps: { mensaje: "Error inesperado, por favor intente más tarde." }
       })
       await modal.present();
     }
@@ -123,20 +128,19 @@ export class AltaNuevaTarjetaPage implements OnInit {
       return;
     }
     console.log(this.formPago)
-
+    let tarjeta = this.formPago.controls['nombreTarjeta'].value.split("-").join('');
     let objeto = {
       name: this.formPago.controls['nombreTitular'].value,
-      number_card: this.formPago.controls['nombreTarjeta'].value,
+      number_card: tarjeta,
       cvv2: this.formPago.controls['cvv'].value,
-      month_expiration: this.formPago.controls['fechaVencimiento'].value.substring(0, 2),
-      year_expiration: this.formPago.controls['fechaVencimiento'].value.substring(2, 4),
+      month_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[0],
+      year_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[1],
       id_client: this.usuario.id,
       id_card: this.tarjetaEditar.id
     }
 
-    console.log(objeto)
-
     let respuesta = await this.webRestService.postAsync(API.endpoints.editarTarjeta, objeto);
+    console.log(respuesta)
 
     if (respuesta.status == true) {
       localStorage.setItem("opcionAlerta", "registro-tarjeta-exitoso")
@@ -149,12 +153,12 @@ export class AltaNuevaTarjetaPage implements OnInit {
       this.navCtrl.navigateRoot("administracion-tarjetas")
     }
 
-    if (respuesta.status == false) {
+    if (respuesta.status == false || respuesta.status == 401) {
       localStorage.setItem("opcionAlerta", "registro-tarjeta-fallido")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: this.id? "No se pudo editar la tarjeta." : "No se pudo guardar la tarjeta." }
+        componentProps: { mensaje: "Error inesperado, por favor intente más tarde." }
       })
       await modal.present();
     }
@@ -162,9 +166,17 @@ export class AltaNuevaTarjetaPage implements OnInit {
 
   public async setearEdicion(){
     console.log(this.tarjetaEditar)
+
+    let tarjeta = this.tarjetaEditar.card_number.match(/.{1,4}/g);
+
+
     this.formPago.controls['nombreTitular'].setValue(this.tarjetaEditar.holder_name);
-    this.formPago.controls['nombreTarjeta'].setValue(this.tarjetaEditar.card_number);
-    this.formPago.controls['fechaVencimiento'].setValue(this.tarjetaEditar.expiration_month + this.tarjetaEditar.expiration_year);
+    this.formPago.controls['nombreTarjeta'].setValue(tarjeta.join("-"));
+    this.formPago.controls['fechaVencimiento'].setValue(this.tarjetaEditar.expiration_month + "/" + this.tarjetaEditar.expiration_year);
+  }
+ 
+  public prueba(){
+    console.log(this.nombreTarjeta)
   }
 
 }

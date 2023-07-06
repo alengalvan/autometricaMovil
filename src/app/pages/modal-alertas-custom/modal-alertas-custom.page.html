@@ -54,12 +54,15 @@
 
     <!-- login -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'usuario-inactivo' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"
           *ngIf="mensajeError != 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
         <ion-icon src="assets/icon/alerta-mensaje.svg" style="zoom: 2;"
@@ -72,12 +75,14 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'login-cinco-intentos' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/candado-cinco-intentos-login.svg" style="zoom: 2;"></ion-icon><br>
         <div class="mensaje-error">
           {{mensajeError}}
@@ -125,12 +130,15 @@
 
     <!-- recuperar contrasenia -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'recuperar-contrasenia-enviamos-enlace' ">
-      <br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/mdi_email.svg" style="zoom: 2;"></ion-icon><br>
         <div class="mensaje-error">
           {{mensajeError}}
@@ -159,12 +167,14 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'restablecer-contrasenia-exitoso' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
         <div class="mensaje-error">
           {{mensajeError}}
@@ -197,13 +207,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'descarga-pendiente' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
-        <br>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div class="mensaje-error" style="text-align: center;" [innerHTML]="mensajeInner"></div>
         <br>
       </ion-col>
@@ -230,36 +240,37 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'descarga-exitosa' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
-        <br>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error" [innerHTML]="mensajeInnerDescargaExitosa"></div>
         </div>
-
         <br>
       </ion-col>
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'modificaciones-exitosas' ">
-      <br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error">
             {{mensajeError}}
           </div>
         </div>
-
         <br>
       </ion-col>
     </ion-row>
@@ -305,31 +316,31 @@
 
     <!-- tarjetas -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'registro-tarjeta-exitoso' ">
-      <br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
-        <br>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error">
             {{mensajeError}}
           </div>
         </div>
-
         <br>
       </ion-col>
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'registro-tarjeta-fallido' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error">
@@ -341,12 +352,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'eliminar-metodo-pago' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <div style="text-align: center;">
           <div class="mensaje-error">
             {{mensajeError}}
@@ -354,13 +366,13 @@
           <br>
           <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
             <span style="font-size: 12px;">
-              Ahora no
+              Cancelar
             </span>
           </ion-button>
 
           <ion-button mode="md" (click)="cerrarModalReturnData(true)">
             <span style="font-size: 12px;">
-              Descargar
+              Aceptar
             </span>
           </ion-button>
 
@@ -370,13 +382,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'eliminacion-correcta' ">
-      <br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
-        <br>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error">
@@ -389,12 +401,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'confirmacion-cvv' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10">
         <div>
           <div>
             <span style="color: #616161;font-size: 15px;font-weight: 700;">
@@ -472,12 +485,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-pago-prepago' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <div class="mensaje-error">
           {{mensajeError}}
         </div>
@@ -486,13 +500,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'compra-exitosa' ">
-      <br><br>
+      <ion-col size="12" no-padding>
+        <div style="text-align: end;">
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+        </div>
+      </ion-col>
       <ion-col size="1"></ion-col>
       <ion-col size="10">
-        <div style="text-align: end;">
-          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal(true)"></ion-icon><br>
-        </div>
-        <br>
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error" [innerHTML]="mensajeInnerCompraExitosa"></div>
@@ -527,12 +541,13 @@
 
     <!-- pgos -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-general' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
         <div class="mensaje-error">
           {{mensajeError}}
@@ -543,12 +558,13 @@
 
     <!-- consulta  -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'sin-informacion-descargada' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
         <div class="mensaje-error">
           {{mensajeError}}
@@ -581,12 +597,13 @@
     </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'campos-requeridos' ">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" no-padding>
         <div style="text-align: end;">
           <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
         </div>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
         <ion-icon src="assets/icon/formulario.svg" style="zoom: 2;"></ion-icon>
         <div class="mensaje-error">
           {{mensajeError}}

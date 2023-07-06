@@ -26,6 +26,19 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 
+.transparent-modal-menu {
+  --background: #0000005c;
+
+  ion-content {
+    --background: black;
+  }
+
+  ion-footer{
+    --background: black;
+  }
+}
+
+
 .transparent-modal {
   --background: #0000005c;
 
