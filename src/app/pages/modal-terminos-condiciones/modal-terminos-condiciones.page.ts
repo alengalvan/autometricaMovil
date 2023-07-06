@@ -3,6 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { FileOpener } from "@ionic-native/file-opener"
 import { DocumentViewer } from '@awesome-cordova-plugins/document-viewer/ngx';
 import { DocumentViewerOptions } from '@awesome-cordova-plugins/document-viewer';
+import { API } from 'src/app/endpoints';
+import { WebRestService } from 'src/app/services/crud-rest.service';
 
 @Component({
   selector: 'app-modal-terminos-condiciones',
@@ -12,19 +14,20 @@ import { DocumentViewerOptions } from '@awesome-cordova-plugins/document-viewer'
 export class ModalTerminosCondicionesPage implements OnInit {
 
   public esTerminos: any = localStorage.getItem('abrirTerminos');
-  public filePath: any = this.esTerminos == 1 ? localStorage.getItem("pathTycFile") : localStorage.getItem("pathApFile")
-
+  public stringPDFAvisoPrivacidad: string = '';
+  public stringPDFTyC: string = '';
 
   constructor(public modalController: ModalController,
-    private document: DocumentViewer) { }
+    private document: DocumentViewer,
+    public webService: WebRestService) { }
 
   public async ngOnInit() {
-    const options: DocumentViewerOptions = {
-      title: 'My PDF'
+    let respuesta = await this.webService.getAsync(API.endpoints.verPDFLinea)
+    console.log(respuesta)
+    if(respuesta.status == true){
+      this.stringPDFAvisoPrivacidad = respuesta?.ap;
+      this.stringPDFTyC = respuesta?.tyc;
     }
-    // this.document.viewDocument(this.filePath, 'application/pdf', options)
-    const mimeType = "application/pdf"
-    await FileOpener.open(this.filePath, mimeType)
   }
 
   public dissmiss(acepto: boolean) {

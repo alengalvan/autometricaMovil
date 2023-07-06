@@ -98,6 +98,7 @@ export class LoginPage implements OnInit {
     let objeto: any = {
       email: this.form.controls['usuario'].value,
       password: this.form.controls['contrasenia'].value,
+      // mobile_identifier: "c06c7c5f8b043518",
       mobile_identifier: this.idMobile,
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.login, objeto)
@@ -173,7 +174,8 @@ export class LoginPage implements OnInit {
     let objeto: any = {
       email: valores.email,
       password: valores.password,
-      mobile_identifier: valores.mobile_identifier,
+      // mobile_identifier: "c06c7c5f8b043518",
+      mobile_identifier: this.idMobile,
     }
 
     let respuesta = await this.webRestService.postAsync(API.endpoints.login, objeto)

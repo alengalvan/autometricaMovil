@@ -79,19 +79,24 @@ export class PagosPage implements OnInit {
         this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
         this.anio = this.fechaPeriodo[0]?.month_period?.split('-')[0];
       }
-  
+
       if (this.mes && this.anio) {
         this.mes = this.utilitiesServices.obtenerMesStringActual(this.mes)
       }
-  
+
       for (let i = 0; i < this.tiposLicencias.length; i++) {
         this.tiposLicencias[i].mes = this.mes;
         this.tiposLicencias[i].anio = this.anio;
         this.tiposLicencias[i].metodosPago = respuesta?.paymet_method;
         this.tiposLicencias[i].mesNumero = this.fechaPeriodo[0]?.month_period?.split('-')[1];
+
+        if (this.tiposLicencias[i].duration_month > 1) {
+          this.tiposLicencias[i].mesFin = Number(this.tiposLicencias[i].mesNumero) + (this.tiposLicencias[i].duration_month - 1)
+          this.tiposLicencias[i].mesFinString = this.utilitiesServices.obtenerMesStringActual(this.tiposLicencias[i].mesFin)
+        }
       }
 
-    }else{
+    } else {
       localStorage.setItem("opcionAlerta", "error-general")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
@@ -102,7 +107,7 @@ export class PagosPage implements OnInit {
       await modal.present();
     }
 
-    
+
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,7 +115,7 @@ export class PagosPage implements OnInit {
     localStorage.setItem("licenciaSeleccionada", JSON.stringify(item))
     this.navCtrl.navigateRoot("metodos-pago");
     console.log(JSON.parse(localStorage.getItem('licenciaSeleccionada')!))
-    }
+  }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public reygresar() {

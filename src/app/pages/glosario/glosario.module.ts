@@ -8,6 +8,7 @@ import { GlosarioPageRoutingModule } from './glosario-routing.module';
 
 import { GlosarioPage } from './glosario.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PipesModule } from 'src/app/pipe/file pipes.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     GlosarioPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule
   ],
   declarations: [GlosarioPage]
 })

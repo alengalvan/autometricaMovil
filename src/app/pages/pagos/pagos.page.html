@@ -41,208 +41,22 @@
                 {{metodo.name}} <br>
               </span>
             </ion-col>
-            <ion-col size="4" style="text-align: end;">
+            <ion-col size="4" style="text-align: end;" *ngIf="licencia.duration_month == 1">
               <ion-icon src="assets/icon/pagosestrella.svg" style="zoom: 2;"></ion-icon><br>
               <span style="font-size: 10px;color: #616161;">Edición: {{licencia.mes}} {{licencia.anio}}</span> <br>
             </ion-col>
-          </ion-row>
-        </div>
-      </ion-col>
-    </ion-row>
-  </div>
 
-
-  <!-- <div *ngIf="pasoPago == 2">
-    <ion-row>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
-        <div style="text-align: center;">
-          <ion-icon src="assets/icon/billete.svg" style="zoom: 3;"></ion-icon> <br>
-          <span style="font-size: 30px;color: #616161;">Método de pago</span><br>
-          <span style="font-size: 12px;color: #438EFF;">{{usuario.email}} </span><br>
-        </div>
-        <br>
-        <ion-row *ngFor="let forma of tiposFormasPago" style="margin-bottom: 15px;" (click)="pasosPago(2, forma)">
-          <ion-col size="9">
-            <span style="font-size: 20px;color:#616161;"> {{forma.nombre}} </span> <br>
-            <span style="font-size: 12px;color:#616161;"> {{forma.desc}} </span> <br>
-            <span style="font-size: 12px;color:#438EFF;"> {{forma.textoTarjeta}} </span>
-          </ion-col>
-          <ion-col size="3" style="text-align: end;padding-top: 20px;">
-            <ion-icon name="chevron-forward-outline" style="zoom: 1.5;"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-  </div>
-
-  <div *ngIf="pasoPago == 3 && metodoPago">
-    <ion-row>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
-        <div style="text-align: center;">
-          <ion-icon src="assets/icon/billete.svg" style="zoom: 3;"></ion-icon> <br>
-          <span style="font-size: 30px;color: #616161;"> {{metodoPago.nombre}} </span><br>
-        </div>
-
-        <div *ngIf="metodoPago.id == 1">
-          <br><br><br>
-          <form [formGroup]="form" autocomplete="off">
-            <br>
-            <ion-item class="ion-item-input" mode="md">
-              <ion-input type="text" formControlName="codigo1" placeholder="Código 1" autocomplete="off"></ion-input>
-            </ion-item>
-            <div *ngFor="let error of mensajesValidacion.codigo1">
-              <ng-container *ngIf="codigo1!.hasError(error.type) && (codigo1!.dirty || codigo1!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
-              </ng-container>
-            </div>
-            <br>
-            <ion-item class="ion-item-input" mode="md">
-              <ion-input type="text" formControlName="codigo2" placeholder="Código 2" autocomplete="off"></ion-input>
-            </ion-item>
-            <div *ngFor="let error of mensajesValidacion.codigo2">
-              <ng-container *ngIf="codigo2!.hasError(error.type) && (codigo2!.dirty || codigo2!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
-              </ng-container>
-            </div>
-            <br>
-            <ion-button mode="md" expand="full" style=" --background: #FF3E44;"><span style="font-size: 12px;"
-                (click)="pagar()"> Aceptar </span></ion-button> <br>
-            <ion-button mode="md" expand="full" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-                (click)="cancelarPago()"> Cancelar </span></ion-button>
-          </form>
-        </div>
-
-        <div *ngIf="metodoPago.id == 2">
-          <br><br>
-          <ion-row>
-            <ion-col size="12">
-              <div *ngIf="!abiertoOtraTarjeta">
-                <div class="container-licencias" *ngFor="let tarjeta of tarjetasGuardadas;">
-                  <ion-row style="padding: 5px;" (click)="pasosPago(3, tarjeta)">
-                    <ion-col size="9">
-                      <span style="font-size: 20px;color: #616161;"><b>{{tarjeta.nombre}}</b> </span> <br>
-                      <span style="font-size: 12px;color: #616161;"> {{tarjeta.desc}} </span> <br>
-                      <span style="font-size: 12px;color: #438EFF;"> Tarjeta Seleccionada </span> <br>
-                      <span style="font-size: 12px;color: #EC1C24;"> Eliminar Tarjeta </span>
-                    </ion-col>
-                  </ion-row>
-                </div>
-              </div>
-
-
-              <ion-accordion-group #accordionGroup class="container-licencias">
-                <ion-accordion value="first">
-                  <ion-item slot="header" color="light">
-                    <ion-col size="9">
-                      <span style="font-size: 20px;color: #616161;"><b>Otra Tarjeta</b> </span> <br>
-                      <span style="font-size: 12px;color: #616161;"> Inserta una tarjeta nueva </span> <br>
-                      <span style="font-size: 12px;color: #438EFF;" (click)="abiertoOtraTarjeta = !abiertoOtraTarjeta">
-                        Ingresar Tarjeta </span> <br>
-                    </ion-col>
-                  </ion-item>
-                  <div class="ion-padding" slot="content">
-                    <form [formGroup]="formPago" autocomplete="off">
-                      <div>
-                        <ion-row>
-                          <ion-col size="12">
-                            <ion-item class="ion-item-input" mode="md">
-                              <ion-input type="text" formControlName="nombreTitular" placeholder="Nombre(s)"
-                                autocomplete="off"></ion-input>
-                            </ion-item>
-                            <div *ngFor="let error of mensajesValidacionPago.nombreTitular">
-                              <ng-container
-                                *ngIf="nombreTitular!.hasError(error.type) && (nombreTitular!.dirty || nombreTitular!.touched)">
-                                <small class="errorValidation">{{error.message}}</small>
-                              </ng-container>
-                            </div>
-                          </ion-col>
-                          <ion-col size="12">
-                            <ion-item class="ion-item-input" mode="md">
-                              <ion-input type="text" formControlName="nombreTarjeta" placeholder="Nombre(s)"
-                                autocomplete="off"></ion-input>
-                            </ion-item>
-                            <div *ngFor="let error of mensajesValidacionPago.nombreTarjeta">
-                              <ng-container
-                                *ngIf="nombreTarjeta!.hasError(error.type) && (nombreTarjeta!.dirty || nombreTarjeta!.touched)">
-                                <small class="errorValidation">{{error.message}}</small>
-                              </ng-container>
-                            </div>
-                          </ion-col>
-                          <ion-col size="6">
-                            <ion-item class="ion-item-input" mode="md">
-                              <ion-input type="text" formControlName="fechaVencimiento" placeholder="Nombre(s)"
-                                autocomplete="off"></ion-input>
-                            </ion-item>
-                            <div *ngFor="let error of mensajesValidacionPago.fechaVencimiento">
-                              <ng-container
-                                *ngIf="fechaVencimiento!.hasError(error.type) && (fechaVencimiento!.dirty || fechaVencimiento!.touched)">
-                                <small class="errorValidation">{{error.message}}</small>
-                              </ng-container>
-                            </div>
-                          </ion-col>
-                          <ion-col size="6">
-                            <ion-item class="ion-item-input" mode="md">
-                              <ion-input type="text" formControlName="cvv" placeholder="Nombre(s)"
-                                autocomplete="off"></ion-input>
-                            </ion-item>
-                            <div *ngFor="let error of mensajesValidacionPago.cvv">
-                              <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">
-                                <small class="errorValidation">{{error.message}}</small>
-                              </ng-container>
-                            </div>
-                          </ion-col>
-                        </ion-row>
-                      </div>
-                      <br>
-                      <ion-button mode="md" expand="full" style=" --background: #FF3E44;"><span style="font-size: 12px;"
-                          (click)="pasosPago(3, 'otro')"> Aceptar </span></ion-button> <br>
-                      <ion-button mode="md" expand="full" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-                          (click)="cancelarPago()"> Cancelar </span></ion-button>
-                    </form>
-                  </div>
-                </ion-accordion>
-              </ion-accordion-group>
+            <ion-col size="4" style="text-align: end;" *ngIf="licencia.duration_month > 1">
+              <ion-icon src="assets/icon/pagosestrella.svg" style="zoom: 2;"></ion-icon><br>
+              <span style="font-size: 10px;color: #616161;">
+                Edición: {{licencia.mes}} {{licencia.anio}} - {{licencia.mesFinString}} {{licencia.anio}}
+              </span> <br>
             </ion-col>
+
           </ion-row>
         </div>
-
       </ion-col>
     </ion-row>
   </div>
-
-  <div *ngIf="pasoPago == 4">
-    <ion-row>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10">
-        <div style="text-align: center;">
-          <span style="font-size: 30px;color: #616161;">Resumen de Compra</span><br>
-        </div>
-        <br>
-        <span style="font-size: 20px;color:#616161;"> {{tipoLicenciaSeleccionada.desc}} </span> <br>
-        <span style="font-size: 13px;color:#616161;"> Costo: {{tipoLicenciaSeleccionada.costo}} </span> <br>
-        <span style="font-size: 10px;color:#616161;"> Periodo: {{tipoLicenciaSeleccionada.periodo}} </span> <br>
-        <span style="font-size: 12px;color:#438EFF;"> Tarjeta de Crédito Visa (3279) </span> <br>
-        <hr style="background-color: #8A8A8A;">
-
-        <br>
-        <div style="text-align: end;">
-          <span style="font-size: 20px;color:#616161;"> Total: {{tipoLicenciaSeleccionada.costo}} </span>
-        </div>
-
-        <br>
-        <ion-button mode="md" expand="full" style=" --background: #FF3E44;"><span style="font-size: 12px;"> Realizar
-            Pago </span></ion-button> <br>
-        <ion-button mode="md" expand="full" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-            (click)="cancelarPago()"> Cancelar </span></ion-button>
-
-
-      </ion-col>
-
-    </ion-row>
-  </div> -->
-
-
 
 </ion-content>

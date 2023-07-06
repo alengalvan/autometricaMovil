@@ -47,7 +47,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   public async pagarTarjeta() {
-    let objeto = {
+    var objetoPrincipal = {
       card_payment: this.tarjetaSeleccionada.id,
       amount: this.licenciaSeleccionada.price,
       cvv2: Number(localStorage.getItem("cvv")),
@@ -56,9 +56,9 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
       year: Number(this.licenciaSeleccionada.anio),
     }
 
-    console.log(objeto)
+    console.log(objetoPrincipal)
 
-    let respuesta = await this.webRestService.postAsync(API.endpoints.pagarTarjeta, objeto);
+    let respuesta = await this.webRestService.postAsync(API.endpoints.pagarTarjeta, objetoPrincipal);
 
     if (respuesta.status == 401) {
       localStorage.setItem("opcionAlerta", "error-pago-prepago-tarjeta")
@@ -91,16 +91,16 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
         const modal = await this.modalController.create({
           component: ModalAlertasCustomPage,
           cssClass: 'transparent-modal',
-          componentProps: { mensaje: "" }
+          componentProps: { mensaje: respuesta.message }
         })
         modal.onDidDismiss().then(async (data) => {
           console.log(data)
           if (data?.data) {
             //proceso de descarga
             let objeto = {
-              mes: 1,
-              anio: 2023,
-              client_id: 60
+              mes: objetoPrincipal.month,
+              anio: objetoPrincipal.year,
+              client_id: this.usuario.id
             }
             this.descargarBd(objeto)
           } else {
@@ -111,6 +111,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
               componentProps: { mensaje: "" }
             })
             await modal.present();
+            this.navCtrl.navigateRoot("mi-perfil")
           }
         });
         await modal.present();
@@ -146,6 +147,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
             }
           })
           await modal.present();
+          this.navCtrl.navigateRoot("mi-perfil")
         }
       });
     await modal.present();

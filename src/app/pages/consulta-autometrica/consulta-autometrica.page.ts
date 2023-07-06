@@ -282,6 +282,7 @@ export class ConsultaAutometricaPage implements OnInit {
               sub_brand: submarca,
               mileage: 0,
               year_car: anio,
+              // mobile_identifier: "c06c7c5f8b043518",
               mobile_identifier: (await Device.getId()).identifier
             }
 
@@ -307,6 +308,7 @@ export class ConsultaAutometricaPage implements OnInit {
         sub_brand: submarca,
         mileage: kilometraje,
         year_car: anio,
+        // mobile_identifier: "c06c7c5f8b043518",
         mobile_identifier: (await Device.getId()).identifier
       }
 

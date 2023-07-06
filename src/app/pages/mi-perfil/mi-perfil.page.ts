@@ -74,6 +74,7 @@ export class MiPerfilPage implements OnInit {
   public async obtenerHistoricoLicencias() {
     let objeto = {
       client_id: this.usuario.id,
+      // mobile_identifier: "c06c7c5f8b043518",
       mobile_identifier: (await Device.getId()).identifier
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
@@ -82,6 +83,11 @@ export class MiPerfilPage implements OnInit {
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta?.data.length; i++) {
         respuesta.data[i].mes = this.utilitiesServices.obtenerMesStringActual(respuesta.data[i].month_hire)
+        
+        if (respuesta.data[i].duration_month > 1) {
+          respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
+          respuesta.data[i].mesFinString = this.utilitiesServices.obtenerMesStringActual(respuesta.data[i].mesFin)
+        }
         if (respuesta.data[i].active == 1 || respuesta.data[i].active == 2) {
           this.licenciaActual.push(respuesta.data[i])
         } else {
@@ -112,7 +118,7 @@ export class MiPerfilPage implements OnInit {
     modal.onDidDismiss()
       .then(async (data) => {
         if (data.data) {
-          await this.sqliteService.verificacionConexion(licencia.month_hire, licencia.year_hire);
+          await this.sqliteService.verificacionConexion(licencia.mesNumero, licencia.anio);
         } else {
           this.modalController.dismiss();
           localStorage.setItem("opcionAlerta", "descarga-pendiente")

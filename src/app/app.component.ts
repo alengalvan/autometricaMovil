@@ -11,12 +11,14 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { LoginPage } from './pages/login/login.page';
 import { UserService } from './services/user.service';
 import { Device } from '@capacitor/device';
+import { Network, ConnectionStatus } from '@capacitor/network'
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent  {
+export class AppComponent {
 
   public pages: any = [];
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
@@ -25,6 +27,7 @@ export class AppComponent  {
   public isWeb: boolean = false;
   public haySesion: boolean = false;
   userChangedSubscription: Subscription | undefined;
+  hayInternet: boolean = false;
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private navCtrl: NavController,
     public utilitiesService: UtilitiesService,
@@ -103,6 +106,18 @@ export class AppComponent  {
         }
         return;
       }
+
+      if (ruta == "terminos-condiciones") {
+        this.hayInternet = (await Network.getStatus()).connected;
+        if (this.hayInternet) {
+          this.navCtrl.navigateRoot(ruta);
+          return;
+        } else {
+          console.log("no tiene internet")
+        }
+
+
+      }
       this.navCtrl.navigateRoot(ruta);
     }
   }
@@ -112,6 +127,7 @@ export class AppComponent  {
     this.licenciaActiva = false;
     let objeto = {
       client_id: JSON.parse(localStorage.getItem('usuario')!).id,
+      // mobile_identifier: "c06c7c5f8b043518",
       mobile_identifier: (await Device.getId()).identifier
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
@@ -129,9 +145,9 @@ export class AppComponent  {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
-    this.haySesion = JSON.parse(localStorage.getItem('usuario')!) ? true: false;
+    this.haySesion = JSON.parse(localStorage.getItem('usuario')!) ? true : false;
     console.log(this.haySesion);
-    
+
     this.userChangedSubscription = this.userService.sesionActivaObs$.subscribe((valor) => {
       console.log("valor sesion")
       this.haySesion = valor
@@ -157,7 +173,7 @@ export class AppComponent  {
       },
       {
         title: 'Canjear Código',
-        url: 'hacer-transaccion',
+        url: 'hacer-transaccion/1',
         icon: 'assets/icon/canjear_codigo.svg'
       },
       {

@@ -25,9 +25,15 @@ export class HacerTransaccionPage implements OnInit {
       { type: "required", message: "*Campo obligatorio." },
     ]
   };
+  mes: any;
+  anio: any;
+  tiposLicencias: any;
+  fechaPeriodo: any;
+  licenciaSeleccionadaAutomatica: any;
   get codigo() {
     return this.form.get("codigo");
   }
+  public id = this.route.snapshot.paramMap.get('id');
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private navCtrl: NavController,
     private formBuilder: FormBuilder,
@@ -39,7 +45,59 @@ export class HacerTransaccionPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    console.log(this.id)
 
+    if (this.id) {
+      console.log(this.usuario)
+      let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
+      console.log(respuesta)
+      if (respuesta.status == true) {
+        this.tiposLicencias = respuesta?.licenses;
+        this.fechaPeriodo = respuesta?.period;
+
+        if (this.fechaPeriodo) {
+          this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
+          this.anio = this.fechaPeriodo[0]?.month_period?.split('-')[0];
+        }
+
+        if (this.mes && this.anio) {
+          this.mes = this.utilitiesServices.obtenerMesStringActual(this.mes)
+        }
+
+        let hayLicenciasMensuales: number = 0;
+
+        for (let i = 0; i < this.tiposLicencias.length; i++) {
+          this.tiposLicencias[i].mes = this.mes;
+          this.tiposLicencias[i].anio = this.anio;
+          this.tiposLicencias[i].metodosPago = respuesta?.paymet_method;
+          this.tiposLicencias[i].mesNumero = this.fechaPeriodo[0]?.month_period?.split('-')[1];
+
+          if (this.tiposLicencias[i].duration_month == 1) {
+            hayLicenciasMensuales++;
+          }
+        }
+
+        for (let i = 0; i < this.tiposLicencias.length; i++) {
+          if (hayLicenciasMensuales > 0) {
+            if (this.tiposLicencias[i].duration_month == 1) {
+              this.licenciaSeleccionadaAutomatica = this.tiposLicencias[i]
+            }
+          } else {
+            this.licenciaSeleccionadaAutomatica = this.tiposLicencias[i]
+          }
+        }
+
+      } else {
+        localStorage.setItem("opcionAlerta", "error-general")
+        const modal = await this.modalController.create({
+          component: ModalAlertasCustomPage,
+          cssClass: 'transparent-modal',
+          componentProps: { mensaje: "Error inesperado por favor intente más tarde." }
+        })
+        this.navCtrl.navigateRoot("mi-perfil")
+        await modal.present();
+      }
+    }
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -49,17 +107,15 @@ export class HacerTransaccionPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   public async pagarPrepago() {
-    let objeto = {
+    let objetoPrincipal = {
       code: this.form.controls["codigo"].value,
-      license_id: this.licenciaSeleccionada.id,
+      license_id: this.id ? this.licenciaSeleccionadaAutomatica.id : this.licenciaSeleccionada.id,
       client_id: this.usuario.id,
-      // month: Number(this.licenciaSeleccionada.mesNumero),
-      // year: Number(this.licenciaSeleccionada.anio),
-      month: 7,
-      year: 2023
+      month: this.id ? this.mes : Number(this.licenciaSeleccionada.mesNumero),
+      year: this.id ? this.anio : Number(this.licenciaSeleccionada.anio),
     }
 
-    let respuesta = await this.webRestService.postAsync(API.endpoints.pagarPrepago, objeto);
+    let respuesta = await this.webRestService.postAsync(API.endpoints.pagarPrepago, objetoPrincipal);
 
     if (respuesta.status == 401) {
       localStorage.setItem("opcionAlerta", "error-pago-prepago")
@@ -83,8 +139,8 @@ export class HacerTransaccionPage implements OnInit {
         if (data?.data) {
           //proceso de descarga
           let objeto = {
-            mes: 1,
-            anio: 2023,
+            mes: objetoPrincipal.month,
+            anio: objetoPrincipal.year,
             client_id: this.usuario.id
           }
           this.descargarBd(objeto)

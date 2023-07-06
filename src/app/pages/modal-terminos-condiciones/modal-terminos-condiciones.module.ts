@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ModalTerminosCondicionesPageRoutingModule } from './modal-terminos-condiciones-routing.module';
 
 import { ModalTerminosCondicionesPage } from './modal-terminos-condiciones.page';
+import { PipesModule } from 'src/app/pipe/file pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ModalTerminosCondicionesPageRoutingModule
+    ModalTerminosCondicionesPageRoutingModule,
+    PipesModule
   ],
   declarations: [ModalTerminosCondicionesPage]
 })

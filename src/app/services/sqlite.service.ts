@@ -107,6 +107,7 @@ export class sqliteService {
                   }
                 })
                 await modal.present();
+                this.navCtrl.navigateRoot("mi-perfil")
               }
             });
             await modal.present();
@@ -173,7 +174,7 @@ export class sqliteService {
   public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
 
     let objeto = {
-      month: 1,
+      month: mes,
       year: anio,
       client_id: this.usuario.id
     }

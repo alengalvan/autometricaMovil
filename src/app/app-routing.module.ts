@@ -89,6 +89,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/hacer-transaccion/hacer-transaccion.module').then( m => m.HacerTransaccionPageModule)
   },
   {
+    path: 'hacer-transaccion/:id',
+    loadChildren: () => import('./pages/hacer-transaccion/hacer-transaccion.module').then( m => m.HacerTransaccionPageModule)
+  },
+  {
     path: 'administracion-tarjetas',
     loadChildren: () => import('./pages/administracion-tarjetas/administracion-tarjetas.module').then( m => m.AdministracionTarjetasPageModule)
   },

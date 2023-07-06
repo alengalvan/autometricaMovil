@@ -8,6 +8,7 @@ import { TerminosCondicionesPageRoutingModule } from './terminos-condiciones-rou
 
 import { TerminosCondicionesPage } from './terminos-condiciones.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PipesModule } from 'src/app/pipe/file pipes.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     TerminosCondicionesPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule
   ],
   declarations: [TerminosCondicionesPage]
 })
