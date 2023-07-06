@@ -8,6 +8,7 @@ import { ModalTerminosCondicionesPageRoutingModule } from './modal-terminos-cond
 
 import { ModalTerminosCondicionesPage } from './modal-terminos-condiciones.page';
 import { PipesModule } from 'src/app/pipe/file pipes.module';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { PipesModule } from 'src/app/pipe/file pipes.module';
     FormsModule,
     IonicModule,
     ModalTerminosCondicionesPageRoutingModule,
-    PipesModule
+    PipesModule,
+    PdfViewerModule
   ],
   declarations: [ModalTerminosCondicionesPage]
 })

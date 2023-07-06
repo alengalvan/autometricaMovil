@@ -18,17 +18,35 @@ export class TerminosCondicionesPage implements OnInit {
 
   public async ngOnInit() {
     this.menu.close();
-    let respuesta = await this.webService.getAsync(API.endpoints.verPDFLinea)
-    console.log(respuesta)
-    if(respuesta.status == true){
-      this.stringPDFAvisoPrivacidad = respuesta?.ap;
-      this.stringPDFTyC = respuesta?.tyc;
+    let objeto = {
+      type: 3
     }
+    let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
+    this.stringPDFAvisoPrivacidad = respuesta.error.text; 
+    console.log(respuesta.error.text)
   }
 
-  segmentChanged(event: any) {
+  public async segmentChanged(event: any) {
     console.log(event.detail.value)
-    this.valorSeleccionado = event.detail.value
+    this.valorSeleccionado = event.detail.value;
+
+    if(this.valorSeleccionado == 'terminosCondiciones'){
+      let objeto = {
+        type: 4
+      }
+      let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
+      this.stringPDFTyC = respuesta.error.text; 
+    }
+
+    if(this.valorSeleccionado == 'avisoPrivacidad'){
+      let objeto = {
+        type: 3
+      }
+      let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
+      this.stringPDFTyC = respuesta.error.text; 
+    }
+
+
   }
 
 }

@@ -45,6 +45,19 @@ export class AppComponent {
     //: Consulta, Mi Perfil, Canjear Código o Adquirir Licencia
     let usuario = JSON.parse(localStorage.getItem('usuario')!);
     if (usuario == null) {
+
+      if (ruta == "glosario") {
+        this.hayInternet = (await Network.getStatus()).connected;
+        if (this.hayInternet) {
+          this.navCtrl.navigateRoot("glosario/1");
+          return;
+        } else {
+          this.navCtrl.navigateRoot("glosario/2");
+          console.log("no tiene internet")
+          return;
+        }
+      }
+
       switch (ruta) {
         case 'mi-perfil':
           this.openAlerta()
@@ -54,11 +67,15 @@ export class AppComponent {
           this.openAlerta()
           break;
 
-        case 'hacer-transaccion':
+        case 'hacer-transaccion/1':
           this.openAlerta()
           break;
 
         case 'pagos':
+          this.openAlerta()
+          break;
+
+        case 'hacer-transaccion':
           this.openAlerta()
           break;
 
@@ -114,10 +131,21 @@ export class AppComponent {
           return;
         } else {
           console.log("no tiene internet")
+          return;
         }
-
-
       }
+      if (ruta == "glosario") {
+        this.hayInternet = (await Network.getStatus()).connected;
+        if (this.hayInternet) {
+          this.navCtrl.navigateRoot("glosario/1");
+          return;
+        } else {
+          this.navCtrl.navigateRoot("glosario/2");
+          console.log("no tiene internet")
+          return;
+        }
+      }
+      console.log("salio")
       this.navCtrl.navigateRoot(ruta);
     }
   }
@@ -239,6 +267,11 @@ export class AppComponent {
             await modal.present();
           }
         }
+
+        if (event.url.includes('login')) {
+          this.navCtrl.navigateRoot("login");
+        }
+
       });
     });
   }

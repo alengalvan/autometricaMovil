@@ -59,6 +59,8 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    await this.descargarArchivo(1);
+    await this.descargarArchivo(2);
     this.idMobile = (await Device.getId()).identifier;
     await this.utilitiesService.obtenerInfo();
     let datosPersonales = JSON.parse(localStorage.getItem('datosPersonales')!);
@@ -83,12 +85,6 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async iniciarSesion() {
-
-    // await this.descargarDocumentacion(1, 'https://niksviks.in/test/filedownload/downloader.php?filename=test12345.pdf')
-    // await this.descargarDocumentacion(2, 'https://niksviks.in/test/filedownload/downloader.php?filename=test12345.pdf')
-    // await this.descargarDocumentacion(3, 'https://niksviks.in/test/filedownload/downloader.php?filename=test12345.pdf')
-    // await this.descargarDocumentacion(4, 'https://niksviks.in/test/filedownload/downloader.php?filename=test12345.pdf')
-
 
     if (!this.form.valid) {
       this.utilitiesService.validaCamposFormulario([this.form]);
@@ -229,6 +225,25 @@ export class LoginPage implements OnInit {
     })
   }
 
+  public async descargarArchivo(tipo: number){
+    let objeto = {
+      type: tipo
+    }
+    let respuesta = await this.webRestService.postAsync(API.endpoints.descargarPDF, objeto)
+    if(respuesta.status == 200){
+      let resp = respuesta.error?.text;
+      if(tipo == 1){
+        localStorage.setItem("glosario", resp)
+      }
+
+      if(tipo == 2){
+        localStorage.setItem("kilometraje", resp)
+      }
+    }
+    console.log(respuesta)
+    
+
+  }
 
 
 }

@@ -77,6 +77,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/glosario/glosario.module').then( m => m.GlosarioPageModule)
   },
   {
+    path: 'glosario/:id',
+    loadChildren: () => import('./pages/glosario/glosario.module').then( m => m.GlosarioPageModule)
+  },
+  {
     path: 'quienes-somos',
     loadChildren: () => import('./pages/quienes-somos/quienes-somos.module').then( m => m.QuienesSomosPageModule)
   },

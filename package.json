@@ -41,6 +41,7 @@
     "ionicons": "^7.0.0",
     "jeep-sqlite": "^2.3.7",
     "ng-circle-progress": "^1.7.1",
+    "ng2-pdf-viewer": "^9.1.5",
     "ngx-trim-directive": "^3.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

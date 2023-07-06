@@ -9,6 +9,7 @@ import { GlosarioPageRoutingModule } from './glosario-routing.module';
 import { GlosarioPage } from './glosario.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PipesModule } from 'src/app/pipe/file pipes.module';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { PipesModule } from 'src/app/pipe/file pipes.module';
     IonicModule,
     GlosarioPageRoutingModule,
     ComponentsModule,
-    PipesModule
+    PipesModule,
+    PdfViewerModule
   ],
   declarations: [GlosarioPage]
 })
