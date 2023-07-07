@@ -57,7 +57,6 @@ export class MiPerfilPage implements OnInit {
     this.mesActual = this.mesActual.getMonth() + 1;
     console.log(this.usuario)
     await this.obtenerHistoricoLicencias();
-    await this.validarLicenciaActiva();
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,8 +65,40 @@ export class MiPerfilPage implements OnInit {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public navegarA(ruta: string) {
-    this.navCtrl.navigateRoot(ruta);
+  public async navegarA(ruta: string) {
+    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
+
+    if (respuesta.status == 401) {
+      if (respuesta.error.message.includes("realiza una")) {
+        localStorage.setItem("opcionAlerta", "eliminar-transferencia")
+        const modal = await this.modalController.create({
+          component: ModalAlertasCustomPage,
+          cssClass: 'transparent-modal',
+          componentProps: { mensaje: respuesta.error.message }
+        })
+
+        modal.onDidDismiss()
+          .then(async (data) => {
+            if (data.data) {
+              this.navCtrl.navigateRoot(ruta);
+            }
+          })
+        await modal.present();
+      }
+
+      if (respuesta.error.message.includes("licencia disponible")) {
+        localStorage.setItem("opcionAlerta", "intente-el-dia")
+        const modal = await this.modalController.create({
+          component: ModalAlertasCustomPage,
+          cssClass: 'transparent-modal',
+          componentProps: { mensaje: respuesta.error.message }
+        })
+        await modal.present();
+      }
+    }
+    if (respuesta.status == true) {
+      this.navCtrl.navigateRoot(ruta);
+    }
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,7 +114,7 @@ export class MiPerfilPage implements OnInit {
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta?.data.length; i++) {
         respuesta.data[i].mes = this.utilitiesServices.obtenerMesStringActual(respuesta.data[i].month_hire)
-        
+
         if (respuesta.data[i].duration_month > 1) {
           respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
           respuesta.data[i].mesFinString = this.utilitiesServices.obtenerMesStringActual(respuesta.data[i].mesFin)
@@ -100,14 +131,9 @@ export class MiPerfilPage implements OnInit {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async validarLicenciaActiva() {
-    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
-    console.log(respuesta)
-  }
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async descargarBd(licencia: any) {
 
+    console.log(licencia)
     localStorage.setItem("opcionAlerta", "aviso-borrado-licencias")
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
@@ -118,7 +144,7 @@ export class MiPerfilPage implements OnInit {
     modal.onDidDismiss()
       .then(async (data) => {
         if (data.data) {
-          await this.sqliteService.verificacionConexion(licencia.mesNumero, licencia.anio);
+          await this.sqliteService.verificacionConexion(licencia.month_hire, licencia.year_hire);
         } else {
           this.modalController.dismiss();
           localStorage.setItem("opcionAlerta", "descarga-pendiente")

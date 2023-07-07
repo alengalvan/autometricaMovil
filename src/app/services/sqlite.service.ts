@@ -216,6 +216,7 @@ export class sqliteService {
         }
       })
       await modal.present();
+      this.navCtrl.navigateRoot("mi-perfil")
     } else {
 
     }

@@ -85,39 +85,57 @@ export class AltaNuevaTarjetaPage implements OnInit {
       return;
     }
     
-    let tarjeta = this.formPago.controls['nombreTarjeta'].value.split("-").join('');
+    localStorage.setItem("opcionAlerta", "desea-guardar-tarjeta")
+      const modal = await this.modalController.create({
+        component: ModalAlertasCustomPage,
+        cssClass: 'transparent-modal',
+        componentProps: { mensaje: "¿Desea guardar su tarjeta para próximas compras?" }
+      })
+      modal.onDidDismiss().then(async (data) => {
+        console.log(data)
+        if (data?.data) {
+          let tarjeta = this.formPago.controls['nombreTarjeta'].value.split("-").join('');
+          let objeto = {
+            name: this.formPago.controls['nombreTitular'].value,
+            number_card: tarjeta,
+            cvv2: this.formPago.controls['cvv'].value,
+            month_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[0],
+            year_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[1],
+            id_client: this.usuario.id,
+          }
+      
+          let respuesta = await this.webRestService.postAsync(API.endpoints.agregarTarjeta, objeto);
+      
+          if (respuesta.status == true) {
+            localStorage.setItem("opcionAlerta", "registro-tarjeta-exitoso")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta.message }
+            })
+            await modal.present();
+            localStorage.setItem("cvv", this.formPago.controls['cvv'].value)
+            this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
+          }
+      
+          if (respuesta.status == false || respuesta.status == 401) {
+            localStorage.setItem("opcionAlerta", "registro-tarjeta-fallido")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: "Error inesperado, por favor intente más tarde." }
+            })
+            await modal.present();
+          }
+        }else{
+          this.navCtrl.navigateRoot("metodos-pago")
+        }
+      });
+
+      await modal.present();
+
+
     
-    let objeto = {
-      name: this.formPago.controls['nombreTitular'].value,
-      number_card: tarjeta,
-      cvv2: this.formPago.controls['cvv'].value,
-      month_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[0],
-      year_expiration: this.formPago.controls['fechaVencimiento'].value.split("/")[1],
-      id_client: this.usuario.id,
-    }
-
-    let respuesta = await this.webRestService.postAsync(API.endpoints.agregarTarjeta, objeto);
-
-    if (respuesta.status == true) {
-      localStorage.setItem("opcionAlerta", "registro-tarjeta-exitoso")
-      const modal = await this.modalController.create({
-        component: ModalAlertasCustomPage,
-        cssClass: 'transparent-modal',
-        componentProps: { mensaje: respuesta.message }
-      })
-      await modal.present();
-      this.navCtrl.navigateRoot("administracion-tarjetas")
-    }
-
-    if (respuesta.status == false || respuesta.status == 401) {
-      localStorage.setItem("opcionAlerta", "registro-tarjeta-fallido")
-      const modal = await this.modalController.create({
-        component: ModalAlertasCustomPage,
-        cssClass: 'transparent-modal',
-        componentProps: { mensaje: "Error inesperado, por favor intente más tarde." }
-      })
-      await modal.present();
-    }
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  

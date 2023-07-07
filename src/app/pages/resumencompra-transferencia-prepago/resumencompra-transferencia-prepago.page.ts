@@ -79,42 +79,32 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
     }
 
     if (respuesta.status == true) {
-      localStorage.setItem("opcionAlerta", "compra-exitosa")
+      localStorage.setItem("opcionAlerta", "ya-puede-consultar")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: "" }
+        componentProps: { mensaje: respuesta.message }
       })
       modal.onDidDismiss().then(async (data) => {
         console.log(data)
-        localStorage.setItem("opcionAlerta", "ya-puede-consultar")
-        const modal = await this.modalController.create({
-          component: ModalAlertasCustomPage,
-          cssClass: 'transparent-modal',
-          componentProps: { mensaje: respuesta.message }
-        })
-        modal.onDidDismiss().then(async (data) => {
-          console.log(data)
-          if (data?.data) {
-            //proceso de descarga
-            let objeto = {
-              mes: objetoPrincipal.month,
-              anio: objetoPrincipal.year,
-              client_id: this.usuario.id
-            }
-            this.descargarBd(objeto)
-          } else {
-            localStorage.setItem("opcionAlerta", "descarga-pendiente")
-            const modal = await this.modalController.create({
-              component: ModalAlertasCustomPage,
-              cssClass: 'transparent-modal',
-              componentProps: { mensaje: "" }
-            })
-            await modal.present();
-            this.navCtrl.navigateRoot("mi-perfil")
+        if (data?.data) {
+          //proceso de descarga
+          let objeto = {
+            mes: objetoPrincipal.month,
+            anio: objetoPrincipal.year,
+            client_id: this.usuario.id
           }
-        });
-        await modal.present();
+          this.descargarBd(objeto)
+        } else {
+          localStorage.setItem("opcionAlerta", "descarga-pendiente")
+          const modal = await this.modalController.create({
+            component: ModalAlertasCustomPage,
+            cssClass: 'transparent-modal',
+            componentProps: { mensaje: "" }
+          })
+          await modal.present();
+          this.navCtrl.navigateRoot("mi-perfil")
+        }
       });
       await modal.present();
     }

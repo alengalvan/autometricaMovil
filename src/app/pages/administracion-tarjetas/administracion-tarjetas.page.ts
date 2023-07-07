@@ -44,9 +44,7 @@ export class AdministracionTarjetasPage implements OnInit {
       this.listadoLicencias = respuesta.list_card;
 
       for (let i = 0; i < this.listadoLicencias.length; i++) {
-        let limite = this.listadoLicencias[i].card_number.length - 1;
-        let inicio = limite - 4;
-        let maskTarjeta = "**** **** **** " + this.listadoLicencias[i].card_number.substring(inicio, limite);
+        let maskTarjeta = "**** **** **** " + this.listadoLicencias[i].card_number.substring(this.listadoLicencias[i].card_number.length - 4);
         this.listadoLicencias[i].maskTarjeta = maskTarjeta;
         this.listadoLicencias[i].seleccionada = false;
       }
@@ -60,13 +58,13 @@ export class AdministracionTarjetasPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async seleccionarTarjeta(tarjeta: any) {
     if (!tarjeta.seleccionada) {
-      // for (let i = 0; i < this.listadoLicencias.length; i++) {
-      //   if (tarjeta.card_number == this.listadoLicencias[i].card_number) {
-      //     this.listadoLicencias[i].seleccionada = true;
-      //   } else {
-      //     this.listadoLicencias[i].seleccionada = false;
-      //   }
-      // }
+      for (let i = 0; i < this.listadoLicencias.length; i++) {
+        if (tarjeta.id == this.listadoLicencias[i].id) {
+          this.listadoLicencias[i].seleccionada = true;
+        } else {
+          this.listadoLicencias[i].seleccionada = false;
+        }
+      }
       localStorage.setItem("tarjetaSeleccionada", JSON.stringify(tarjeta))
       localStorage.setItem("opcionAlerta", "confirmacion-cvv")
       const modal = await this.modalController.create({

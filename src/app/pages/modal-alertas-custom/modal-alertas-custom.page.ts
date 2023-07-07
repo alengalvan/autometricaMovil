@@ -36,6 +36,12 @@ export class ModalAlertasCustomPage implements OnInit {
   "<br>" + "conexión? Esto borrará cualquier" +
   "<br>" + "descarga vigente anterior. Podrá seguir" + 
   "<br>" + "consultándola en línea."
+  public mensajeKMVacio = "Kilometraje vacío" +
+  "<br><br>" + "Si no proporciona el kilometraje, se" +
+  "<br>" + "se tomará en cuenta el kilometraje" +
+  "<br>" + "promedio para ese año."
+
+  // Si no proporciona el kilometraje,  promedio para ese año.
   public tarjetaSeleccionada = JSON.parse(localStorage.getItem('tarjetaSeleccionada')!);
   public mensajeModalConsulta = localStorage.getItem('mensaje-modal-consulta');
 
@@ -97,6 +103,7 @@ export class ModalAlertasCustomPage implements OnInit {
   }
 
   public async canjearAdquirir(){
+    this.cerrarModal()
     if(this.mensajeModalConsulta == 'Adquirir Licencia'){
       this.navCtrl.navigateRoot("pagos");
     }else{
@@ -108,7 +115,12 @@ export class ModalAlertasCustomPage implements OnInit {
   public async cerrarModalReturnDataForm(data: any){
     
     await this.utilitiesService.validaCamposFormulario([this.formPago])
-    
+    console.log(this.formPago.controls['cvv'].value)
+
+    if(this.formPago.controls['cvv'].value == null || this.formPago.controls['cvv'].value == ''){
+      return;
+    }
+
     if(String(this.formPago.controls['cvv'].value).length >= 3 && String(this.formPago.controls['cvv'].value).length <= 4){
       console.log("si")
       this.modalController.dismiss(data);

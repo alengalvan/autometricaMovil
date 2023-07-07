@@ -3,7 +3,7 @@
 
   <br>
 
-  <ion-row>
+  <ion-row *ngIf="!id">
     <ion-col size="1"></ion-col>
     <ion-col size="1">
       <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="reygresar('metodos-pago')"> </ion-icon>
@@ -60,7 +60,7 @@
         </ion-button>
         <br>
         <ion-button mode="md" expand="full" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-            (click)="reygresar('metodos-pago')"> Cancelar
+            (click)="reygresar(id ? 'mi-perfil' : 'metodos-pago')"> Cancelar
           </span></ion-button>
       </form>
 

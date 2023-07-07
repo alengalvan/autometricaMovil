@@ -22,33 +22,28 @@
     </ion-row>
 
     <ion-row style="padding: 10px;border-radius: 10px;" *ngIf="opcionAlerta == 'no-tiene-licencia-activa'">
-      <br><br><br>
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
+      <ion-col size="12" style="text-align: center;">
         <div style="align-items: center;text-align: center;">
           <span style="font-weight: 400; font-size: 12px;line-height: 14px;">
-            No tiene una licencia activa, <br>
-            por favor adquiera una licencia
+            No cuenta con una licencia activa, por <br>
+            favor adquiera una licencia.
           </span>
         </div>
         <br>
 
-        <ion-row>
-          <ion-col size="6">
-            <ion-button mode="md" (click)="cerrarModal()" expand="full" style="--background: #8A8A8A">
-              <span style="font-size: 12px;">
-                Cancelar
-              </span>
-            </ion-button>
-          </ion-col>
-          <ion-col size="6">
-            <ion-button mode="md" (click)="canjearAdquirir()" expand="full">
-              <span style="font-size: 12px;">
-                {{mensajeModalConsulta}}
-              </span>
-            </ion-button>
-          </ion-col>
-        </ion-row>
+        <div>
+          <ion-button mode="md" (click)="cerrarModal()" style="--background: #8A8A8A">
+            <span style="font-size: 12px;">
+              &nbsp;&nbsp;&nbsp;&nbsp; Cancelar &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+          </ion-button>
+
+          <ion-button mode="md" (click)="canjearAdquirir()">
+            <span style="font-size: 12px;">
+              {{mensajeModalConsulta}}
+            </span>
+          </ion-button>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -318,6 +313,53 @@
       </ion-col>
     </ion-row>
 
+    <div style="padding: 10px;" *ngIf="opcionAlerta == 'intente-el-dia' ">
+      <ion-row style="margin: 0;">
+        <ion-col size="12" no-padding>
+          <div style="text-align: end;">
+            <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin: 0;">
+        <ion-col size="1"></ion-col>
+        <ion-col size="10" style="text-align: center;">
+          <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+          <br><br>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div style="padding: 10px;" *ngIf="opcionAlerta == 'eliminar-transferencia' ">
+      <ion-row style="margin: 0;">
+        <ion-col size="12" no-padding>
+          <div style="text-align: end;">
+            <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;"
+              (click)="cerrarModalReturnData(false)"></ion-icon><br>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin: 0;">
+        <ion-col size="1"></ion-col>
+        <ion-col size="10" style="text-align: center;">
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+          <br>
+          <ion-button mode="md" (click)="cerrarModalReturnData(true)" style="--background:#EC1C24">
+            <span style="font-size: 12px;">
+              Aceptar
+            </span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+
     <!-- tarjetas -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'registro-tarjeta-exitoso' ">
       <ion-col size="12" no-padding>
@@ -518,9 +560,10 @@
       <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
-          <div class="mensaje-error" [innerHTML]="mensajeInnerCompraExitosa"></div>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
         </div>
-
         <br>
       </ion-col>
     </ion-row>
@@ -547,6 +590,30 @@
         </ion-button>
       </ion-col>
     </ion-row>
+
+
+    <div style="padding: 10px;" *ngIf="opcionAlerta == 'desea-guardar-tarjeta' ">
+
+      <ion-row style="margin: 0;">
+        <ion-col size="1"></ion-col>
+        <ion-col size="10" style="text-align: center;">
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+          <br>
+          <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+            <span style="font-size: 12px;">
+              Ahora No
+            </span>
+          </ion-button>
+          <ion-button mode="md" (click)="cerrarModalReturnData(true)" style="--background:#EC1C24">
+            <span style="font-size: 12px;">
+              &nbsp;Guardar&nbsp;
+            </span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
 
     <!-- pgos -->
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'error-general' ">
@@ -586,22 +653,25 @@
       <br><br>
       <ion-col size="1"></ion-col>
       <ion-col size="10" style="text-align: center;">
-        <div class="mensaje-error">
-          Kilometraje vacío <br>
-          {{mensajeError}}
-        </div>
+        <div class="mensaje-error" [innerHTML]="mensajeKMVacio"></div>
         <br>
-        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
-          <span style="font-size: 12px;">
-            Cancelar
-          </span>
-        </ion-button>
 
-        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
-          <span style="font-size: 12px;">
-            Aceptar
-          </span>
-        </ion-button>
+        <ion-row st>
+          <ion-col size="6" style="padding: 0px">
+            <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+              <span style="font-size: 12px;" expand="block">
+                Cancelar
+              </span>
+            </ion-button>
+          </ion-col>
+          <ion-col size="6" style="padding: 0px">
+            <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+              <span style="font-size: 12px;">
+                Aceptar
+              </span>
+            </ion-button>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
 

@@ -24,6 +24,8 @@ export class AppComponent {
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
   public licenciaActiva: boolean = false;
   public mostrarAdquirirLicencia: boolean = false;
+  public mostrarCanjear: boolean = false;
+  
   public isWeb: boolean = false;
   public haySesion: boolean = false;
   userChangedSubscription: Subscription | undefined;
@@ -200,11 +202,6 @@ export class AppComponent {
         icon: 'assets/icon/menu-consulta.svg'
       },
       {
-        title: 'Canjear Código',
-        url: 'hacer-transaccion/1',
-        icon: 'assets/icon/canjear_codigo.svg'
-      },
-      {
         title: 'Glosario y Kilometraje',
         url: 'glosario',
         icon: 'assets/icon/a.svg'
@@ -218,7 +215,7 @@ export class AppComponent {
     ];
 
     if (this.mostrarAdquirirLicencia) {
-      let indice = 4;
+      let indice = 3;
       let objeto =
       {
         title: 'Adquirir Licencia',
@@ -226,6 +223,18 @@ export class AppComponent {
         icon: 'assets/icon/adquirir_licencia.svg'
       }
       this.insertar(indice, objeto)
+    }
+
+    if(this.mostrarCanjear){
+      let indice = 3;
+      let objeto = {
+        title: 'Canjear Código',
+        url: 'hacer-transaccion/1',
+        icon: 'assets/icon/canjear_codigo.svg'
+      }
+      
+      this.insertar(indice, objeto)
+     
     }
     await this.utilitiesService.obtenerInfo();
   }
@@ -309,6 +318,9 @@ export class AppComponent {
       for (let i = 0; i < respuesta.paymet_method.length; i++) {
         if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
           this.mostrarAdquirirLicencia = true;
+        }
+        if (respuesta.paymet_method[i].id == 1) {
+          this.mostrarCanjear = true;
         }
       }
       return;
