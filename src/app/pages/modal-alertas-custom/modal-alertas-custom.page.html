@@ -52,27 +52,31 @@
       </ion-col>
     </ion-row>
 
-    <!-- login -->
-    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'usuario-inactivo' ">
+    <!-- login este es el que se valido -->
+    <div *ngIf="opcionAlerta == 'usuario-inactivo' ">
+      <ion-row style="padding: 10px;" style="margin: 0;">
+        <ion-col size="12" no-padding>
+          <div style="text-align: end;">
+            <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+          </div>
+        </ion-col>
+      </ion-row>
 
-      <ion-col size="12" no-padding>
-        <div style="text-align: end;">
-          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
-        </div>
-      </ion-col>
+      <ion-row style="margin: 0;">
+        <ion-col size="1"></ion-col>
+        <ion-col size="10" style="text-align: center;">
+          <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"
+            *ngIf="mensajeError != 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
+          <ion-icon src="assets/icon/alerta-mensaje.svg" style="zoom: 2;"
+            *ngIf="mensajeError == 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
+          <div class="mensaje-error">
+            {{mensajeError}}
+          </div>
+          <br><br>
+        </ion-col>
+      </ion-row>
+    </div>
 
-      <ion-col size="1"></ion-col>
-      <ion-col size="10" style="text-align: center;">
-        <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"
-          *ngIf="mensajeError != 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
-        <ion-icon src="assets/icon/alerta-mensaje.svg" style="zoom: 2;"
-          *ngIf="mensajeError == 'El correo electrónico ingresado ya está registrado en el sistema.' "></ion-icon>
-        <div class="mensaje-error">
-          {{mensajeError}}
-        </div>
-        <br>
-      </ion-col>
-    </ion-row>
 
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'login-cinco-intentos' ">
       <ion-col size="12" no-padding>

@@ -32,7 +32,7 @@ export class TerminosCondicionesPage implements OnInit {
 
     if(this.valorSeleccionado == 'terminosCondiciones'){
       let objeto = {
-        type: 4
+        type: 3
       }
       let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
       this.stringPDFTyC = respuesta.error.text; 
@@ -40,7 +40,7 @@ export class TerminosCondicionesPage implements OnInit {
 
     if(this.valorSeleccionado == 'avisoPrivacidad'){
       let objeto = {
-        type: 3
+        type: 4
       }
       let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
       this.stringPDFTyC = respuesta.error.text; 

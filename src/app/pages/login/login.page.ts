@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
   public mensajesValidacion = {
     usuario: [
       { type: "required", message: "*Por favor ingrese su correo electrónico." },
-      { type: "pattern", message: "*Correo electrónico no válido" },
+      { type: "pattern", message: "*Correo electrónico no válido." },
     ],
     contrasenia: [
       { type: "required", message: "*Por favor ingrese su contraseña." },
