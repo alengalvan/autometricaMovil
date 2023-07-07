@@ -21,7 +21,7 @@
 
   <div *ngIf="valorSeleccionado == 'terminosCondiciones'">
     <pdf-viewer [src]="'data:application/pdf;base64,' + stringPDFTyC" [render-text]="true"
-      [original-size]="false" style="width: 400px; height: 700px"></pdf-viewer>
+      [original-size]="false" style="width: 400px; height: 700px;display: contents"></pdf-viewer>
   </div>
 
 </ion-content>

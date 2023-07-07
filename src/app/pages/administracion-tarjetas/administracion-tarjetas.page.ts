@@ -76,8 +76,12 @@ export class AdministracionTarjetasPage implements OnInit {
       modal.onDidDismiss().then(async (data) => {
         console.log(data)
         if (data?.data?.exito) {
-        localStorage.setItem("cvv", data?.data?.formulario.cvv)
-         this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
+          localStorage.setItem("cvv", data?.data?.formulario.cvv)
+          this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
+        } else {
+          for (let i = 0; i < this.listadoLicencias.length; i++) {
+            this.listadoLicencias[i].seleccionada = false;
+          }
         }
       });
 

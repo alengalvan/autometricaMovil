@@ -7,12 +7,17 @@ import { sqliteService } from 'src/app/services/sqlite.service';
 import { Subscription } from 'rxjs';
 import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-custom.page';
 import { Device } from '@capacitor/device'
+import { Network } from '@capacitor/network';
+import { PluginListenerHandle } from '@capacitor/core';
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.page.html',
   styleUrls: ['./mi-perfil.page.scss'],
 })
 export class MiPerfilPage implements OnInit {
+  networkStatus: any;
+  networkListener: PluginListenerHandle | undefined;
+
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
   public licenciaActual: any[] = []
   public historicoLicencias: any[] = [];
@@ -34,7 +39,34 @@ export class MiPerfilPage implements OnInit {
     public modalController: ModalController) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ngOnDestroy() {
+    if (this.networkListener) {
+      this.networkListener.remove();
+    }
+  }
+
+  endNetworkListener() {
+    if (this.networkListener) {
+      this.networkListener.remove();
+    }
+  }
+
+  async getNetWorkStatus() {
+    this.networkStatus = await Network.getStatus();
+    console.log(this.networkStatus);
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+
+
+    await this.getNetWorkStatus();
+
+    this.networkListener = Network.addListener('networkStatusChange', (status) => {
+      this.networkStatus = status;
+      console.log('Network status changed', status);
+    });
+
     await this.validarTransferencia();
     this.totalesDescargaChangedSubscription = this.sqliteService.totalDescargaObs$.subscribe((valor) => {
       this.totalDescarga = valor;
@@ -66,8 +98,14 @@ export class MiPerfilPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async navegarA(ruta: string) {
-    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
 
+    if(ruta == "datos-generales-edicion"){
+      this.navCtrl.navigateRoot(ruta)
+      return
+    }
+
+
+    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
     if (respuesta.status == 401) {
       if (respuesta.error.message.includes("realiza una")) {
         localStorage.setItem("opcionAlerta", "eliminar-transferencia")
