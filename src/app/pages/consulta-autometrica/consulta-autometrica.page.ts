@@ -32,6 +32,7 @@ export class ConsultaAutometricaPage implements OnInit {
     anio: [null, [Validators.required]],
     kilometraje: [null],
   });
+  licenciaActual: any = [];
 
   get marca() {
     return this.form.get("marca");
@@ -78,9 +79,12 @@ export class ConsultaAutometricaPage implements OnInit {
 
     this.hayInternet = (await Network.getStatus()).connected;
     if (this.hayInternet) {
+      await this.obtenerHistoricoLicencias()
+
+
+
       await this.obtenerMarcasOnline();
     } else {
-
       // no ha descargado
       await this.obtenerListadoMarcas();
       await this.obtenerMarcasOffline()
@@ -95,6 +99,32 @@ export class ConsultaAutometricaPage implements OnInit {
       }
     }
 
+
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  public async obtenerHistoricoLicencias() {
+    let objeto = {
+      client_id: this.usuario.id,
+      // mobile_identifier: "c06c7c5f8b043518",
+      mobile_identifier: (await Device.getId()).identifier
+    }
+    let respuesta = await this.webRestService.postAsync(API.endpoints.historialLicencias, objeto)
+    console.log(respuesta)
+
+    if (respuesta.status == true) {
+      for (let i = 0; i < respuesta?.data.length; i++) {
+        respuesta.data[i].mes = this.utilitiesService.obtenerMesStringActual(respuesta.data[i].month_hire)
+
+        if (respuesta.data[i].duration_month > 1) {
+          respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
+          respuesta.data[i].mesFinString = this.utilitiesService.obtenerMesStringActual(respuesta.data[i].mesFin)
+        }
+        if (respuesta.data[i].active == 1) {
+          this.licenciaActual.push(respuesta.data[i])
+        }
+      }
+    }
 
   }
 
@@ -209,9 +239,10 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerAniosOnline(marca: string) {
+    let objetoPrincipal = this.licenciaActual[0];
     let objeto: any = {
-      month_period: 1,
-      year_period: 2023,
+      month_period: objetoPrincipal.month_hire,
+      year_period: objetoPrincipal.year_hire,
       brand: marca
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.listaAnios, objeto)
@@ -226,10 +257,13 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerSubMarcarOnline(marca: string) {
+    let objetoPrincipal = this.licenciaActual[0];
+
     let objeto: any = {
-      month_period: 1,
-      year_period: 2023,
-      brand: marca
+      month_period: objetoPrincipal.month_hire,
+      year_period: objetoPrincipal.year_hire,
+      brand: marca,
+      year: this.form.controls['anio'].value
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.listaSubmarcas, objeto)
     console.log("submarcas online", respuesta)
@@ -242,9 +276,11 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerMarcasOnline() {
+    let objetoPrincipal = this.licenciaActual[0];
+
     let objeto: any = {
-      month_period: 1,
-      year_period: 2023,
+      month_period: objetoPrincipal.month_hire,
+      year_period: objetoPrincipal.year_hire,
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.listaMarcas, objeto)
     console.log("marcas online", respuesta)
@@ -258,7 +294,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsultaOnline() {
-
+    let objetoPrincipal = this.licenciaActual[0];
     let anio: any = this.form.controls['anio'].value;
     let marca = this.form.controls['marca'].value.toLowerCase();
     let submarca = this.form.controls['submarca'].value.toLowerCase();
@@ -276,8 +312,8 @@ export class ConsultaAutometricaPage implements OnInit {
           if (data.data) {
             let objeto = {
               client_id: this.usuario.id,
-              month_period: 1,
-              year_period: 2023,
+              month_period: objetoPrincipal.month_period,
+              year_period: objetoPrincipal.year_hire,
               brand: marca,
               sub_brand: submarca,
               mileage: 0,
@@ -302,8 +338,8 @@ export class ConsultaAutometricaPage implements OnInit {
     } else {
       let objeto = {
         client_id: this.usuario.id,
-        month_period: 1,
-        year_period: 2023,
+        month_period: objetoPrincipal.month_period,
+        year_period: objetoPrincipal.year_hire,
         brand: marca,
         sub_brand: submarca,
         mileage: kilometraje,
@@ -326,7 +362,7 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsulta() {
 
-    if(!this.form.valid){
+    if (!this.form.valid) {
       await this.utilitiesService.validaCamposFormulario([this.form])
       localStorage.setItem("opcionAlerta", "campos-requeridos")
       const modal = await this.modalController.create({
@@ -337,12 +373,12 @@ export class ConsultaAutometricaPage implements OnInit {
       await modal.present();
       return;
     }
-   
+
     let anio: any = this.form.controls['anio'].value;
     let marca = this.form.controls['marca'].value.toLowerCase();
     let submarca = this.form.controls['submarca'].value.toLowerCase();
     let kilometraje = this.form.controls['kilometraje'].value;
-    let anioActual:any = new Date().getFullYear();
+    let anioActual: any = new Date().getFullYear();
 
 
     if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
@@ -389,7 +425,7 @@ export class ConsultaAutometricaPage implements OnInit {
               }
 
               console.log(filtroKilometraje)
-              
+
               for (let i = 0; i < filtroKilometraje.length; i++) {
                 if (filtroKilometraje[i].inicial == 0 && filtroKilometraje[i].final == 0) {
                   valoresTotalesMillas.push(filtroKilometraje[i])

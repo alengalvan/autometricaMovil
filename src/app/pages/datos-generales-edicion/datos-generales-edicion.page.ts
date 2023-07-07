@@ -170,6 +170,15 @@ export class DatosGeneralesEdicionPage implements OnInit {
     let respuesta = await this.webRestService.postAsync(API.endpoints.actualizarUsuario, objeto)
 
     if (respuesta.status == true) {
+
+      this.usuario.name = objeto.name;
+      this.usuario.last_name = objeto.last_name;
+      this.usuario.last_name_mother = objeto.last_name_mother;
+      this.usuario.email = objeto.email;
+      this.usuario.phone = objeto.phone;
+      this.usuario.state = objeto.state;
+      localStorage.setItem("usuario", JSON.stringify(this.usuario))
+
       localStorage.setItem("opcionAlerta", "modificaciones-exitosas")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
@@ -190,6 +199,9 @@ export class DatosGeneralesEdicionPage implements OnInit {
     let respuesta = await this.webRestService.postAsync(API.endpoints.setearContrasenia, objeto)
     console.log(respuesta)
     if (respuesta.status == true) {
+
+      this.datosPersonales.password = objeto.password;
+      localStorage.setItem("datosPersonales", JSON.stringify(this.datosPersonales))
       localStorage.setItem("opcionAlerta", "modificaciones-exitosas")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,

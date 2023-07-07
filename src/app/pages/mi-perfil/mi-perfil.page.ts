@@ -171,6 +171,11 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async descargarBd(licencia: any) {
 
+    this.networkStatus = (await Network.getStatus()).connected;
+    if (!this.networkStatus) {
+      return;
+    }
+
     console.log(licencia)
     localStorage.setItem("opcionAlerta", "aviso-borrado-licencias")
     const modal = await this.modalController.create({

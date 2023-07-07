@@ -62,7 +62,7 @@
           <ion-col size="12" (click)="prueba()">
             <input appTrim credit-card type="text"
               style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
-              formControlName="nombreTarjeta" placeholder="Número de Tarjeta" maxlength="21" credit-card>
+              formControlName="nombreTarjeta" placeholder="Número de Tarjeta" maxlength="19" credit-card>
             <div *ngFor="let error of mensajesValidacionPago.nombreTarjeta">
               <ng-container
                 *ngIf="nombreTarjeta!.hasError(error.type) && (nombreTarjeta!.dirty || nombreTarjeta!.touched)">
@@ -84,8 +84,8 @@
           <ion-col size="6">
 
             <input appTrim type="number" formControlName="cvv" placeholder="CVV"
-              style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
-              maxlength="4">
+              onKeyPress="if(this.value.length==4) return false;"
+              style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;">
             <div *ngFor="let error of mensajesValidacionPago.cvv">
               <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">
                 <small class="errorValidation">{{error.message}}</small>

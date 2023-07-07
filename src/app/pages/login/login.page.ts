@@ -170,8 +170,8 @@ export class LoginPage implements OnInit {
     let objeto: any = {
       email: valores.email,
       password: valores.password,
-      mobile_identifier: "c06c7c5f8b043518",
-      // mobile_identifier: this.idMobile,
+      // mobile_identifier: "c06c7c5f8b043518",
+      mobile_identifier: this.idMobile,
     }
 
     let respuesta = await this.webRestService.postAsync(API.endpoints.login, objeto)
