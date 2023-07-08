@@ -7,7 +7,7 @@ import { sqliteService } from 'src/app/services/sqlite.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { Network, ConnectionStatus } from '@capacitor/network'
 import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-custom.page';
-import { Device } from '@capacitor/device';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-consulta-autometrica',
   templateUrl: './consulta-autometrica.page.html',
@@ -33,6 +33,7 @@ export class ConsultaAutometricaPage implements OnInit {
     kilometraje: [null],
   });
   licenciaActual: any = [];
+  public hayInternet = this.route.snapshot.paramMap.get('id');
 
   get marca() {
     return this.form.get("marca");
@@ -64,25 +65,20 @@ export class ConsultaAutometricaPage implements OnInit {
       { type: "required", message: "Ingrese el kilometraje." },
     ]
   };
-
   public estados: any = [];
-  hayInternet: any = null
   constructor(private formBuilder: FormBuilder,
     public utilitiesService: UtilitiesService,
     public sqliteService: sqliteService,
     public webRestService: WebRestService,
     public navCtrl: NavController,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    private route: ActivatedRoute) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async ngOnInit() {
-
-    this.hayInternet = (await Network.getStatus()).connected;
+    console.log(this.hayInternet)
     if (this.hayInternet) {
       await this.obtenerHistoricoLicencias()
-
-
-
       await this.obtenerMarcasOnline();
     } else {
       // no ha descargado
@@ -106,8 +102,7 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerHistoricoLicencias() {
     let objeto = {
       client_id: this.usuario.id,
-      // mobile_identifier: "c06c7c5f8b043518",
-      mobile_identifier: (await Device.getId()).identifier
+      mobile_identifier: await this.utilitiesService.idTelefono()
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.historialLicencias, objeto)
     console.log(respuesta)
@@ -294,11 +289,25 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsultaOnline() {
+
+    if (!this.form.valid) {
+      this.utilitiesService.validaCamposFormulario([this.form]);
+      localStorage.setItem("opcionAlerta", "campos-requeridos")
+      const modal = await this.modalController.create({
+        component: ModalAlertasCustomPage,
+        cssClass: 'transparent-modal',
+        componentProps: { mensaje: "Debe seleccionar un valor en los campos marcados con rojo." }
+      })
+      await modal.present();
+      return;
+    }
+
     let objetoPrincipal = this.licenciaActual[0];
-    let anio: any = this.form.controls['anio'].value;
-    let marca = this.form.controls['marca'].value.toLowerCase();
-    let submarca = this.form.controls['submarca'].value.toLowerCase();
-    let kilometraje = this.form.controls['kilometraje'].value;
+    console.log(objetoPrincipal)
+    var anio: any = this.form.controls['anio'].value;
+    var marca = this.form.controls['marca'].value.toLowerCase();
+    var submarca = this.form.controls['submarca'].value.toLowerCase();
+    var kilometraje = this.form.controls['kilometraje'].value;
 
     if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
       localStorage.setItem("opcionAlerta", "kilometraje-vacio")
@@ -312,47 +321,63 @@ export class ConsultaAutometricaPage implements OnInit {
           if (data.data) {
             let objeto = {
               client_id: this.usuario.id,
-              month_period: objetoPrincipal.month_period,
+              month_period: objetoPrincipal.month_hire,
               year_period: objetoPrincipal.year_hire,
               brand: marca,
               sub_brand: submarca,
-              mileage: 0,
+              mileage: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje,
               year_car: anio,
-              // mobile_identifier: "c06c7c5f8b043518",
-              mobile_identifier: (await Device.getId()).identifier
+              mobile_identifier: await this.utilitiesService.idTelefono()
             }
 
             let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
             console.log(respuesta)
             if (respuesta.status == true) {
-              if (respuesta.cars.length > 0) {
-                localStorage.setItem("resultadosConsulta", JSON.stringify(respuesta.cars))
+              if (respuesta.lineales.length > 0) {
+                localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
+                localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
+                localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
+                let objetoBusqueda = {
+                  anio: anio,
+                  marca: marca,
+                  submarca: submarca,
+                  kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+                }
+
+                localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
                 this.navCtrl.navigateRoot("resultados-consulta")
               }
             }
-          } else {
-
           }
         });
       await modal.present();
     } else {
       let objeto = {
         client_id: this.usuario.id,
-        month_period: objetoPrincipal.month_period,
+        month_period: objetoPrincipal.month_hire,
         year_period: objetoPrincipal.year_hire,
         brand: marca,
         sub_brand: submarca,
-        mileage: kilometraje,
+        mileage: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje,
         year_car: anio,
-        // mobile_identifier: "c06c7c5f8b043518",
-        mobile_identifier: (await Device.getId()).identifier
+        mobile_identifier: await this.utilitiesService.idTelefono()
       }
 
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
       console.log(respuesta)
       if (respuesta.status == true) {
-        if (respuesta.cars.length > 0) {
-          localStorage.setItem("resultadosConsulta", JSON.stringify(respuesta.cars))
+        if (respuesta.lineales.length > 0) {
+          localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
+          localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
+          localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
+          let objetoBusqueda = {
+            anio: anio,
+            marca: marca,
+            submarca: submarca,
+            kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+          }
+
+          localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
           this.navCtrl.navigateRoot("resultados-consulta")
         }
       }

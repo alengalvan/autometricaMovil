@@ -28,7 +28,8 @@ export const API = {
       listaMarcas: environment.proyectoBase + '/api/car/list-brand',
       listaSubmarcas: environment.proyectoBase + '/api/car/list-subbrand',
       listaAnios: environment.proyectoBase + '/api/car/list-year',
-      consultaAuto: environment.proyectoBase + '/api/car/consult-car'
+      consultaAuto: environment.proyectoBase + '/api/car/consult-car',
+      cancelarLicencia: environment.proyectoBase + "/api/license/cancel-license"
     }
   };
   

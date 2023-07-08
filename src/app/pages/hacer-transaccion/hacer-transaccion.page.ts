@@ -55,7 +55,7 @@ export class HacerTransaccionPage implements OnInit {
       if (respuesta.status == true) {
         this.tiposLicencias = respuesta?.licenses;
         this.fechaPeriodo = respuesta?.period;
-
+        debugger
         if (this.fechaPeriodo) {
           this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
           this.anio = this.fechaPeriodo[0]?.month_period?.split('-')[0];
@@ -112,7 +112,7 @@ export class HacerTransaccionPage implements OnInit {
       code: this.form.controls["codigo"].value,
       license_id: this.id ? this.licenciaSeleccionadaAutomatica.id : this.licenciaSeleccionada.id,
       client_id: this.usuario.id,
-      month: this.id ? this.mes : Number(this.licenciaSeleccionada.mesNumero),
+      month: this.id ? this.licenciaSeleccionada.mesNumero : Number(this.licenciaSeleccionada.mesNumero),
       year: this.id ? this.anio : Number(this.licenciaSeleccionada.anio),
     }
 
@@ -153,6 +153,7 @@ export class HacerTransaccionPage implements OnInit {
             componentProps: { mensaje: "" }
           })
           await modal.present();
+          this.navCtrl.navigateRoot("mi-perfil")
         }
       });
       await modal.present();

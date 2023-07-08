@@ -47,6 +47,27 @@
       </ion-col>
     </ion-row>
 
+
+    <div *ngIf="opcionAlerta == 'sin-internet-sin-datos-descargados' ">
+      <ion-row style="padding: 10px;" style="margin: 0;">
+        <ion-col size="12" no-padding>
+          <div style="text-align: end;">
+            <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModal()"></ion-icon><br>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="margin: 0;">
+        <ion-col size="1"></ion-col>
+        <ion-col size="10" style="text-align: center;">
+          <ion-icon src="assets/icon/alerta-error.svg" style="zoom: 2;"></ion-icon>
+          <div class="mensaje-error" [innerHTML]="sinInternetSinDescarga"></div>
+          <br><br>
+        </ion-col>
+      </ion-row>
+    </div>
+
+
     <!-- login este es el que se valido -->
     <div *ngIf="opcionAlerta == 'usuario-inactivo' ">
       <ion-row style="padding: 10px;" style="margin: 0;">

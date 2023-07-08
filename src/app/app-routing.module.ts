@@ -33,6 +33,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/consulta-autometrica/consulta-autometrica.module').then( m => m.ConsultaAutometricaPageModule)
   },
   {
+    path: 'consulta-autometrica/:id',
+    loadChildren: () => import('./pages/consulta-autometrica/consulta-autometrica.module').then( m => m.ConsultaAutometricaPageModule)
+  },
+  {
     path: 'detalle-consulta-autometrica',
     loadChildren: () => import('./pages/detalle-consulta-autometrica/detalle-consulta-autometrica.module').then( m => m.DetalleConsultaAutometricaPageModule)
   },

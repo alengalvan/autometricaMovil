@@ -1,7 +1,8 @@
 <ion-content [fullscreen]="true">
   <ion-content [fullscreen]="true">
     <app-header-title></app-header-title>
-    <br><br>
+    <br>
+
     <ion-row>
       <ion-col size="1"></ion-col>
       <ion-col size="1">
@@ -16,103 +17,85 @@
     <ion-row>
       <ion-col size="1"></ion-col>
       <ion-col size="10">
-        <div style="text-align: center;">
-          <span style="font-size: 30px;color: #616161;">Valores de mes año</span><br>
-        </div>
-        <br>
 
         <div style="text-align: center;">
-          <img src="../../../assets/imgs/vehiculo.png" alt="" srcset="">
-        </div>
-
-
-        <br>
-
-        <div>
-          <span style="color: #000;font-size: 20px;font-weight: 600;">
-            {{resultasOfflineConsulta[0].brand}}
-          </span>
-          <br>
-          <span style="color: #000;font-size: 14px;font-weight: 500;">
-            {{resultasOfflineConsulta[0].subbrand}} {{resultasOfflineConsulta[0].year}}
-          </span>
-          <br>
-          <span *ngIf="resultasOfflineConsulta[0].sale == 0 || resultasOfflineConsulta[0].purchase == 0"
-          style="color: #000;font-size: 14px;font-style: italic;font-weight: 400;text-decoration-line: underline;">
-            Para autos nuevos no se calcula kilometraje.<br>
-          </span>
-
-          <span *ngIf="resultasOfflineConsulta[0].inicial == 0"
-          style="color: #000;font-size: 14px;font-style: italic;font-weight: 400;text-decoration-line: underline;">
-            Se aplicó el kilometraje promedio para este año.<br>
-          </span>
-
-          <span *ngIf="resultasOfflineConsulta[0].inicial > 0"
-            style="color: #000;font-size: 14px;font-weight: 500;">
-            Kilometraje: {{ resultasOfflineConsulta[0].inicial }} km <br>
-          </span>
-
-
+          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{mes}} {{busquedaAutometrica.anio}}</span><br>
         </div>
         <br>
+
+        <div style="text-align: center;">
+          <img
+            [src]="'https://www.autometrica.com.mx/valuador/assets/img/autos/'+resultasCarsConsulta[0].list[0].filename"
+            onerror="this.onerror=null;this.src='../../../assets/imgs/vehiculo.png';" />
+        </div>
+
         <br>
-        <table>
-          <thead>
-            <tr style="background-color:#515151;height: 30px;color: white;font-weight: 500;font-size: 10px;">
+
+        <div class="contenedo-clase">
+          <p class="title">{{busquedaAutometrica.marca | titlecase }} </p>
+          <p class="text">
+            {{busquedaAutometrica.submarca | titlecase }} {{busquedaAutometrica.anio}}
+          </p>
+
+          <p class="text" *ngIf="busquedaAutometrica.kilometraje">
+            Kilometraje: {{ busquedaAutometrica.kilometraje }} km
+          </p>
+
+          <p class="text" style="text-decoration-line: underline;font-style: italic;"
+            *ngIf="!busquedaAutometrica.kilometraje">Se aplicó el kilometraje promedio para este año.
+          </p>
+
+
+          <p class="title-table">Cambio de línea</p>
+          <table class="table-consult">
+            <tr>
               <th>G/km</th>
-              <th>Precios</th>
+              <th class="text-center">Precios</th>
               <th>Venta</th>
               <th>Compra</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let vehiculo of resultasOfflineConsulta" 
-            style="background-color: #D9D9D9;height: 45px;margin-top: 20px;color: #414141;font-size: 10px;font-weight: 500;">
-              <td>&nbsp; {{vehiculo.grupo}}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.version}}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.sale | currency }}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.purchase | currency }}&nbsp;</td>
-              <hr>
+            <tr *ngFor="let car of resultasCarsConsulta[0].list">
+              <td class="text-center"> {{car.km_group}} </td>
+              <td>{{car.version}}</td>
+              <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+              <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
             </tr>
-          </tbody>
-        </table>
-
-        <!-- <table>
-          <thead>
-            <tr style="background-color:#515151;height: 30px;color: white;font-weight: 500;font-size: 10px;">
-              <th>Descripción</th>
-              <th>Precio</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let vehiculo of resultasOfflineConsulta" 
-            style="background-color: #D9D9D9;height: 45px;margin-top: 20px;color: #414141;font-size: 10px;font-weight: 500;">
-              <td>&nbsp; {{vehiculo.grupo}}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.version}}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.sale}}&nbsp;</td>
-              <td>&nbsp;{{vehiculo.purchase}}&nbsp;</td>
-              <hr>
-            </tr>
-          </tbody>
-        </table> -->
+          </table>
 
 
-        <table style="width: 100%;">
-          <thead>
-            <tr style="background-color:#515151;height: 30px;color: white;font-weight: 500;font-size: 10px;">
-              <th>G/km</th>
+          <p class="title-table" *ngIf="resultadosAnadir.length > 0">Equipo adicional</p>
+          <table class="table-consult" *ngIf="resultadosAnadir.length > 0">
+            <tr>
+              <th>Precios</th>
+              <th class="text-center">Venta</th>
+              <th class="text-center">Compra</th>
+            </tr>
+            <tr *ngFor="let anadir of resultadosAnadir">
+              <td> {{anadir.add_version}} </td>
+              <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+              <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+            </tr>
+          </table>
+
+
+          <p class="title-table" *ngIf="resultadosKilometraje.length > 0">Kilometraje</p>
+          <table class="table-consult" *ngIf="resultadosKilometraje.length > 0">
+            <tr>
+              <th class="text-center">G/km</th>
               <th>Impacto de Kilometraje</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let vehiculo of resultasOfflineConsulta" 
-            style="background-color: #D9D9D9;height: 45px;margin-top: 20px;color: #414141;font-size: 10px;font-weight: 500;">
-              <td style="width: 30%;text-align: center;">&nbsp; {{vehiculo.grupo}}&nbsp;</td>
-              <td style="width: 70%;text-align: center;">&nbsp;{{vehiculo.sale | currency }}&nbsp;</td>
-              <hr>
+            <tr>
+              <td class="text-center">C</td>
+              <td class="text-center">$000,000</td>
             </tr>
-          </tbody>
-        </table>
+            <tr>
+              <td class="text-center">A</td>
+              <td class="text-center">$000,000</td>
+            </tr>
+          </table>
+        </div>
+
+
 
       </ion-col>
     </ion-row>

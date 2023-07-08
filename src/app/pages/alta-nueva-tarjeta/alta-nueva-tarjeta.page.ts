@@ -139,7 +139,7 @@ export class AltaNuevaTarjetaPage implements OnInit {
         const modal = await this.modalController.create({
           component: ModalAlertasCustomPage,
           cssClass: 'transparent-modal',
-          componentProps: { mensaje: "Error inesperado, por favor intente más tarde." }
+          componentProps: { mensaje: respuesta.message }
         })
         await modal.present();
       }

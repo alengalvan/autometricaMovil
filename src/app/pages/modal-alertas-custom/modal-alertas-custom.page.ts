@@ -40,6 +40,9 @@ export class ModalAlertasCustomPage implements OnInit {
   "<br><br>" + "Si no proporciona el kilometraje, se" +
   "<br>" + "se tomará en cuenta el kilometraje" +
   "<br>" + "promedio para ese año."
+  public sinInternetSinDescarga = "Para poder consultar información" +
+  "<br>" + "es necesario descargar la edición o" +
+  "<br>" + "contar con acceso a internet."
 
   // Si no proporciona el kilometraje,  promedio para ese año.
   public tarjetaSeleccionada = JSON.parse(localStorage.getItem('tarjetaSeleccionada')!);

@@ -107,6 +107,8 @@ export class MiPerfilPage implements OnInit {
 
     let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
     if (respuesta.status == 401) {
+
+      
       if (respuesta.error.message.includes("realiza una")) {
         localStorage.setItem("opcionAlerta", "eliminar-transferencia")
         const modal = await this.modalController.create({
@@ -118,6 +120,12 @@ export class MiPerfilPage implements OnInit {
         modal.onDidDismiss()
           .then(async (data) => {
             if (data.data) {
+              let objeto = {
+                client_id: this.usuario.id
+              }
+              let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
+              console.log(response)
+
               this.navCtrl.navigateRoot(ruta);
             }
           })
@@ -143,8 +151,7 @@ export class MiPerfilPage implements OnInit {
   public async obtenerHistoricoLicencias() {
     let objeto = {
       client_id: this.usuario.id,
-      // mobile_identifier: "c06c7c5f8b043518",
-      mobile_identifier: (await Device.getId()).identifier
+      mobile_identifier: await this.utilitiesServices.idTelefono()
     }
     let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
     console.log(respuesta)

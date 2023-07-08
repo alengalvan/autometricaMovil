@@ -189,25 +189,8 @@ export class sqliteService {
       localStorage.setItem("lineas", JSON.stringify(respuesta.lineals))
       localStorage.setItem("millas", JSON.stringify(respuesta.mileages))
       localStorage.setItem("imagenes", JSON.stringify(respuesta.images))
-      
-      // this.totalDescarga$.next((respuesta.lineals.length + respuesta.mileages.length + respuesta.images.length));
-      // console.log(this.totalDescarga$)
-      // this.estaGenerandoBase$.next(true);
-
-      // if (respuesta.lineals.length > 0) {
-      //   await this.crearLineas(respuesta.lineals);
-      // }
-      // if (respuesta.mileages.length > 0) {
-      //   await this.crearMileages(respuesta.mileages);
-      // }
-      // if (respuesta.images.length > 0) {
-      //   await this.crearImages(respuesta.images);
-      // }
-
-      // this.estaGenerandoBase$.next(false);
-      // this.totalDescarga$.next(0)
-      // this.totalCargados$.next(0)
       localStorage.setItem("opcionAlerta", "descarga-exitosa")
+      
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',

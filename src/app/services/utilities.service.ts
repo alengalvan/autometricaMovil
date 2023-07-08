@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
-
+import { Device } from '@capacitor/device';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class UtilitiesService {
 
     // private androidPermissions: AndroidPermissions,
     // private uid: Uid
-    
-    ) {}
+
+  ) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async alert(title: string, message: string, nombreBoton?: string) {
@@ -262,32 +262,32 @@ export class UtilitiesService {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async solicitarPermisos(){
+  public async solicitarPermisos() {
     // const { hasPermission } = await this.androidPermissions.checkPermission(
     //   this.androidPermissions.PERMISSION.READ_PHONE_STATE
     // );
-   
+
     // if (!hasPermission) {
     //   const result = await this.androidPermissions.requestPermission(
     //     this.androidPermissions.PERMISSION.READ_PHONE_STATE
     //   );
-   
+
     //   if (!result.hasPermission) {
     //     throw new Error('Permissions required');
     //   }
-   
+
     //   // ok, a user gave us permission, we can get him identifiers after restart app
     //   return;
     // }
-   
+
     //  return this.uid.IMEI
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async obtenerInfo(){
+  public async obtenerInfo() {
     // const info = await Device.getInfo();
     // return info;
-  } 
+  }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async presentLoading(msg: string, time = 600000) {
@@ -302,36 +302,73 @@ export class UtilitiesService {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public obtenerMesStringActual(mes: number){
+  public obtenerMesStringActual(mes: number) {
     if (mes == 1) {
       return "Enero";
-    }else if(mes == 2){
+    } else if (mes == 2) {
       return "Febrero";
-    }else if(mes == 3){
+    } else if (mes == 3) {
       return "Marzo";
-    }else if(mes == 4){
+    } else if (mes == 4) {
       return "Abril";
-    }else if(mes == 5){
+    } else if (mes == 5) {
       return "Mayo";
-    }else if(mes == 6){
+    } else if (mes == 6) {
       return "Junio";
-    }else if(mes == 7){
+    } else if (mes == 7) {
       return "Julio";
-    }else if(mes == 8){
+    } else if (mes == 8) {
       return "Agosto";
-    }else if(mes == 9){
+    } else if (mes == 9) {
       return "Septiembre";
-    }else if(mes == 10){
+    } else if (mes == 10) {
       return "Octubre";
-    }else if(mes == 11){
+    } else if (mes == 11) {
       return "Noviembre";
-    }else if(mes == 12){
+    } else if (mes == 12) {
       return "Diciembre";
-    }else{
+    } else {
       return "Diciembre";
     }
   }
-  
 
-  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async numeroAMes(numero: number){
+    switch (numero) {
+      case 1:
+        return "Enero";
+      case 2:
+        return "Febrero";
+      case 3:
+        return "Marzo";
+      case 4:
+        return "Abril";
+      case 5:
+        return "Mayo";
+      case 6:
+        return "Junio";
+      case 7:
+        return "Julio";
+      case 8:
+        return "Agosto";
+      case 9:
+        return "Septiembre";
+      case 10:
+        return "Octubre";
+      case 11:
+        return "Noviembre";
+      case 12:
+        return "Diciembre";
+      default:
+        return "Enero";
+    }
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async idTelefono(){
+    // return (await Device.getId()).identifier;
+    return "c06c7c5f8b043518"
+  }
+
+
 }

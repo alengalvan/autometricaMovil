@@ -56,16 +56,14 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
       year: Number(this.licenciaSeleccionada.anio),
     }
 
-    console.log(objetoPrincipal)
-
     let respuesta = await this.webRestService.postAsync(API.endpoints.pagarTarjeta, objetoPrincipal);
-
-    if (respuesta.status == 401) {
+    console.log(respuesta)
+    if (respuesta.status == 401 || respuesta.status == false) {
       localStorage.setItem("opcionAlerta", "error-pago-prepago-tarjeta")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: respuesta.error.message }
+        componentProps: { mensaje: "El pago no pudo completarse. Por favor intente con otro método de pago." }
       })
       modal.onDidDismiss().then(async (data) => {
         console.log(data)
@@ -108,9 +106,6 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
       });
       await modal.present();
     }
-
-
-    console.log(respuesta)
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  

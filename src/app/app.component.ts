@@ -22,10 +22,11 @@ export class AppComponent {
 
   public pages: any = [];
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
-  public licenciaActiva: boolean = false;
-  public mostrarAdquirirLicencia: boolean = false;
-  public mostrarCanjear: boolean = false;
-  
+  public licenciaActiva: number = 0;
+  public mostrarAdquirirLicencia: number = 0;
+  public mostrarCanjear: number = 0;
+  public mensajeNavegacionConsultaError: string = ''
+
   public isWeb: boolean = false;
   public haySesion: boolean = false;
   userChangedSubscription: Subscription | undefined;
@@ -87,41 +88,71 @@ export class AppComponent {
       }
     } else {
       if (ruta == 'consulta-autometrica') {
-        await this.obtenerHistoricoLicencias();
-        if (this.licenciaActiva) {
-          this.navCtrl.navigateRoot(ruta);
-        } else {
-          let respuesta = await this.webService.getAsync(API.endpoints.getListado + usuario.id)
-          console.log(respuesta)
-          if (respuesta.status == true) {
-            let hayTarjetaTransferencia: boolean = false;
-            let hayPrepago: boolean = false;
 
+        if ((await Network.getStatus()).connected == true) {
+          await this.obtenerHistoricoLicencias();
 
-            for (let i = 0; i < respuesta.paymet_method.length; i++) {
-              if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
-                hayTarjetaTransferencia = true;
-              }
+          if (this.licenciaActiva == 1) {
+            this.navCtrl.navigateRoot("consulta-autometrica/1");
+          }
 
-              if (respuesta.paymet_method[i].id == 1) {
-                hayPrepago = true;
-              }
-            }
+          if (this.licenciaActiva == 2) {
+            localStorage.setItem("opcionAlerta", "eliminar-transferencia")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: this.mensajeNavegacionConsultaError }
+            })
 
-            let mensaje = hayTarjetaTransferencia ? "Adquirir Licencia" : "Canjear Código";
+            modal.onDidDismiss()
+              .then(async (data) => {
+                if (data.data) {
+                  let objeto = {
+                    client_id: this.usuario.id
+                  }
+                  let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
+                  await this.validarTransferencia();
+                  let mensaje = this.mostrarAdquirirLicencia > 0 ? "Adquirir Licencia" : "Canjear Código";
+                  localStorage.setItem("mensaje-modal-consulta", mensaje)
+                  localStorage.setItem("opcionAlerta", "no-tiene-licencia-activa")
+                  const modal = await this.modalController.create({
+                    component: ModalAlertasCustomPage,
+                    cssClass: 'transparent-modal',
+                  })
+                  await modal.present();
+                }
+              })
+            await modal.present();
+
+          }
+
+          if (this.licenciaActiva == 3) {
+            await this.validarTransferencia();
+            let mensaje = this.mostrarAdquirirLicencia > 0 ? "Adquirir Licencia" : "Canjear Código";
             localStorage.setItem("mensaje-modal-consulta", mensaje)
-
             localStorage.setItem("opcionAlerta", "no-tiene-licencia-activa")
             const modal = await this.modalController.create({
               component: ModalAlertasCustomPage,
               cssClass: 'transparent-modal',
             })
             await modal.present();
-            return;
           }
 
-          console.log("no hay licencia activa");
-          return;
+        } else {
+          // validaciones para consulta sin internet
+          let lineas = JSON.parse(localStorage.getItem('lineas')!)
+          if (!lineas) {
+            localStorage.setItem("opcionAlerta", "sin-internet-sin-datos-descargados")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: "" }
+            })
+            await modal.present();
+          }else{
+            this.navCtrl.navigateRoot("consulta-autometrica")
+          }
+
         }
         return;
       }
@@ -147,6 +178,114 @@ export class AppComponent {
           return;
         }
       }
+
+      if (ruta == "hacer-transaccion/1") {
+        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+        console.log(respuesta);
+
+
+        if (respuesta.status == false || respuesta.status == 401) {
+
+          // licencia pendiente
+          if (respuesta.error.message.includes("realiza una")) {
+            localStorage.setItem("opcionAlerta", "eliminar-transferencia")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta.error.message }
+            })
+
+            modal.onDidDismiss()
+              .then(async (data) => {
+                if (data.data) {
+
+
+                  let objeto = {
+                    client_id: this.usuario.id
+                  }
+                  let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
+                  console.log(response)
+
+                  this.navCtrl.navigateRoot(ruta);
+                }
+              })
+            await modal.present();
+          }
+
+          // licencia activa
+          if (respuesta.error.message.includes("licencia disponible")) {
+            localStorage.setItem("opcionAlerta", "intente-el-dia")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta.error.message }
+            })
+            await modal.present();
+          }
+        }
+
+        if (respuesta.status == true) {
+          this.navCtrl.navigateRoot(ruta)
+        }
+
+
+        return;
+      }
+
+      if (ruta == "pagos") {
+        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+        console.log(respuesta);
+
+
+        if (respuesta.status == false || respuesta.status == 401) {
+
+          // licencia pendiente
+          if (respuesta.error.message.includes("realiza una")) {
+            localStorage.setItem("opcionAlerta", "eliminar-transferencia")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta.error.message }
+            })
+
+            modal.onDidDismiss()
+              .then(async (data) => {
+                if (data.data) {
+
+
+                  let objeto = {
+                    client_id: this.usuario.id
+                  }
+                  let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
+                  console.log(response)
+
+                  this.navCtrl.navigateRoot(ruta);
+                }
+              })
+            await modal.present();
+          }
+
+          // licencia activa
+          if (respuesta.error.message.includes("licencia disponible")) {
+            localStorage.setItem("opcionAlerta", "intente-el-dia")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta.error.message }
+            })
+            await modal.present();
+          }
+        }
+
+        if (respuesta.status == true) {
+          this.navCtrl.navigateRoot(ruta)
+        }
+        return;
+      }
+
+
+
+
       console.log("salio")
       this.navCtrl.navigateRoot(ruta);
     }
@@ -154,21 +293,24 @@ export class AppComponent {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerHistoricoLicencias() {
-    this.licenciaActiva = false;
-    let objeto = {
-      client_id: JSON.parse(localStorage.getItem('usuario')!).id,
-      // mobile_identifier: "c06c7c5f8b043518",
-      mobile_identifier: (await Device.getId()).identifier
+    this.mensajeNavegacionConsultaError = "";
+    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+    console.log(respuesta);
+    if (respuesta.status == false || respuesta.status == 401) {
+      // licencia pendiente
+      if (respuesta.error.message.includes("realiza una")) {
+        this.mensajeNavegacionConsultaError = respuesta.error.message;
+        this.licenciaActiva = 2;
+      }
+
+      if (respuesta.error.message.includes("licencia disponibl")) {
+        this.mensajeNavegacionConsultaError = respuesta.error.message;
+        this.licenciaActiva = 1;
+      }
     }
-    let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
-    console.log(respuesta)
 
     if (respuesta.status == true) {
-      for (let i = 0; i < respuesta?.data.length; i++) {
-        if (respuesta.data[i].active == 1) {
-          this.licenciaActiva = true;
-        }
-      }
+      this.licenciaActiva = 3;
     }
   }
 
@@ -214,7 +356,7 @@ export class AppComponent {
 
     ];
 
-    if (this.mostrarAdquirirLicencia) {
+    if (this.mostrarAdquirirLicencia > 0) {
       let indice = 3;
       let objeto =
       {
@@ -225,16 +367,16 @@ export class AppComponent {
       this.insertar(indice, objeto)
     }
 
-    if(this.mostrarCanjear){
+    if (this.mostrarCanjear > 0) {
       let indice = 3;
       let objeto = {
         title: 'Canjear Código',
         url: 'hacer-transaccion/1',
         icon: 'assets/icon/canjear_codigo.svg'
       }
-      
+
       this.insertar(indice, objeto)
-     
+
     }
     await this.utilitiesService.obtenerInfo();
   }
@@ -317,15 +459,13 @@ export class AppComponent {
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta.paymet_method.length; i++) {
         if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
-          this.mostrarAdquirirLicencia = true;
+          this.mostrarAdquirirLicencia++
         }
         if (respuesta.paymet_method[i].id == 1) {
-          this.mostrarCanjear = true;
+          this.mostrarCanjear++;
         }
       }
       return;
     }
-
-
   }
 }

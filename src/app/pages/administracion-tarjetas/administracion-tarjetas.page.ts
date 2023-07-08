@@ -115,6 +115,14 @@ export class AdministracionTarjetasPage implements OnInit {
           })
           await modal.present();
           await this.ngOnInit();
+        }else{
+          localStorage.setItem("opcionAlerta", "error-general")
+          const modal = await this.modalController.create({
+            component: ModalAlertasCustomPage,
+            cssClass: 'transparent-modal',
+            componentProps: { mensaje: respuesta.message }
+          })
+          await modal.present();
         }
 
       } else {
