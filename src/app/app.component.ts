@@ -22,7 +22,7 @@ import { sqliteService } from './services/sqlite.service';
 export class AppComponent {
 
   public pages: any = [];
-  public usuario = JSON.parse(localStorage.getItem('usuario')!);
+  // public usuario = JSON.parse(localStorage.getItem('usuario')!);
   public licenciaActiva: number = 0;
   public mostrarAdquirirLicencia: number = 0;
   public mostrarCanjear: number = 0;
@@ -112,7 +112,7 @@ export class AppComponent {
               .then(async (data) => {
                 if (data.data) {
                   let objeto = {
-                    client_id: this.usuario.id
+                    client_id: JSON.parse(localStorage.getItem('usuario')!).id
                   }
                   let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
                   await this.validarTransferencia();
@@ -184,7 +184,7 @@ export class AppComponent {
       }
 
       if (ruta == "hacer-transaccion/1") {
-        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
 
 
@@ -205,7 +205,7 @@ export class AppComponent {
 
 
                   let objeto = {
-                    client_id: this.usuario.id
+                    client_id: JSON.parse(localStorage.getItem('usuario')!).id
                   }
                   let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
                   console.log(response)
@@ -237,7 +237,7 @@ export class AppComponent {
       }
 
       if (ruta == "pagos") {
-        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+        let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
         if (respuesta.status == false || respuesta.status == 401) {
 
@@ -256,7 +256,7 @@ export class AppComponent {
 
 
                   let objeto = {
-                    client_id: this.usuario.id
+                    client_id: JSON.parse(localStorage.getItem('usuario')!).id
                   }
                   let response = await this.webService.postAsync(API.endpoints.cancelarLicencia, objeto)
                   console.log(response)
@@ -291,7 +291,7 @@ export class AppComponent {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerHistoricoLicencias() {
     this.mensajeNavegacionConsultaError = "";
-    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
+    let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
     console.log(respuesta);
     if (respuesta.status == false || respuesta.status == 401) {
       // licencia pendiente

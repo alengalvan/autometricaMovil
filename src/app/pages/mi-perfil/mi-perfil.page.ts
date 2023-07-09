@@ -59,7 +59,7 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
-    await this.sqliteService.listaModulos$.next(true);
+    // await this.sqliteService.listaModulos$.next(true);
 
     await this.getNetWorkStatus();
 
@@ -98,7 +98,7 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async navegarA(ruta: string) {
 
-    if(ruta == "datos-generales-edicion"){
+    if (ruta == "datos-generales-edicion") {
       this.navCtrl.navigateRoot(ruta)
       return
     }
@@ -107,7 +107,7 @@ export class MiPerfilPage implements OnInit {
     let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
     if (respuesta.status == 401) {
 
-      
+
       if (respuesta.error.message.includes("realiza una")) {
         localStorage.setItem("opcionAlerta", "eliminar-transferencia")
         const modal = await this.modalController.create({
@@ -234,6 +234,13 @@ export class MiPerfilPage implements OnInit {
 
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async handleRefresh(event: any) {
+    if ((await Network.getStatus()).connected == true) {
+      await this.sqliteService.listaModulos$.next(true);
+      event.target.complete();
+    }
+  }
 
 
 }

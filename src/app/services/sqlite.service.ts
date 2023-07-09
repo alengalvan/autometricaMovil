@@ -15,8 +15,6 @@ import { Capacitor } from '@capacitor/core';
 })
 export class sqliteService {
 
-  public usuario = JSON.parse(localStorage.getItem('usuario')!);
-
   public totalDescarga$ = new BehaviorSubject<number>(0);
   public totalCargados$ = new BehaviorSubject<number>(0);
   totalDescargaObs$ = this.totalDescarga$.asObservable();
@@ -177,11 +175,11 @@ export class sqliteService {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
-
+    console.log(JSON.parse(localStorage.getItem('usuario')!))
     let objeto = {
       month: mes,
       year: anio,
-      client_id: this.usuario.id
+      client_id: JSON.parse(localStorage.getItem('usuario')!).id
     }
 
     let respuesta = await this.webRestService.postAsync(API.endpoints.traerBD, objeto);

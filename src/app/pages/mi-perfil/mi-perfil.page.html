@@ -1,4 +1,9 @@
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <app-header-title></app-header-title>
   <br><br>
 
