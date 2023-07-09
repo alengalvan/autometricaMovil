@@ -188,7 +188,7 @@ export class MiPerfilPage implements OnInit {
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
       cssClass: 'transparent-modal',
-      componentProps: { mensaje: "Esta acción borrará cualquier descarga vigente anterior, podrá seguir consultándola en línea" }
+      componentProps: { mensaje: "Esta acción borrará cualquier descarga vigente anterior, podrá seguir consultándola en línea." }
     })
 
     modal.onDidDismiss()

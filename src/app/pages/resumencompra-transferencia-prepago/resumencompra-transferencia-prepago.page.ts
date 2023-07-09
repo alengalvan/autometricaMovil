@@ -77,32 +77,40 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
     }
 
     if (respuesta.status == true) {
-      localStorage.setItem("opcionAlerta", "ya-puede-consultar")
+      localStorage.setItem("opcionAlerta", "compra-exitosa")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: respuesta.message }
+        componentProps: { mensaje: "El pago fue realizado exitosamente. Si requiere factura contáctenos." }
       })
       modal.onDidDismiss().then(async (data) => {
-        console.log(data)
-        if (data?.data) {
-          //proceso de descarga
-          let objeto = {
-            mes: objetoPrincipal.month,
-            anio: objetoPrincipal.year,
-            client_id: this.usuario.id
+        localStorage.setItem("opcionAlerta", "ya-puede-consultar")
+        const modal = await this.modalController.create({
+          component: ModalAlertasCustomPage,
+          cssClass: 'transparent-modal',
+          componentProps: { mensaje: respuesta.message }
+        })
+        modal.onDidDismiss().then(async (data) => {
+          console.log(data)
+          if (data?.data) {
+            let objeto = {
+              mes: objetoPrincipal.month,
+              anio: objetoPrincipal.year,
+              client_id: this.usuario.id
+            }
+            this.descargarBd(objeto)
+          } else {
+            localStorage.setItem("opcionAlerta", "descarga-pendiente")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: "" }
+            })
+            await modal.present();
+            this.navCtrl.navigateRoot("mi-perfil")
           }
-          this.descargarBd(objeto)
-        } else {
-          localStorage.setItem("opcionAlerta", "descarga-pendiente")
-          const modal = await this.modalController.create({
-            component: ModalAlertasCustomPage,
-            cssClass: 'transparent-modal',
-            componentProps: { mensaje: "" }
-          })
-          await modal.present();
-          this.navCtrl.navigateRoot("mi-perfil")
-        }
+        });
+        await modal.present();
       });
       await modal.present();
     }
@@ -114,7 +122,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
       cssClass: 'transparent-modal',
-      componentProps: { mensaje: "Esta acción borrará cualquier descarga vigente anterior, podrá seguir consultándola en línea" }
+      componentProps: { mensaje: "Esta acción borrará cualquier descarga vigente anterior, podrá seguir consultándola en línea." }
     })
 
     modal.onDidDismiss()

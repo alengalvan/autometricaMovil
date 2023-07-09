@@ -94,6 +94,7 @@ export class AltaNuevaTarjetaPage implements OnInit {
     })
     modal.onDidDismiss().then(async (data) => {
       console.log(data)
+      
       let tarjeta = this.formPago.controls['nombreTarjeta'].value.split("-").join('');
       let exp_anioCompleto = this.formPago.controls['fechaVencimiento'].value.split("/")[1].slice(2)
       console.log(exp_anioCompleto)
@@ -124,12 +125,18 @@ export class AltaNuevaTarjetaPage implements OnInit {
         }
 
         localStorage.setItem("tarjetaSeleccionada", JSON.stringify(objeto))
-        const modal = await this.modalController.create({
-          component: ModalAlertasCustomPage,
-          cssClass: 'transparent-modal',
-          componentProps: { mensaje: respuesta.message }
-        })
-        await modal.present();
+        if(data.data){
+          const modal = await this.modalController.create({
+            component: ModalAlertasCustomPage,
+            cssClass: 'transparent-modal',
+            componentProps: { mensaje: respuesta.message }
+          })
+          await modal.present();
+        }
+
+       
+
+
         localStorage.setItem("cvv", this.formPago.controls['cvv'].value)
         this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
       }
