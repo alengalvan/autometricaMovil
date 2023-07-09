@@ -59,6 +59,7 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
+    await this.sqliteService.listaModulos$.next(true);
 
     await this.getNetWorkStatus();
 
@@ -83,8 +84,6 @@ export class MiPerfilPage implements OnInit {
       this.progress = 0;
       // }
     })
-
-
 
     this.mesActual = this.mesActual.getMonth() + 1;
     console.log(this.usuario)

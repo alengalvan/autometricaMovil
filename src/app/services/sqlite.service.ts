@@ -26,6 +26,11 @@ export class sqliteService {
   estaDescargandoObs$ = this.estaGenerandoBase$.asObservable();
   public isWeb: boolean = false;
   public contador: number = 0;
+
+  // menu
+  public listaModulos$ = new BehaviorSubject<any>(false);
+  listaModulosObs$ = this.listaModulos$.asObservable();
+
   public schemaLineals: any = `CREATE TABLE IF NOT EXISTS lineals (
     id INTEGER PRIMARY KEY,
     year INTEGER,
@@ -355,6 +360,8 @@ export class sqliteService {
   public async obtenerSubmarca(marca: string) {
 
   }
+
+  
 
 
 

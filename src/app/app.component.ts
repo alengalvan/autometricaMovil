@@ -12,6 +12,7 @@ import { LoginPage } from './pages/login/login.page';
 import { UserService } from './services/user.service';
 import { Device } from '@capacitor/device';
 import { Network, ConnectionStatus } from '@capacitor/network'
+import { sqliteService } from './services/sqlite.service';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +32,8 @@ export class AppComponent {
   public haySesion: boolean = false;
   userChangedSubscription: Subscription | undefined;
   hayInternet: boolean = false;
+  pagesChangedSubscription: Subscription | undefined;
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private navCtrl: NavController,
     public utilitiesService: UtilitiesService,
@@ -39,7 +42,8 @@ export class AppComponent {
     public platform: Platform,
     public webService: WebRestService,
     public userService: UserService,
-    private menu: MenuController) {
+    private menu: MenuController,
+    public sqliteService: sqliteService) {
     this.initializeApp();
   }
 
@@ -149,7 +153,7 @@ export class AppComponent {
               componentProps: { mensaje: "" }
             })
             await modal.present();
-          }else{
+          } else {
             this.navCtrl.navigateRoot("consulta-autometrica")
           }
 
@@ -235,8 +239,6 @@ export class AppComponent {
       if (ruta == "pagos") {
         let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id);
         console.log(respuesta);
-
-
         if (respuesta.status == false || respuesta.status == 401) {
 
           // licencia pendiente
@@ -282,11 +284,6 @@ export class AppComponent {
         }
         return;
       }
-
-
-
-
-      console.log("salio")
       this.navCtrl.navigateRoot(ruta);
     }
   }
@@ -325,7 +322,16 @@ export class AppComponent {
       this.haySesion = valor
     })
 
+    this.pagesChangedSubscription = await this.sqliteService.listaModulos$.subscribe(async (valor) => {
+      console.log("vamos a actualizar")
+      await this.ordenarMenu();
+    })
 
+    await this.utilitiesService.obtenerInfo();
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async ordenarMenu() {
     await this.validarTransferencia();
     this.pages = [
       {
@@ -378,7 +384,6 @@ export class AppComponent {
       this.insertar(indice, objeto)
 
     }
-    await this.utilitiesService.obtenerInfo();
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
