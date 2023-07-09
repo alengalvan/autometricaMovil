@@ -110,7 +110,7 @@ export class ModalAlertasCustomPage implements OnInit {
     if(this.mensajeModalConsulta == 'Adquirir Licencia'){
       this.navCtrl.navigateRoot("pagos");
     }else{
-      this.navCtrl.navigateRoot("hacer-transaccion");
+      this.navCtrl.navigateRoot("hacer-transaccion/1");
     }
 
   }

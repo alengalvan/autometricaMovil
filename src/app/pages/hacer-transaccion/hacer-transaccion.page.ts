@@ -55,7 +55,6 @@ export class HacerTransaccionPage implements OnInit {
       if (respuesta.status == true) {
         this.tiposLicencias = respuesta?.licenses;
         this.fechaPeriodo = respuesta?.period;
-        debugger
         if (this.fechaPeriodo) {
           this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
           this.anio = this.fechaPeriodo[0]?.month_period?.split('-')[0];

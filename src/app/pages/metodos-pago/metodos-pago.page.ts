@@ -26,7 +26,7 @@ export class MetodosPagoPage implements OnInit {
     console.log(this.licenciaSeleccionada)
     this.tiposFormasPago = [];
     for (let i = 0; i < this.licenciaSeleccionada.metodosPago.length; i++) {
-      if(this.licenciaSeleccionada.metodosPago[i].id == 1){
+      if(this.licenciaSeleccionada.metodosPago[i].id == 1 && this.licenciaSeleccionada.duration_month == 1){
         this.tiposFormasPago.push(
           {
             id: 1,
@@ -75,7 +75,7 @@ export class MetodosPagoPage implements OnInit {
     }else if(opcion == 3){
       this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/" + opcion)
     }else{
-      this.navCtrl.navigateRoot("hacer-transaccion")
+      this.navCtrl.navigateRoot("hacer-transaccion/2")
     }
   }
 

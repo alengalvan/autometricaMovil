@@ -454,6 +454,10 @@ export class AppComponent {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async validarTransferencia() {
+    console.log(this.mostrarAdquirirLicencia)
+    console.log(this.mostrarCanjear)
+    this.mostrarAdquirirLicencia = 0;
+    this.mostrarCanjear = 0;
     let respuesta = await this.webService.getAsync(API.endpoints.validarMetodosPagos)
     console.log(respuesta)
     if (respuesta.status == true) {
