@@ -22,14 +22,10 @@ export class MiPerfilPage implements OnInit {
   public licenciaActual: any[] = []
   public historicoLicencias: any[] = [];
   public mesActual: any = new Date();
-  public totalCargados: number = 0;
-  public totalDescarga: number = 0;
-  public estaCargando: boolean = false;
-  totalesDescargaChangedSubscription: Subscription | undefined;
-  totalesCargadosChangedSubscription: Subscription | undefined;
-  estaCargandoChangedSubscription: Subscription | undefined;
-  public mostrarAdquirirLicencia: boolean = false;
-  public progress = 0;
+  public mostrarAdquirirLicencia: number = 0;
+  public mostrarCanjear: number = 0;
+  public hayInternet: boolean = false;
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private menu: MenuController,
     private navCtrl: NavController,
@@ -39,53 +35,22 @@ export class MiPerfilPage implements OnInit {
     public modalController: ModalController) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ngOnDestroy() {
-    if (this.networkListener) {
-      this.networkListener.remove();
-    }
-  }
+  public async ngOnInit() {
+   this.hayInternet = (await Network.getStatus()).connected;
 
-  endNetworkListener() {
-    if (this.networkListener) {
-      this.networkListener.remove();
-    }
-  }
+    Network.addListener('networkStatusChange', status => {
+      console.log('Network status changed', status);
+      this.hayInternet = status.connected;
+    });
 
-  async getNetWorkStatus() {
-    this.networkStatus = await Network.getStatus();
-    console.log(this.networkStatus);
+
+    await this.recargar();
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async ngOnInit() {
-
-    // await this.sqliteService.listaModulos$.next(true);
-
-    await this.getNetWorkStatus();
-
-    this.networkListener = Network.addListener('networkStatusChange', (status) => {
-      this.networkStatus = status;
-      console.log('Network status changed', status);
-    });
-
+  public async recargar() {
     await this.validarTransferencia();
-    this.totalesDescargaChangedSubscription = this.sqliteService.totalDescargaObs$.subscribe((valor) => {
-      this.totalDescarga = valor;
-    })
-
-    this.totalesCargadosChangedSubscription = this.sqliteService.totalCargadosObs$.subscribe((valor) => {
-      this.totalCargados = valor;
-      this.progress = (this.totalCargados / this.totalDescarga) * 100;
-    })
-
-    this.estaCargandoChangedSubscription = this.sqliteService.estaDescargandoObs$.subscribe((valor) => {
-      this.estaCargando = valor;
-      // if(this.totalCargados == this.totalDescarga){
-      this.progress = 0;
-      // }
-    })
-
-    this.mesActual = this.mesActual.getMonth() + 1;
+    this.mesActual = new Date().getMonth() + 1;
     console.log(this.usuario)
     await this.obtenerHistoricoLicencias();
   }
@@ -222,10 +187,15 @@ export class MiPerfilPage implements OnInit {
   public async validarTransferencia() {
     let respuesta = await this.webService.getAsync(API.endpoints.validarMetodosPagos)
     console.log(respuesta)
+    this.mostrarCanjear = 0;
+    this.mostrarAdquirirLicencia = 0;
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta.paymet_method.length; i++) {
         if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
-          this.mostrarAdquirirLicencia = true;
+          this.mostrarAdquirirLicencia++;
+        }
+        if (respuesta.paymet_method[i].id == 1) {
+          this.mostrarCanjear++;
         }
       }
       return;
@@ -237,6 +207,9 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async handleRefresh(event: any) {
     if ((await Network.getStatus()).connected == true) {
+      this.licenciaActual = [];
+      this.historicoLicencias = [];
+      await this.recargar();
       await this.sqliteService.listaModulos$.next(true);
       event.target.complete();
     }

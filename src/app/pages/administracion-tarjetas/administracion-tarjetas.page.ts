@@ -66,26 +66,9 @@ export class AdministracionTarjetasPage implements OnInit {
         }
       }
       localStorage.setItem("tarjetaSeleccionada", JSON.stringify(tarjeta))
+      
       localStorage.setItem("opcionAlerta", "confirmacion-cvv")
-      const modal = await this.modalController.create({
-        component: ModalAlertasCustomPage,
-        cssClass: 'transparent-modal',
-        componentProps: { mensaje: "" }
-      })
-
-      modal.onDidDismiss().then(async (data) => {
-        console.log(data)
-        if (data?.data?.exito) {
-          localStorage.setItem("cvv", data?.data?.formulario.cvv)
-          this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
-        } else {
-          for (let i = 0; i < this.listadoLicencias.length; i++) {
-            this.listadoLicencias[i].seleccionada = false;
-          }
-        }
-      });
-
-      await modal.present();
+      this.navCtrl.navigateRoot("resumencompra-transferencia-prepago/2")
     }
   }
 

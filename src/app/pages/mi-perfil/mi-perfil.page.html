@@ -3,7 +3,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <app-header-title></app-header-title>
   <br><br>
 
@@ -67,32 +67,21 @@
               <ion-col size="1"></ion-col>
               <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 1">
 
-                <div *ngIf="!estaCargando">
+                <div>
                   <ion-icon src="assets/icon/material-symbols_download-for-offline-rounded.svg"
-                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
+                    style="zoom: 1;margin-bottom: -4px;" *ngIf="hayInternet"></ion-icon>
+                  <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
+                    style="zoom: 1;margin-bottom: -4px;" *ngIf="!hayInternet"></ion-icon>
 
-                  <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.duration_month == 1"
-                    (click)="descargarBd(licencia)">
+                  <span style="font-size: 12px;" *ngIf="licencia.duration_month == 1"
+                    [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
                     Descargar la edición de {{licencia.mes}} {{licencia.year_hire}}
                   </span>
 
-                  <span *ngIf="licencia.duration_month > 1" style="font-size: 12px;color: #4ACB48;"
-                    (click)="descargarBd(licencia)">
+                  <span *ngIf="licencia.duration_month > 1" style="font-size: 12px;"
+                    [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
                     Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
                     lowercase}} {{licencia.year_hire}}
-                  </span>
-
-                </div>
-
-                <div *ngIf="estaCargando">
-                  <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
-                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
-                  <span style="font-size: 12px;color: #8A8A8A;"> Descargar la edición de {{licencia.mes}}
-                    {{licencia.year_hire}} </span>
-                  <br>
-                  <span style="color: #EC1C24;font-size: 9px;font-family: Roboto;font-weight: 500;"
-                    (click)="cancelarDescarga()">
-                    Cancelar descarga
                   </span>
                 </div>
 
@@ -107,15 +96,6 @@
                   Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
                   lowercase}} {{licencia.year_hire}}
                 </span>
-              </ion-col>
-
-              <ion-col size="2" style="text-align: start;"
-                *ngIf="totalCargados > 0 && totalDescarga > 0 && estaCargando">
-                <div style="margin-top: -10px;">
-                  <circle-progress [percent]="progress" [radius]="15" [outerStrokeWidth]="2" [innerStrokeWidth]="2"
-                    [outerStrokeColor]="'#4ACB48'" [innerStrokeColor]="'#a4e4a3'" [animation]="true"
-                    [animationDuration]="300"></circle-progress>
-                </div>
               </ion-col>
             </ion-row>
             <br>
@@ -134,10 +114,11 @@
         <ion-col size="1"></ion-col>
         <ion-col size="10">
           <ion-button mode="md" expand="block">
-            <span style="font-size: 12px;" (click)="navegarA('pagos')" *ngIf="mostrarAdquirirLicencia">
+            <span style="font-size: 12px;" (click)="navegarA('pagos')" *ngIf="mostrarAdquirirLicencia > 0">
               Adquirir Licencia
             </span>
-            <span style="font-size: 12px;" (click)="navegarA('hacer-transaccion/2')" *ngIf="!mostrarAdquirirLicencia">
+            <span style="font-size: 12px;" (click)="navegarA('hacer-transaccion/2')"
+              *ngIf="mostrarCanjear > 0 && mostrarAdquirirLicencia == 0">
               Canjear Código
             </span>
           </ion-button>

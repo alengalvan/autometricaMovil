@@ -50,7 +50,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
     var objetoPrincipal = {
       card_payment: this.tarjetaSeleccionada.id,
       amount: this.licenciaSeleccionada.price,
-      cvv2: Number(localStorage.getItem("cvv")),
+      // cvv2: Number(localStorage.getItem("cvv")),
       license_id: this.licenciaSeleccionada.id,
       month: Number(this.licenciaSeleccionada.mesNumero),
       year: Number(this.licenciaSeleccionada.anio),
