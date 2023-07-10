@@ -45,12 +45,36 @@ export class ResultadosConsultaPage implements OnInit {
     for (let i = 0; i < this.resultasCarsConsulta.length; i++) {
       let anadires = [];
       for (let k = 0; k < this.resultadosAnadir.length; k++) {
-        if( this.resultasCarsConsulta[i].name == this.resultadosAnadir[k].subbrand){
+        if (this.resultasCarsConsulta[i].name == this.resultadosAnadir[k].subbrand) {
           anadires.push(this.resultadosAnadir[k])
         }
       }
       this.resultasCarsConsulta[i].anadires = anadires;
     }
+
+
+    // acomodar kilometraje 
+    for (let j = 0; j < this.resultasCarsConsulta.length; j++) {
+      let kilometraje = [];
+      for (let k = 0; k < this.resultasCarsConsulta[j].list.length; k++) {
+        for (let l = 0; l < this.resultadosKilometraje.length; l++) {
+          if (this.resultasCarsConsulta[j].list[k].km_group == this.resultadosKilometraje[l].grupo) {
+            kilometraje.push(this.resultadosKilometraje[l])
+          }
+        }
+      }
+      this.resultasCarsConsulta[j].kilometraje = kilometraje;
+    }
+
+    // en caso de que existan
+    for (let i = 0; i < this.resultasCarsConsulta.length; i++) {
+      let hash: any = {};
+      this.resultasCarsConsulta[i].kilometraje = 
+      this.resultasCarsConsulta[i].kilometraje.filter((o: any) => hash[o.grupo] ? false : hash[o.grupo] = true);
+    }
+
+
+
     console.log(this.resultasCarsConsulta)
   }
 

@@ -41,8 +41,8 @@
 
         <br>
         <ion-item class="ion-item-input" mode="md">
-          <ion-select formControlName="anio" placeholder="Año" autocomplete="off" (ionChange)="cambiosSelectOnline('anio')"
-            *ngIf="hayInternet">
+          <ion-select formControlName="anio" placeholder="Año" autocomplete="off"
+            (ionChange)="cambiosSelectOnline('anio')" *ngIf="hayInternet">
             <ion-select-option *ngFor="let item of aniosOnline" [value]="item.year">
               {{ item.year }}
             </ion-select-option>
@@ -88,10 +88,8 @@
           <ion-input appTrim type="number" formControlName="kilometraje" placeholder="Kilometraje"
             autocomplete="off"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.kilometraje">
-          <ng-container *ngIf="kilometraje!.hasError(error.type) && (kilometraje!.dirty || kilometraje!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
-          </ng-container>
+        <div *ngIf="mensajeErrorKm != ''">
+          <small class="errorValidation">{{mensajeErrorKm}}</small>
         </div>
         <br><br>
 

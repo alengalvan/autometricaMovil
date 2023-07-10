@@ -66,6 +66,7 @@ export class ConsultaAutometricaPage implements OnInit {
     ]
   };
   public estados: any = [];
+  public mensajeErrorKm = "";
   constructor(private formBuilder: FormBuilder,
     public utilitiesService: UtilitiesService,
     public sqliteService: sqliteService,
@@ -288,7 +289,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsultaOnline() {
-
+    this.mensajeErrorKm = "";
     if (!this.form.valid) {
       this.utilitiesService.validaCamposFormulario([this.form]);
       localStorage.setItem("opcionAlerta", "campos-requeridos")
@@ -365,7 +366,7 @@ export class ConsultaAutometricaPage implements OnInit {
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
       console.log(respuesta)
       if (respuesta.status == true) {
-        if (respuesta.lineales.length > 0) {
+        if (respuesta.lineales.length > 0 && respuesta.kilometraje > 0 ) {
           localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
           localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
           localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -378,6 +379,8 @@ export class ConsultaAutometricaPage implements OnInit {
 
           localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
           this.navCtrl.navigateRoot("resultados-consulta")
+        }else {
+          this.mensajeErrorKm = "Kilometraje inválido."
         }
       }
     }

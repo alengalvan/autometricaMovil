@@ -581,9 +581,7 @@
       <ion-col size="10">
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
-          <div class="mensaje-error">
-            {{mensajeError}}
-          </div>
+          <div class="mensaje-error" [innerHTML]="mensajeError"></div>
         </div>
         <br>
       </ion-col>
@@ -612,9 +610,7 @@
       <ion-col size="1"></ion-col>
       <ion-col size="10" style="text-align: center;">
         <!-- <div class="mensaje-error" [innerHTML]="mensajeInnerYaPuedeConsultar"></div> -->
-        <div class="mensaje-error">
-          {{mensajeError}}
-        </div>
+        <div class="mensaje-error" [innerHTML]="mensajeError"></div>
         <br>
         <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
           <span style="font-size: 12px;">

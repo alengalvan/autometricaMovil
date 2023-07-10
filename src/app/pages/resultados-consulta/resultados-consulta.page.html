@@ -81,22 +81,25 @@
               </tr>
             </table>
 
-          </div>
 
-
-          <div *ngIf="resultadosKilometraje.length > 0 && busquedaAutometrica.kilometraje != 0">
-            <p class="title-table">Kilometraje</p>
-            <table class="table-consult">
+            <table class="table-consult"
+              *ngIf="linea?.kilometraje?.length > 0 && busquedaAutometrica.kilometraje != 0">
+              <p class="title-table">Kilometraje</p>
               <tr>
                 <th class="text-center">G/km</th>
                 <th>Impacto de Kilometraje</th>
               </tr>
-              <tr *ngFor="let kilo of resultadosKilometraje">
-                <td class="text-center"> {{kilo.grupo}} </td>
-                <td class="text-center"> {{kilo.valor | currency : 'USD' : 'symbol' : '1.0-0' }} </td>
+              <tr *ngFor="let km of linea?.kilometraje">
+                <td class="text-center"> {{km.grupo}} </td>
+                <td class="text-center"> {{km.valor | currency : 'USD' : 'symbol' : '1.0-0' }} </td>
               </tr>
             </table>
+
+
           </div>
+
+
+
 
         </div>
 

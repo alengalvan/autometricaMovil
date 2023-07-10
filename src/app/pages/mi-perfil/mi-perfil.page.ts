@@ -212,6 +212,8 @@ export class MiPerfilPage implements OnInit {
       await this.recargar();
       await this.sqliteService.listaModulos$.next(true);
       event.target.complete();
+    }else{
+      event.target.complete();
     }
   }
 
