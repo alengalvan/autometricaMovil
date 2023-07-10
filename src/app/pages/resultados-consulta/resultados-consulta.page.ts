@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 
@@ -13,9 +14,12 @@ export class ResultadosConsultaPage implements OnInit {
   public resultadosAnadir = JSON.parse(localStorage.getItem('resultadosAñadir')!);
   public resultadosKilometraje = JSON.parse(localStorage.getItem('resultadosKilometraje')!);
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
-  mes: string = ''
+  public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+  mes: string = '';
+  public hayInternet = this.route.snapshot.paramMap.get('id');
   constructor(public navCtrl: NavController,
-    public utilitiesService: UtilitiesService) { }
+    public utilitiesService: UtilitiesService,
+    private route: ActivatedRoute) { }
 
   public async ngOnInit() {
     await this.mesString()
@@ -23,14 +27,32 @@ export class ResultadosConsultaPage implements OnInit {
     console.log(this.resultadosAnadir)
     console.log(this.resultadosKilometraje)
     console.log(this.busquedaAutometrica)
+    console.log(this.licenciaConsulta)
+    await this.acomodarDatos()
   }
 
-   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   public reygresar() {
-    this.navCtrl.navigateRoot("consulta-autometrica")
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public reygresar(ruta: string) {
+    this.navCtrl.navigateRoot(ruta)
   }
-
-  public async mesString(){
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async mesString() {
     this.mes = await this.utilitiesService.numeroAMes(this.busquedaAutometrica.mes)
   }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async acomodarDatos() {
+    for (let i = 0; i < this.resultasCarsConsulta.length; i++) {
+      let anadires = [];
+      for (let k = 0; k < this.resultadosAnadir.length; k++) {
+        if( this.resultasCarsConsulta[i].name == this.resultadosAnadir[k].subbrand){
+          anadires.push(this.resultadosAnadir[k])
+        }
+      }
+      this.resultasCarsConsulta[i].anadires = anadires;
+    }
+    console.log(this.resultasCarsConsulta)
+  }
+
+
 }

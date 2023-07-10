@@ -166,8 +166,6 @@ export class ConsultaAutometricaPage implements OnInit {
       this.obtenerTodasImagenes[i].start = Number(this.obtenerTodasImagenes[i].start)
       this.obtenerTodasImagenes[i].end = Number(this.obtenerTodasImagenes[i].end)
     }
-
-
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -272,6 +270,7 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerMarcasOnline() {
     let objetoPrincipal = this.licenciaActual[0];
+    localStorage.setItem("licenciaConsulta", JSON.stringify(objetoPrincipal))
 
     let objeto: any = {
       month_period: objetoPrincipal.month_hire,
@@ -345,7 +344,7 @@ export class ConsultaAutometricaPage implements OnInit {
                 }
 
                 localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
-                this.navCtrl.navigateRoot("resultados-consulta")
+                this.navCtrl.navigateRoot("resultados-consulta/1")
               }
             }
           }

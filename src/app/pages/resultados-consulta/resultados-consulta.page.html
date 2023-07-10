@@ -6,7 +6,9 @@
     <ion-row>
       <ion-col size="1"></ion-col>
       <ion-col size="1">
-        <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;" (click)="reygresar()"> </ion-icon> &nbsp;&nbsp;
+        <ion-icon src="assets/icon/return.svg" style="zoom: 1.5;"
+          (click)="hayInternet? reygresar('consulta-autometrica/1') : reygresar('consulta-autometrica/1')"> </ion-icon>
+        &nbsp;&nbsp;
       </ion-col>
 
       <ion-col size="8" style="padding-top: 10px;">
@@ -19,7 +21,8 @@
       <ion-col size="10">
 
         <div style="text-align: center;">
-          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{mes}} {{busquedaAutometrica.anio}}</span><br>
+          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{licenciaConsulta.mes}}
+            {{licenciaConsulta.year_hire}}</span><br>
         </div>
         <br>
 
@@ -45,57 +48,57 @@
             *ngIf="!busquedaAutometrica.kilometraje">Se aplicó el kilometraje promedio para este año.
           </p>
 
+          <div *ngFor="let linea of resultasCarsConsulta">
+            <p class="title-table"> {{linea.name}} </p>
 
-          <p class="title-table">Cambio de línea</p>
-          <table class="table-consult">
-            <tr>
-              <th>G/km</th>
-              <th class="text-center">Precios</th>
-              <th>Venta</th>
-              <th>Compra</th>
-            </tr>
-            <tr *ngFor="let car of resultasCarsConsulta[0].list">
-              <td class="text-center"> {{car.km_group}} </td>
-              <td>{{car.version}}</td>
-              <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-              <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-            </tr>
-          </table>
-
-
-          <p class="title-table" *ngIf="resultadosAnadir.length > 0">Equipo adicional</p>
-          <table class="table-consult" *ngIf="resultadosAnadir.length > 0">
-            <tr>
-              <th>Precios</th>
-              <th class="text-center">Venta</th>
-              <th class="text-center">Compra</th>
-            </tr>
-            <tr *ngFor="let anadir of resultadosAnadir">
-              <td> {{anadir.add_version}} </td>
-              <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-              <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
-            </tr>
-          </table>
+            <table class="table-consult">
+              <tr>
+                <th>G/km</th>
+                <th class="text-center">Precios</th>
+                <th>Venta</th>
+                <th>Compra</th>
+              </tr>
+              <tr *ngFor="let car of linea.list">
+                <td class="text-center"> {{car.km_group}} </td>
+                <td>{{car.version}}</td>
+                <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+              </tr>
+            </table>
 
 
-          <p class="title-table" *ngIf="resultadosKilometraje.length > 0">Kilometraje</p>
-          <table class="table-consult" *ngIf="resultadosKilometraje.length > 0">
-            <tr>
-              <th class="text-center">G/km</th>
-              <th>Impacto de Kilometraje</th>
-            </tr>
-            <tr>
-              <td class="text-center">C</td>
-              <td class="text-center">$000,000</td>
-            </tr>
-            <tr>
-              <td class="text-center">A</td>
-              <td class="text-center">$000,000</td>
-            </tr>
-          </table>
+            <table class="table-consult" *ngIf="linea?.anadires?.length > 0">
+              <p class="title-table">Equipo adicional</p>
+              <tr>
+                <th>Precios</th>
+                <th class="text-center">Venta</th>
+                <th class="text-center">Compra</th>
+              </tr>
+              <tr *ngFor="let anadir of linea.anadires">
+                <td> {{anadir.add_version}} </td>
+                <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+              </tr>
+            </table>
+
+          </div>
+
+
+          <div *ngIf="resultadosKilometraje.length > 0 && busquedaAutometrica.kilometraje != 0">
+            <p class="title-table">Kilometraje</p>
+            <table class="table-consult">
+              <tr>
+                <th class="text-center">G/km</th>
+                <th>Impacto de Kilometraje</th>
+              </tr>
+              <tr *ngFor="let kilo of resultadosKilometraje">
+                <td class="text-center"> {{kilo.grupo}} </td>
+                <td class="text-center"> {{kilo.valor | currency : 'USD' : 'symbol' : '1.0-0' }} </td>
+              </tr>
+            </table>
+          </div>
+
         </div>
-
-
 
       </ion-col>
     </ion-row>

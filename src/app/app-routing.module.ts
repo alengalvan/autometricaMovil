@@ -119,6 +119,14 @@ const routes: Routes = [
   {
     path: 'resultados-consulta',
     loadChildren: () => import('./pages/resultados-consulta/resultados-consulta.module').then( m => m.ResultadosConsultaPageModule)
+  },
+  {
+    path: 'resultados-consulta/:id',
+    loadChildren: () => import('./pages/resultados-consulta/resultados-consulta.module').then( m => m.ResultadosConsultaPageModule)
+  },
+  {
+    path: 'resultados-consulta',
+    loadChildren: () => import('./pages/resultados-consulta/resultados-consulta.module').then( m => m.ResultadosConsultaPageModule)
   }
 ];
 
