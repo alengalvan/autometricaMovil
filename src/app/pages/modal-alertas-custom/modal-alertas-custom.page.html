@@ -727,6 +727,28 @@
     </ion-row>
 
 
+    
+    <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'selecciona-licencia' ">
+      <br><br><br>
+      <ion-col size="1"></ion-col>
+      <ion-col size="10" style="text-align: center;">
+        <!-- <div class="mensaje-error" [innerHTML]="mensajeInnerYaPuedeConsultar"></div> -->
+        <div class="mensaje-error" [innerHTML]="mensajeError"></div>
+        <br>
+        <ion-button mode="md" (click)="cerrarModalReturnData(false)" style="--background:#8A8A8A">
+          <span style="font-size: 12px;">
+            {{primeraLicencia.mes}} {{primeraLicencia.year_hire}}
+          </span>
+        </ion-button>
+
+        <ion-button mode="md" (click)="cerrarModalReturnData(true)">
+          <span style="font-size: 12px;">
+            {{segundaLicencia.mes}} {{segundaLicencia.year_hire}}
+          </span>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
   </div>
 
 </ion-content>

@@ -47,7 +47,8 @@ export class ModalAlertasCustomPage implements OnInit {
   // Si no proporciona el kilometraje,  promedio para ese año.
   public tarjetaSeleccionada = JSON.parse(localStorage.getItem('tarjetaSeleccionada')!);
   public mensajeModalConsulta = localStorage.getItem('mensaje-modal-consulta');
-
+  public primeraLicencia = JSON.parse(localStorage.getItem('primeraLicencia')!)
+  public segundaLicencia = JSON.parse(localStorage.getItem('segundaLicencia')!)
   public formPago: FormGroup = this.formBuilder.group({
     cvv: [null,  [Validators.required, Validators.minLength(3), Validators.pattern("[0-9]+$"), Validators.maxLength(4)]],
   });
@@ -75,6 +76,8 @@ export class ModalAlertasCustomPage implements OnInit {
   }
 
   public async ngOnInit() {
+    console.log(this.primeraLicencia)
+    console.log(this.segundaLicencia)
     // await this.cerrarPorTiempo();
   }
 

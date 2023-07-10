@@ -148,6 +148,7 @@ export class MiPerfilPage implements OnInit {
     }
 
     console.log(licencia)
+    
     localStorage.setItem("opcionAlerta", "aviso-borrado-licencias")
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
@@ -158,6 +159,7 @@ export class MiPerfilPage implements OnInit {
     modal.onDidDismiss()
       .then(async (data) => {
         if (data.data) {
+          localStorage.setItem("licenciaConsulta", JSON.stringify(licencia))
           await this.sqliteService.verificacionConexion(licencia.month_hire, licencia.year_hire);
         } else {
           this.modalController.dismiss();

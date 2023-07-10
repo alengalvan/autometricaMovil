@@ -15,29 +15,31 @@ export class ResultadosConsultaPage implements OnInit {
   public resultadosKilometraje = JSON.parse(localStorage.getItem('resultadosKilometraje')!);
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
   public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
-  mes: string = '';
   public hayInternet = this.route.snapshot.paramMap.get('id');
   constructor(public navCtrl: NavController,
     public utilitiesService: UtilitiesService,
     private route: ActivatedRoute) { }
 
   public async ngOnInit() {
-    await this.mesString()
-    console.log(this.resultasCarsConsulta)
-    console.log(this.resultadosAnadir)
-    console.log(this.resultadosKilometraje)
-    console.log(this.busquedaAutometrica)
-    console.log(this.licenciaConsulta)
-    await this.acomodarDatos()
+
+    // console.log(this.resultasCarsConsulta)
+    // console.log(this.resultadosAnadir)
+    // console.log(this.resultadosKilometraje)
+    // console.log(this.busquedaAutometrica)
+    // console.log(this.licenciaConsulta)
+    console.log(this.hayInternet)
+
+    if (this.hayInternet) {
+      await this.acomodarDatos()
+    } else {
+      this.resultasCarsConsulta = JSON.parse(localStorage.getItem('resultadosConsulta')!);
+    }
+
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public reygresar(ruta: string) {
     this.navCtrl.navigateRoot(ruta)
-  }
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async mesString() {
-    this.mes = await this.utilitiesService.numeroAMes(this.busquedaAutometrica.mes)
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -69,8 +71,8 @@ export class ResultadosConsultaPage implements OnInit {
     // en caso de que existan
     for (let i = 0; i < this.resultasCarsConsulta.length; i++) {
       let hash: any = {};
-      this.resultasCarsConsulta[i].kilometraje = 
-      this.resultasCarsConsulta[i].kilometraje.filter((o: any) => hash[o.grupo] ? false : hash[o.grupo] = true);
+      this.resultasCarsConsulta[i].kilometraje =
+        this.resultasCarsConsulta[i].kilometraje.filter((o: any) => hash[o.grupo] ? false : hash[o.grupo] = true);
     }
 
 

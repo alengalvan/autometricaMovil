@@ -34,6 +34,7 @@ export class ConsultaAutometricaPage implements OnInit {
   });
   licenciaActual: any = [];
   public hayInternet = this.route.snapshot.paramMap.get('id');
+  public LicenciasActivas: any = []
 
   get marca() {
     return this.form.get("marca");
@@ -80,20 +81,10 @@ export class ConsultaAutometricaPage implements OnInit {
     console.log(this.hayInternet)
     if (this.hayInternet) {
       await this.obtenerHistoricoLicencias()
-      await this.obtenerMarcasOnline();
     } else {
       // no ha descargado
-      await this.obtenerListadoMarcas();
+      await this.obtenerInformacionOffline();
       await this.obtenerMarcasOffline()
-      if (this.obtenerTodasLineas.length == 0) {
-        localStorage.setItem("opcionAlerta", "sin-informacion-descargada")
-        const modal = await this.modalController.create({
-          component: ModalAlertasCustomPage,
-          cssClass: 'transparent-modal',
-          componentProps: { mensaje: "Para poder consultar información es necesario descargar la edición o contar con acceso a internet." }
-        })
-        await modal.present();
-      }
     }
 
 
@@ -116,10 +107,41 @@ export class ConsultaAutometricaPage implements OnInit {
           respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
           respuesta.data[i].mesFinString = this.utilitiesService.obtenerMesStringActual(respuesta.data[i].mesFin)
         }
+
         if (respuesta.data[i].active == 1) {
-          this.licenciaActual.push(respuesta.data[i])
+          this.LicenciasActivas.push(respuesta.data[i])
         }
       }
+
+
+      if (this.LicenciasActivas.length == 1) {
+        this.licenciaActual.push(this.LicenciasActivas[0]);
+        await this.obtenerMarcasOnline();
+      }
+
+      if (this.LicenciasActivas.length > 1) {
+        this.utilitiesService.validaCamposFormulario([this.form]);
+        localStorage.setItem("opcionAlerta", "selecciona-licencia")
+        localStorage.setItem("primeraLicencia", JSON.stringify(this.LicenciasActivas[0]))
+        localStorage.setItem("segundaLicencia", JSON.stringify(this.LicenciasActivas[1]))
+
+        const modal = await this.modalController.create({
+          component: ModalAlertasCustomPage,
+          cssClass: 'transparent-modal',
+          componentProps: { mensaje: "¿Qué edición desea consultar?" }
+        })
+        modal.onDidDismiss()
+          .then(async (data) => {
+            if (data.data) {
+              this.licenciaActual.push(this.LicenciasActivas[0]);
+            } else {
+              this.licenciaActual.push(this.LicenciasActivas[1]);
+            }
+            await this.obtenerMarcasOnline();
+          })
+        await modal.present();
+      }
+
     }
 
   }
@@ -158,10 +180,14 @@ export class ConsultaAutometricaPage implements OnInit {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async obtenerListadoMarcas() {
+  public async obtenerInformacionOffline() {
     this.obtenerTodasLineas = JSON.parse(localStorage.getItem('lineas')!);
     this.obtenerTodasMillas = JSON.parse(localStorage.getItem('millas')!);
     this.obtenerTodasImagenes = JSON.parse(localStorage.getItem('imagenes')!);
+    console.log(this.obtenerTodasLineas)
+    console.log(this.obtenerTodasMillas)
+    console.log(this.obtenerTodasImagenes)
+
 
     for (let i = 0; i < this.obtenerTodasImagenes.length; i++) {
       this.obtenerTodasImagenes[i].start = Number(this.obtenerTodasImagenes[i].start)
@@ -173,6 +199,20 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerMarcasOffline() {
     if (this.obtenerTodasLineas.length == 0) return;
     this.marcasOffline = [];
+
+    // agregamos las lineas
+    for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
+      if (this.obtenerTodasLineas[i].subbrand.includes('(') && this.obtenerTodasLineas[i].subbrand.includes(')')) {
+        let comienza = this.obtenerTodasLineas[i].subbrand.indexOf("(")
+        let final = this.obtenerTodasLineas[i].subbrand.indexOf(")")
+        this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand.slice(0, comienza).trim();
+      } else {
+        this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand
+      }
+
+    }
+    console.log(this.obtenerTodasLineas)
+
     var array: any = this.obtenerTodasLineas;
     let hash: any = {};
     array = array.filter((o: { brand: string | number; }) => hash[o.brand] ? false : hash[o.brand] = true);
@@ -180,12 +220,12 @@ export class ConsultaAutometricaPage implements OnInit {
       this.marcasOffline.push(array[i].brand)
     }
     console.log(this.marcasOffline)
+    console.log(this.obtenerTodasLineas)
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerAniosOffline(marca: string) {
     this.aniosOffline = [];
-    if (this.obtenerTodasLineas.length == 0) return;
     var array: any = this.obtenerTodasLineas;
     var arrayFiltrado = [];
 
@@ -211,7 +251,6 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerSubmarcaOffline(marca: string, anio: number) {
     console.log(marca, anio)
     this.subMarcasOffline = [];
-    if (this.obtenerTodasLineas.length == 0) return;
     var array: any = this.obtenerTodasLineas;
     var arrayFiltrado = [];
 
@@ -221,18 +260,21 @@ export class ConsultaAutometricaPage implements OnInit {
       }
     }
 
-    console.log(arrayFiltrado)
+    console.log(this.obtenerTodasLineas)
 
     let hash: any = {};
-    arrayFiltrado = arrayFiltrado.filter((o: { subbrand: string | number; }) =>
-      hash[o.subbrand] ? false : hash[o.subbrand] = true);
+    arrayFiltrado = arrayFiltrado.filter((o: { subbrandSinLinea: string | number; }) =>
+      hash[o.subbrandSinLinea] ? false : hash[o.subbrandSinLinea] = true);
     for (let i = 0; i < arrayFiltrado.length; i++) {
-      this.subMarcasOffline.push(arrayFiltrado[i].subbrand)
+      this.subMarcasOffline.push(arrayFiltrado[i].subbrandSinLinea)
     }
+
+    console.log("resultado de submarca,", this.subMarcasOffline)
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerAniosOnline(marca: string) {
+    this.aniosOnline = []
     let objetoPrincipal = this.licenciaActual[0];
     let objeto: any = {
       month_period: objetoPrincipal.month_hire,
@@ -251,8 +293,8 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerSubMarcarOnline(marca: string) {
+    this.subMarcasOnline = []
     let objetoPrincipal = this.licenciaActual[0];
-
     let objeto: any = {
       month_period: objetoPrincipal.month_hire,
       year_period: objetoPrincipal.year_hire,
@@ -271,6 +313,7 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerMarcasOnline() {
     let objetoPrincipal = this.licenciaActual[0];
+    console.log(objetoPrincipal)
     localStorage.setItem("licenciaConsulta", JSON.stringify(objetoPrincipal))
 
     let objeto: any = {
@@ -305,8 +348,8 @@ export class ConsultaAutometricaPage implements OnInit {
     let objetoPrincipal = this.licenciaActual[0];
     console.log(objetoPrincipal)
     var anio: any = this.form.controls['anio'].value;
-    var marca = this.form.controls['marca'].value.toLowerCase();
-    var submarca = this.form.controls['submarca'].value.toLowerCase();
+    var marca = this.form.controls['marca'].value;
+    var submarca = this.form.controls['submarca'].value;
     var kilometraje = this.form.controls['kilometraje'].value;
 
     if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
@@ -366,7 +409,7 @@ export class ConsultaAutometricaPage implements OnInit {
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
       console.log(respuesta)
       if (respuesta.status == true) {
-        if (respuesta.lineales.length > 0 && respuesta.kilometraje > 0 ) {
+        if (respuesta.lineales.length > 0 && respuesta.kilometraje.length > 0) {
           localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
           localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
           localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -378,8 +421,8 @@ export class ConsultaAutometricaPage implements OnInit {
           }
 
           localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
-          this.navCtrl.navigateRoot("resultados-consulta")
-        }else {
+          this.navCtrl.navigateRoot("resultados-consulta/1")
+        } else {
           this.mensajeErrorKm = "Kilometraje inválido."
         }
       }
@@ -388,7 +431,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsulta() {
-
+    
     if (!this.form.valid) {
       await this.utilitiesService.validaCamposFormulario([this.form])
       localStorage.setItem("opcionAlerta", "campos-requeridos")
@@ -401,12 +444,21 @@ export class ConsultaAutometricaPage implements OnInit {
       return;
     }
 
+    this.mensajeErrorKm = "";
+
     let anio: any = this.form.controls['anio'].value;
     let marca = this.form.controls['marca'].value.toLowerCase();
     let submarca = this.form.controls['submarca'].value.toLowerCase();
     let kilometraje = this.form.controls['kilometraje'].value;
-    let anioActual: any = new Date().getFullYear();
 
+    let objetoBusqueda = {
+      anio: anio,
+      marca: marca,
+      submarca: submarca,
+      kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+    }
+
+    localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
 
     if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
       localStorage.setItem("opcionAlerta", "kilometraje-vacio")
@@ -419,145 +471,209 @@ export class ConsultaAutometricaPage implements OnInit {
         .then(async (data) => {
           if (data.data) {
             let valoresTotalesLinea = [];
-            let valoresTotalesImagenes = [];
-            let valoresTotalesMillas = [];
+
+            console.log(this.obtenerTodasLineas)
 
             for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
               if (this.obtenerTodasLineas[i].year == anio &&
                 this.obtenerTodasLineas[i].brand.toLowerCase() == marca &&
-                this.obtenerTodasLineas[i].subbrand.toLowerCase() == submarca) {
+                this.obtenerTodasLineas[i].subbrandSinLinea.toLowerCase() == submarca) {
+                console.log()
                 valoresTotalesLinea.push(this.obtenerTodasLineas[i])
               }
             }
 
-            for (let j = 0; j < this.obtenerTodasImagenes.length; j++) {
-              if (this.obtenerTodasImagenes[j].brand.toLowerCase() == marca && this.obtenerTodasImagenes[j].subbrand.toLowerCase() == submarca) {
-                if (this.obtenerTodasImagenes[j].start <= anio && this.obtenerTodasImagenes[j].end >= anio) {
-                  valoresTotalesImagenes.push(this.obtenerTodasImagenes[j])
-                }
+            console.log(valoresTotalesLinea)
+
+            // separar por linea
+            let lineasNuevas = [];
+            let cambioLinea = [];
+            let lineaAnterior = [];
+            let sinInformacion = [];
+
+            for (let i = 0; i < valoresTotalesLinea.length; i++) {
+              if (valoresTotalesLinea[i].subbrand.includes('(línea nueva)')) {
+                lineasNuevas.push(valoresTotalesLinea[i])
+              }
+
+              if (valoresTotalesLinea[i].subbrand.includes('(cambio de línea)')) {
+                cambioLinea.push(valoresTotalesLinea[i])
+              }
+
+              if (valoresTotalesLinea[i].subbrand.includes('(línea anterior)')) {
+                lineaAnterior.push(valoresTotalesLinea[i])
+              }
+
+              if (valoresTotalesLinea[i].subbrand == valoresTotalesLinea[i].subbrandSinLinea) {
+                sinInformacion.push(valoresTotalesLinea[i])
+              }
+
+            }
+
+            let respuesta = [];
+
+            respuesta.push(await this.ordenarRespuesta(sinInformacion))
+            respuesta.push(await this.ordenarRespuesta(lineasNuevas))
+            respuesta.push(await this.ordenarRespuesta(lineaAnterior))
+            respuesta.push(await this.ordenarRespuesta(cambioLinea))
+
+            console.log(respuesta);
+            let respuestaFiltrada = [];
+            for (let i = 0; i < respuesta.length; i++) {
+              if (respuesta[i] != null) {
+                respuestaFiltrada.push(respuesta[i])
               }
             }
 
-            let filtroKilometraje = [];
-
-            if (valoresTotalesLinea.length > 0) {
-
-              for (let i = 0; i < this.obtenerTodasMillas.length; i++) {
-                for (let j = 0; j < valoresTotalesLinea.length; j++) {
-                  if (valoresTotalesLinea[j].km_group == this.obtenerTodasMillas[i].grupo &&
-                    valoresTotalesLinea[j].year == this.obtenerTodasMillas[i].year) {
-                    filtroKilometraje.push(this.obtenerTodasMillas[i]);
-                  }
-                }
-              }
-
-              console.log(filtroKilometraje)
-
-              for (let i = 0; i < filtroKilometraje.length; i++) {
-                if (filtroKilometraje[i].inicial == 0 && filtroKilometraje[i].final == 0) {
-                  valoresTotalesMillas.push(filtroKilometraje[i])
-                }
-              }
-
-              if (valoresTotalesMillas.length > 0 && valoresTotalesLinea.length > 0 && valoresTotalesImagenes.length > 0) {
-                for (let i = 0; i < valoresTotalesMillas.length; i++) {
-                  for (let j = 0; j < valoresTotalesLinea.length; j++) {
-                    if (i == j) {
-                      const final = {
-                        ...valoresTotalesMillas[i], ...valoresTotalesLinea[i]
-                      }
-                      final.imagen = valoresTotalesImagenes[0]
-                      this.respuestaBusquedaOffline.push(final);
-                    }
-                  }
-                }
-              }
-
-              if (this.respuestaBusquedaOffline.length > 0) {
-                localStorage.setItem("resultadosConsulta", JSON.stringify(this.respuestaBusquedaOffline))
-                this.navCtrl.navigateRoot("resultados-consulta")
-              }
-            }
-          } else {
-
+            localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
+            this.navCtrl.navigateRoot("resultados-consulta")
+            console.log(respuestaFiltrada);
           }
         });
       await modal.present();
     } else {
       let valoresTotalesLinea = [];
-      let valoresTotalesImagenes = [];
-      let valoresTotalesMillas = [];
+
+      console.log(this.obtenerTodasLineas)
 
       for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
         if (this.obtenerTodasLineas[i].year == anio &&
           this.obtenerTodasLineas[i].brand.toLowerCase() == marca &&
-          this.obtenerTodasLineas[i].subbrand.toLowerCase() == submarca) {
+          this.obtenerTodasLineas[i].subbrandSinLinea.toLowerCase() == submarca) {
+          console.log()
           valoresTotalesLinea.push(this.obtenerTodasLineas[i])
         }
       }
 
-      for (let j = 0; j < this.obtenerTodasImagenes.length; j++) {
-        if (this.obtenerTodasImagenes[j].brand.toLowerCase() == marca && this.obtenerTodasImagenes[j].subbrand.toLowerCase() == submarca) {
-          if (this.obtenerTodasImagenes[j].start <= anio && this.obtenerTodasImagenes[j].end >= anio) {
-            valoresTotalesImagenes.push(this.obtenerTodasImagenes[j])
-          }
+      console.log(valoresTotalesLinea)
+
+      // separar por linea
+      let lineasNuevas = [];
+      let cambioLinea = [];
+      let lineaAnterior = [];
+      let sinInformacion = [];
+
+      // iteracion para que se generen los grupos
+      for (let i = 0; i < valoresTotalesLinea.length; i++) {
+        if (valoresTotalesLinea[i].subbrand.includes('(línea nueva)')) {
+          lineasNuevas.push(valoresTotalesLinea[i])
+        }
+
+        if (valoresTotalesLinea[i].subbrand.includes('(cambio de línea)')) {
+          cambioLinea.push(valoresTotalesLinea[i])
+        }
+
+        if (valoresTotalesLinea[i].subbrand.includes('(línea anterior)')) {
+          lineaAnterior.push(valoresTotalesLinea[i])
+        }
+
+        if (valoresTotalesLinea[i].subbrand == valoresTotalesLinea[i].subbrandSinLinea) {
+          sinInformacion.push(valoresTotalesLinea[i])
+        }
+
+      }
+
+      let respuesta = [];
+
+      respuesta.push(await this.ordenarRespuesta(sinInformacion))
+      respuesta.push(await this.ordenarRespuesta(lineasNuevas))
+      respuesta.push(await this.ordenarRespuesta(lineaAnterior))
+      respuesta.push(await this.ordenarRespuesta(cambioLinea))
+
+      console.log(respuesta);
+      let respuestaFiltrada = [];
+      for (let i = 0; i < respuesta.length; i++) {
+        if (respuesta[i] != null) {
+          respuestaFiltrada.push(respuesta[i])
         }
       }
 
-      let filtroKilometraje = [];
-
-      if (valoresTotalesLinea.length > 0) {
-
-        for (let i = 0; i < this.obtenerTodasMillas.length; i++) {
-          for (let j = 0; j < valoresTotalesLinea.length; j++) {
-            if (valoresTotalesLinea[j].km_group == this.obtenerTodasMillas[i].grupo &&
-              valoresTotalesLinea[j].year == this.obtenerTodasMillas[i].year) {
-              filtroKilometraje.push(this.obtenerTodasMillas[i]);
-            }
-          }
-        }
-
-
-        for (let i = 0; i < filtroKilometraje.length; i++) {
-          if (kilometraje >= filtroKilometraje[i].inicial && kilometraje <= filtroKilometraje[i].final) {
-            valoresTotalesMillas.push(filtroKilometraje[i])
-          }
-        }
-
-
-        if (valoresTotalesMillas.length > 0 && valoresTotalesLinea.length > 0 && valoresTotalesImagenes.length > 0) {
-
-
-          for (let i = 0; i < valoresTotalesMillas.length; i++) {
-            for (let j = 0; j < valoresTotalesLinea.length; j++) {
-              if (i == j) {
-                const final = {
-                  ...valoresTotalesMillas[i], ...valoresTotalesLinea[i]
-                }
-                final.imagen = valoresTotalesImagenes[0]
-                this.respuestaBusquedaOffline.push(final);
+      // filtro para encontra y agregar los kilometrajes
+      for (let i = 0; i < respuestaFiltrada.length; i++) {
+        let kilometraje: any = [];
+        for (let j = 0; j < respuestaFiltrada[i]!.list!.length; j++) {
+          for (let k = 0; k < this.obtenerTodasMillas.length; k++) {
+            if (this.obtenerTodasMillas[k].grupo == respuestaFiltrada[i]!.list![j].km_group
+              && this.obtenerTodasMillas[k].year == respuestaFiltrada[i]!.list![j].year) {
+              if (objetoBusqueda.kilometraje >= this.obtenerTodasMillas[k].inicial
+                && objetoBusqueda.kilometraje <= this.obtenerTodasMillas[k].final) {
+                kilometraje.push(this.obtenerTodasMillas[k])
               }
             }
           }
-        }
-
-        console.log(valoresTotalesMillas)
-        console.log(valoresTotalesLinea)
-        console.log(valoresTotalesImagenes)
-
-        console.log(this.respuestaBusquedaOffline)
-        if (this.respuestaBusquedaOffline.length > 0) {
-          localStorage.setItem("resultadosConsulta", JSON.stringify(this.respuestaBusquedaOffline))
-          this.navCtrl.navigateRoot("resultados-consulta")
+          respuestaFiltrada[i]!.kilometraje = kilometraje
         }
       }
-    }
 
+      console.log(respuestaFiltrada);
+
+      // vamos a depurar los repetidos
+      for (let i = 0; i < respuestaFiltrada.length; i++) {
+        let hash: any = {};
+        respuestaFiltrada[i]!.kilometraje = respuestaFiltrada[i]!.kilometraje.filter((o: { subbrandSinLinea: string | number; }) =>
+          hash[o.subbrandSinLinea] ? false : hash[o.subbrandSinLinea] = true);
+      }
+
+
+      let noExistenKilometros = 0;
+      for (let i = 0; i < respuestaFiltrada.length; i++) {
+        for (let j = 0; j < respuestaFiltrada[i]!.list!.length; j++) {
+          console.log(respuestaFiltrada[i]!.kilometraje.length == 0)
+          if (respuestaFiltrada[i]!.kilometraje.length == 0) {
+            noExistenKilometros++;
+          }
+        }
+      }
+
+      if (noExistenKilometros == 0) {
+        localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
+        this.navCtrl.navigateRoot("resultados-consulta")
+      }else{
+        this.mensajeErrorKm = "Kilometraje inválido.";
+        return;
+      }
+
+      console.log(respuestaFiltrada);
+      // localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
+      // this.navCtrl.navigateRoot("resultados-consulta")
+
+      //   console.log(this.obtenerTodasLineas)
+      // console.log(this.obtenerTodasMillas)
+      // console.log(this.obtenerTodasImagenes)
+    }
 
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async ordenarRespuesta(arrayLinea: any) {
+    if (arrayLinea.length == 0) return null;
 
+    let lineas = [];
+    let anadires = [];
+
+    for (let i = 0; i < arrayLinea.length; i++) {
+      // debugger
+      if (arrayLinea[i].add_version == "") {
+        lineas.push(arrayLinea[i])
+      } else {
+        anadires.push(arrayLinea[i])
+      }
+    }
+
+    let arregloComodin: any = [];
+    let objetoReturn = {
+      anadires: anadires,
+      kilometraje: arregloComodin,
+      list: lineas,
+      name: arrayLinea[0].subbrand
+    }
+
+    console.log(objetoReturn)
+    console.log(lineas)
+    console.log(anadires)
+
+    return objetoReturn;
+  }
 
 
 
