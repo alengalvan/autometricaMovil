@@ -244,6 +244,7 @@ export class ConsultaAutometricaPage implements OnInit {
     for (let i = 0; i < arrayFiltrado.length; i++) {
       this.aniosOffline.push(arrayFiltrado[i].year)
     }
+    this.aniosOffline.sort(function(a: number, b: number){return b - a});
     console.log(this.aniosOffline)
   }
 

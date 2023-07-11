@@ -175,6 +175,11 @@ export class sqliteService {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
+
+    // actulizamos descarga
+   await  this.descargarArchivos(1)
+    await this.descargarArchivos(2)
+    
     console.log(JSON.parse(localStorage.getItem('usuario')!))
     let objeto = {
       month: mes,
@@ -357,6 +362,23 @@ export class sqliteService {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerSubmarca(marca: string) {
 
+  }
+
+  public async descargarArchivos(tipo: number){
+    let objeto = {
+      type: tipo
+    }
+    let respuesta = await this.webRestService.postAsync(API.endpoints.descargarPDF, objeto)
+    if(respuesta.status == 200){
+      let resp = respuesta.error?.text;
+      if(tipo == 1){
+        localStorage.setItem("glosario", resp);
+      }
+
+      if(tipo == 2){
+        localStorage.setItem("kilometraje", resp)
+      }
+    }
   }
 
   
