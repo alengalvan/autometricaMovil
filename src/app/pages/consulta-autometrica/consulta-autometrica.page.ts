@@ -120,10 +120,14 @@ export class ConsultaAutometricaPage implements OnInit {
       }
 
       if (this.LicenciasActivas.length > 1) {
+        this.LicenciasActivas = this.LicenciasActivas.sort(((a: { month_hire: number; }, b: { month_hire: number; }) => a.month_hire - b.month_hire));
         this.utilitiesService.validaCamposFormulario([this.form]);
         localStorage.setItem("opcionAlerta", "selecciona-licencia")
         localStorage.setItem("primeraLicencia", JSON.stringify(this.LicenciasActivas[0]))
         localStorage.setItem("segundaLicencia", JSON.stringify(this.LicenciasActivas[1]))
+
+        console.log(this.LicenciasActivas[0])
+        console.log(this.LicenciasActivas[1])
 
         const modal = await this.modalController.create({
           component: ModalAlertasCustomPage,
@@ -133,9 +137,9 @@ export class ConsultaAutometricaPage implements OnInit {
         modal.onDidDismiss()
           .then(async (data) => {
             if (data.data) {
-              this.licenciaActual.push(this.LicenciasActivas[0]);
-            } else {
               this.licenciaActual.push(this.LicenciasActivas[1]);
+            } else {
+              this.licenciaActual.push(this.LicenciasActivas[0]);
             }
             await this.obtenerMarcasOnline();
           })

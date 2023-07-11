@@ -16,6 +16,15 @@ export class ResultadosConsultaPage implements OnInit {
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
   public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
   public hayInternet = this.route.snapshot.paramMap.get('id');
+  public lineasNuevas: any = [];
+  public cambioLinea: any = [];
+  public lineaAnterior: any = [];
+  public sinLinea: any = [];
+  public autosNuevos: any = [];
+  public autosNoNuevos: any = [];
+  public hayVenta: number = 0;
+  public hayCompra: number = 0;
+  
   constructor(public navCtrl: NavController,
     public utilitiesService: UtilitiesService,
     private route: ActivatedRoute) { }
@@ -33,6 +42,7 @@ export class ResultadosConsultaPage implements OnInit {
       await this.acomodarDatos()
     } else {
       this.resultasCarsConsulta = JSON.parse(localStorage.getItem('resultadosConsulta')!);
+      await this.ordenarPorLineas();
     }
 
   }
@@ -75,8 +85,64 @@ export class ResultadosConsultaPage implements OnInit {
         this.resultasCarsConsulta[i].kilometraje.filter((o: any) => hash[o.grupo] ? false : hash[o.grupo] = true);
     }
 
+    await this.ordenarPorLineas();
+  }
 
+  public async ordenarPorLineas() {
+    // separamos por tipos de lineas
+    for (let i = 0; i < this.resultasCarsConsulta.length; i++) {
+      if (this.resultasCarsConsulta[i].name.includes("(cambio de línea)")) {
+        this.cambioLinea.push(this.resultasCarsConsulta[i])
+      }
 
+      if (this.resultasCarsConsulta[i].name.includes("(línea anterior)")) {
+        this.lineaAnterior.push(this.resultasCarsConsulta[i])
+      }
+
+      if (this.resultasCarsConsulta[i].name.includes("(línea nueva)")) {
+        this.lineasNuevas.push(this.resultasCarsConsulta[i])
+      }
+
+      if (!this.resultasCarsConsulta[i].name.includes("(cambio de línea)")
+        && !this.resultasCarsConsulta[i].name.includes("(línea anterior)"
+          && !this.resultasCarsConsulta[i].name.includes("(línea nueva)"))) {
+        this.sinLinea.push(this.resultasCarsConsulta[i])
+      }
+
+    }
+
+    let hayLineaAutoNuevo = 0;
+    for (let i = 0; i < this.sinLinea.length; i++) {
+      for (let j = 0; j < this.sinLinea[i].list.length; j++) {
+        if (this.sinLinea[i].list[j].sale == "" || this.sinLinea[i].list[j].purchase == "") {
+          hayLineaAutoNuevo++;
+        }
+      }
+    }
+
+    if (hayLineaAutoNuevo > 0) {
+      this.autosNuevos = this.sinLinea
+    } else {
+      this.autosNoNuevos = this.sinLinea;
+    }
+
+    for (let i = 0; i < this.autosNuevos.length; i++) {
+      for (let j = 0; j < this.autosNuevos[i].list.length; j++) {
+        if (this.autosNuevos[i].list[j].sale != "") {
+          this.hayVenta++
+        }
+        if(this.autosNuevos[i].list[j].purchase != ""){
+          this.hayCompra++
+        }
+      }
+    }
+
+    console.log(this.lineasNuevas)
+    console.log(this.cambioLinea)
+    console.log(this.lineaAnterior)
+    console.log(this.sinLinea)
+    console.log(this.autosNuevos)
+    console.log(this.autosNoNuevos)
     console.log(this.resultasCarsConsulta)
   }
 
