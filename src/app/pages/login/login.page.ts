@@ -194,35 +194,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-
-  public async descargarDocumentacion(number: number, URL: any) {
-
-    let ref = this;
-    this.fileName = URL.split("=")[1];
-    this.http.get(URL, { responseType: "blob" }).subscribe((res: Blob) => {
-      var reader = new FileReader();
-      reader.readAsDataURL(res);
-      reader.onloadend = function () {
-        let base64 = reader.result?.toString();
-        ref.savePDF(number, base64)
-      }
-    })
-  }
-
-  public savePDF(number: any, base64: any) {
-    let nombreArchivo = number == 1 ? 'glosario.pdf' : number == 2 ? 'kilometraje.pdf' : number == 3 ? 'tyc.pdf' : 'ap.pdf'
-    Filesystem.writeFile({
-      path: nombreArchivo,
-      data: base64,
-      directory: Directory.Documents
-    }).then((res) => {
-      console.log(res)
-      localStorage.setItem(number == 1 ? 'pathGlosarioFile' : number == 2 ? 'pathKilometrajeFile' : number == 3 ? 'pathTycFile' : 'pathApFile', res.uri)
-    }, (err) => {
-      alert(err)
-    })
-  }
-
   public async descargarArchivo(tipo: number){
     let objeto = {
       type: tipo

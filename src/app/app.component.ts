@@ -184,6 +184,10 @@ export class AppComponent {
       }
 
       if (ruta == "hacer-transaccion/1") {
+
+        let hayInternet = (await Network.getStatus()).connected;
+        if(hayInternet == false) return;
+
         let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
 
@@ -237,6 +241,9 @@ export class AppComponent {
       }
 
       if (ruta == "pagos") {
+        let hayInternet = (await Network.getStatus()).connected;
+        if(hayInternet == false) return;
+        
         let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
         if (respuesta.status == false || respuesta.status == 401) {
@@ -435,7 +442,11 @@ export class AppComponent {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async cerrarSesion() {
 
-    localStorage.clear();
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("datosPersonales");
+    localStorage.removeItem("token");
+    localStorage.removeItem("recordarContrasenia");
+
     this.userService.cerrarSesion();
     await this.navCtrl.navigateRoot('/login');
     setTimeout(() => {
