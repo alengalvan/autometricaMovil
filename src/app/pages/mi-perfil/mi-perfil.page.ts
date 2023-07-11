@@ -193,10 +193,11 @@ export class MiPerfilPage implements OnInit {
     this.mostrarAdquirirLicencia = 0;
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta.paymet_method.length; i++) {
-        if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
-          this.mostrarAdquirirLicencia++;
+        if ((respuesta.paymet_method[i].id == 2 && respuesta.paymet_method[i].active) ||
+          (respuesta.paymet_method[i].id == 3 && respuesta.paymet_method[i].active)) {
+          this.mostrarAdquirirLicencia++
         }
-        if (respuesta.paymet_method[i].id == 1) {
+        if (respuesta.paymet_method[i].id == 1 && respuesta.paymet_method[i].active) {
           this.mostrarCanjear++;
         }
       }

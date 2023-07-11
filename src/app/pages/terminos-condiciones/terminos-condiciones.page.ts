@@ -12,22 +12,32 @@ export class TerminosCondicionesPage implements OnInit {
 
   public valorSeleccionado: string = 'avisoPrivacidad';
   public stringPDFTyC: string = '';
+  public stringPDFAP: string = '';
+  
   constructor(private menu: MenuController,
     public webService: WebRestService) { }
 
   public async ngOnInit() {
     this.menu.close();
     let objeto = {
-      type: 3
+      type: 4
     }
     let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-    this.stringPDFTyC = respuesta.error.text; 
+    this.stringPDFAP = respuesta.error.text; 
     console.log(respuesta.error.text)
   }
 
   public async segmentChanged(event: any) {
     console.log(event.detail.value)
     this.valorSeleccionado = event.detail.value;
+
+    if(this.valorSeleccionado == 'avisoPrivacidad'){
+      let objeto = {
+        type: 4
+      }
+      let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
+      this.stringPDFAP = respuesta.error.text; 
+    }
 
     if(this.valorSeleccionado == 'terminosCondiciones'){
       let objeto = {
@@ -36,15 +46,6 @@ export class TerminosCondicionesPage implements OnInit {
       let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
       this.stringPDFTyC = respuesta.error.text; 
     }
-
-    if(this.valorSeleccionado == 'avisoPrivacidad'){
-      let objeto = {
-        type: 4
-      }
-      let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-      this.stringPDFTyC = respuesta.error.text; 
-    }
-
 
   }
 

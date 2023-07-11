@@ -16,15 +16,17 @@ export class ResultadosConsultaPage implements OnInit {
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
   public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
   public hayInternet = this.route.snapshot.paramMap.get('id');
+  public sinLinea: any = [];
+
+  public autosNuevos: any = [];
   public lineasNuevas: any = [];
   public cambioLinea: any = [];
   public lineaAnterior: any = [];
-  public sinLinea: any = [];
-  public autosNuevos: any = [];
   public autosNoNuevos: any = [];
+
   public hayVenta: number = 0;
   public hayCompra: number = 0;
-  
+
   constructor(public navCtrl: NavController,
     public utilitiesService: UtilitiesService,
     private route: ActivatedRoute) { }
@@ -111,39 +113,81 @@ export class ResultadosConsultaPage implements OnInit {
 
     }
 
-    let hayLineaAutoNuevo = 0;
-    for (let i = 0; i < this.sinLinea.length; i++) {
-      for (let j = 0; j < this.sinLinea[i].list.length; j++) {
-        if (this.sinLinea[i].list[j].sale == "" || this.sinLinea[i].list[j].purchase == "") {
-          hayLineaAutoNuevo++;
-        }
-      }
-    }
 
-    if (hayLineaAutoNuevo > 0) {
-      this.autosNuevos = this.sinLinea
-    } else {
-      this.autosNoNuevos = this.sinLinea;
-    }
+    await this.revisarSiEsNuevo(this.cambioLinea, 1)
+    await this.revisarSiEsNuevo(this.lineaAnterior, 2)
+    await this.revisarSiEsNuevo(this.lineasNuevas, 3)
+    await this.revisarSiEsNuevo(this.sinLinea, 4)
 
-    for (let i = 0; i < this.autosNuevos.length; i++) {
-      for (let j = 0; j < this.autosNuevos[i].list.length; j++) {
-        if (this.autosNuevos[i].list[j].sale != "") {
-          this.hayVenta++
-        }
-        if(this.autosNuevos[i].list[j].purchase != ""){
-          this.hayCompra++
-        }
-      }
-    }
 
     console.log(this.lineasNuevas)
     console.log(this.cambioLinea)
     console.log(this.lineaAnterior)
     console.log(this.sinLinea)
-    console.log(this.autosNuevos)
-    console.log(this.autosNoNuevos)
-    console.log(this.resultasCarsConsulta)
+
+  }
+
+  public async revisarSiEsNuevo(array: any, tipo: number) {
+    console.log(tipo)
+    console.log(array)
+    // 1.- cambioLinea, 2.- lineaAnterior, 3.-lineasNuevas, 4.- sinLinea
+    // primero validamos que la linea tenga compra y venta
+    let hayLineaAutoNuevo = 0;
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array[i].list.length; j++) {
+        if (array[i].list[j].sale == "" || array[i].list[j].purchase == "") {
+          hayLineaAutoNuevo++;
+        }
+      }
+    }
+
+    //cambio de linea
+    if (tipo == 1 && hayLineaAutoNuevo > 0) {
+      this.cambioLinea = [];
+    }
+    if (tipo == 1 && hayLineaAutoNuevo == 0) {
+      this.cambioLinea = array;
+    }
+
+    //Linea anterior
+    if (tipo == 2 && hayLineaAutoNuevo > 0) {
+      this.lineaAnterior = [];
+    }
+    if (tipo == 2 && hayLineaAutoNuevo == 0) {
+      this.lineaAnterior = array;
+    }
+
+    //Linea nueva
+    if (tipo == 3 && hayLineaAutoNuevo > 0) {
+      this.lineasNuevas = [];
+    }
+    if (tipo == 3 && hayLineaAutoNuevo == 0) {
+      this.lineasNuevas = array;
+    }
+
+    //Linea nueva
+    if (tipo == 4 && hayLineaAutoNuevo > 0) {
+      this.autosNuevos = [];
+    }
+    if (tipo == 4 && hayLineaAutoNuevo == 0) {
+      this.autosNoNuevos = array;
+    }
+
+    // Sin linea
+
+    if (hayLineaAutoNuevo > 0) {
+      for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[i].list.length; j++) {
+          if (array[i].list[j].sale != "") {
+            this.hayVenta++
+          }
+          if (array[i].list[j].purchase != "") {
+            this.hayCompra++
+          }
+        }
+      }
+      this.autosNuevos = array;
+    }
   }
 
 

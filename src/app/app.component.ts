@@ -186,7 +186,7 @@ export class AppComponent {
       if (ruta == "hacer-transaccion/1") {
 
         let hayInternet = (await Network.getStatus()).connected;
-        if(hayInternet == false) return;
+        if (hayInternet == false) return;
 
         let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
@@ -242,8 +242,8 @@ export class AppComponent {
 
       if (ruta == "pagos") {
         let hayInternet = (await Network.getStatus()).connected;
-        if(hayInternet == false) return;
-        
+        if (hayInternet == false) return;
+
         let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
         console.log(respuesta);
         if (respuesta.status == false || respuesta.status == 401) {
@@ -478,10 +478,11 @@ export class AppComponent {
     console.log(respuesta)
     if (respuesta.status == true) {
       for (let i = 0; i < respuesta.paymet_method.length; i++) {
-        if (respuesta.paymet_method[i].id == 2 || respuesta.paymet_method[i].id == 3) {
+        if ((respuesta.paymet_method[i].id == 2 && respuesta.paymet_method[i].active) ||
+          (respuesta.paymet_method[i].id == 3 && respuesta.paymet_method[i].active)) {
           this.mostrarAdquirirLicencia++
         }
-        if (respuesta.paymet_method[i].id == 1) {
+        if (respuesta.paymet_method[i].id == 1 && respuesta.paymet_method[i].active) {
           this.mostrarCanjear++;
         }
       }

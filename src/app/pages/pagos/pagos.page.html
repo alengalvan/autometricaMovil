@@ -37,8 +37,14 @@
               <span style="font-size: 12px;color: #616161;">
                 Métodos de pago aceptados: <br>
               </span>
-              <span style="font-size: 12px;color: #616161;" *ngFor="let metodo of licencia.metodosPago">
-                {{metodo.name}} <br>
+              <span style="font-size: 12px;color: #616161;" *ngIf="licencia.prepaid_card ==1">
+                Tarjeta de prepago <br>
+              </span>
+              <span style="font-size: 12px;color: #616161;" *ngIf="licencia.credit_card == 1">
+                Tarjeta de crédito o débito <br>
+              </span>
+              <span style="font-size: 12px;color: #616161;" *ngIf="licencia.transfer == 1">
+                Depósito o transferencia <br>
               </span>
             </ion-col>
             <ion-col size="4" style="text-align: end;" *ngIf="licencia.duration_month == 1">
