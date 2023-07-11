@@ -11,7 +11,6 @@ import { WebRestService } from 'src/app/services/crud-rest.service';
 export class TerminosCondicionesPage implements OnInit {
 
   public valorSeleccionado: string = 'avisoPrivacidad';
-  public stringPDFAvisoPrivacidad: string = '';
   public stringPDFTyC: string = '';
   constructor(private menu: MenuController,
     public webService: WebRestService) { }
@@ -22,7 +21,7 @@ export class TerminosCondicionesPage implements OnInit {
       type: 3
     }
     let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-    this.stringPDFAvisoPrivacidad = respuesta.error.text; 
+    this.stringPDFTyC = respuesta.error.text; 
     console.log(respuesta.error.text)
   }
 

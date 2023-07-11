@@ -81,7 +81,7 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje: "El pago fue realizado exitosamente. Si requiere factura contáctenos." }
+        componentProps: { mensaje: "El pago fue realizado exitosamente." + "<br>" + "Si requiere factura contáctenos." }
       })
       modal.onDidDismiss().then(async (data) => {
         localStorage.setItem("opcionAlerta", "ya-puede-consultar")

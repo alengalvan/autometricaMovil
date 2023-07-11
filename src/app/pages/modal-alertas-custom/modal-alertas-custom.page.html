@@ -368,9 +368,7 @@
       <ion-row style="margin: 0;">
         <ion-col size="1"></ion-col>
         <ion-col size="10" style="text-align: center;">
-          <div class="mensaje-error">
-            {{mensajeError}}
-          </div>
+          <div class="mensaje-error" [innerHTML]="mensajeError"></div>
           <br>
           <ion-button mode="md" (click)="cerrarModalReturnData(true)" style="--background:#EC1C24">
             <span style="font-size: 12px;">
