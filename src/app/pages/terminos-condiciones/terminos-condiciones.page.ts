@@ -13,7 +13,8 @@ export class TerminosCondicionesPage implements OnInit {
   public valorSeleccionado: string = 'avisoPrivacidad';
   public stringPDFTyC: string = '';
   public stringPDFAP: string = '';
-  
+  zoom: number = 1.0;
+
   constructor(private menu: MenuController,
     public webService: WebRestService) { }
 
@@ -23,7 +24,7 @@ export class TerminosCondicionesPage implements OnInit {
       type: 4
     }
     let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-    this.stringPDFAP = respuesta.error.text; 
+    this.stringPDFAP = respuesta.error.text;
     console.log(respuesta.error.text)
   }
 
@@ -31,22 +32,36 @@ export class TerminosCondicionesPage implements OnInit {
     console.log(event.detail.value)
     this.valorSeleccionado = event.detail.value;
 
-    if(this.valorSeleccionado == 'avisoPrivacidad'){
+    if (this.valorSeleccionado == 'avisoPrivacidad') {
       let objeto = {
         type: 4
       }
       let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-      this.stringPDFAP = respuesta.error.text; 
+      this.stringPDFAP = respuesta.error.text;
     }
 
-    if(this.valorSeleccionado == 'terminosCondiciones'){
+    if (this.valorSeleccionado == 'terminosCondiciones') {
       let objeto = {
         type: 3
       }
       let respuesta = await this.webService.postAsync(API.endpoints.descargarPDF, objeto)
-      this.stringPDFTyC = respuesta.error.text; 
+      this.stringPDFTyC = respuesta.error.text;
     }
 
+  }
+
+
+
+  closeFabIn(fab: any) {
+    this.zoom = this.zoom + 0.25;
+    fab.close();
+  }
+
+  closeFabOut(fab: any) {
+    if (this.zoom > 1) {
+      this.zoom = this.zoom - 0.25;
+    }
+    fab.close();
   }
 
 }

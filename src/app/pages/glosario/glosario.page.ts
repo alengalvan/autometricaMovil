@@ -15,6 +15,7 @@ export class GlosarioPage implements OnInit {
   public stringPDFGlosario: any = '';
   public stringPDFKilometraje: any = '';
   public id = this.route.snapshot.paramMap.get('id');
+  zoom: number = 1.0;
   constructor(private menu: MenuController,
     public webService: WebRestService,
     private route: ActivatedRoute) { }
@@ -65,6 +66,18 @@ export class GlosarioPage implements OnInit {
         this.stringPDFKilometraje = respuesta.error.text;
       }
     }
+  }
+
+  closeFabIn(fab: any) {
+    this.zoom = this.zoom + 0.25;
+    fab.close();
+  }
+
+  closeFabOut(fab: any) {
+    if (this.zoom > 1) {
+      this.zoom = this.zoom - 0.25;
+    }
+    fab.close();
   }
 
 }

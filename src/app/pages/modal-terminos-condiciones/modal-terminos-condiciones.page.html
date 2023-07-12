@@ -21,14 +21,29 @@
       </ion-col>
     </ion-row>
 
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
+      <ion-fab-button>
+        <ion-icon name="chevron-up-circle"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button (click)="closeFabIn(fab)">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="closeFabOut(fab)">
+          <ion-icon name="remove-outline"></ion-icon>
+        </ion-fab-button >
+      </ion-fab-list>
+    </ion-fab>
+
+
     <div *ngIf="esTerminos == 1">
       <pdf-viewer [src]="'data:application/pdf;base64,' + stringPDFTerminos" [render-text]="true" [original-size]="false"
-        style="width: 90%; height: 500px"></pdf-viewer>
+        style="width: 90%; height: 500px" [zoom]="zoom"></pdf-viewer>
     </div>
 
     <div *ngIf="esTerminos == 2">
       <pdf-viewer [src]="'data:application/pdf;base64,' + stringPDFAviso" [render-text]="true" [original-size]="false"
-        style="width: 90%; height: 500px"></pdf-viewer>
+        style="width: 90%; height: 500px" [zoom]="zoom"></pdf-viewer>
     </div>
 
     <br>

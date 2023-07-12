@@ -18,6 +18,7 @@ export class ModalTerminosCondicionesPage implements OnInit {
   public stringPDFTyC: string = '';
   stringPDFTerminos: any;
   stringPDFAviso: any;
+  zoom: number = 1.0;
 
   constructor(public modalController: ModalController,
     private document: DocumentViewer,
@@ -51,6 +52,18 @@ export class ModalTerminosCondicionesPage implements OnInit {
         this.stringPDFAviso = respuesta.error.text;
       }
     }
+  }
+
+  closeFabIn(fab: any) {
+    this.zoom = this.zoom + 0.25;
+    fab.close();
+  }
+
+  closeFabOut(fab: any) {
+    if (this.zoom > 1) {
+      this.zoom = this.zoom - 0.25;
+    }
+    fab.close();
   }
 
 }
