@@ -66,31 +66,31 @@ export class DatosGeneralesEdicionPage implements OnInit {
 
   public mensajesValidacion = {
     nombre: [
-      { type: "required", message: "*Por favor ingrese su nombre" },
+      { type: "required", message: "*Por favor ingrese su nombre." },
     ],
     apellidoPaterno: [
-      { type: "required", message: "*Por favor ingrese su primer apellido" },
+      { type: "required", message: "*Por favor ingrese su primer apellido." },
     ],
     apellidoMaterno: [
-      { type: "required", message: "*Por favor ingrese su segundo apellido" },
+      { type: "required", message: "*Por favor ingrese su segundo apellido." },
     ],
     estado: [
-      { type: "required", message: "*Por favor ingrese su estado de residencia" },
+      { type: "required", message: "*Por favor ingrese su estado de residencia." },
     ],
     correo: [
-      { type: "required", message: "*Por favor ingrese su correo electrónico" },
-      { type: "pattern", message: "*Por favor ingrese su correo electrónico válido" },
+      { type: "required", message: "*Por favor ingrese su correo electrónico." },
+      { type: "pattern", message: "*Por favor ingrese su correo electrónico válido." },
     ],
     telefono: [
-      { type: "pattern", message: "*El número de teléfono debe tener 10 caracteres" },
+      { type: "pattern", message: "*El número de teléfono debe tener 10 caracteres." },
     ],
     contrasenia: [
-      { type: "required", message: "*Por favor ingrese su correo electrónico" },
-      { type: "pattern", message: "*La contraseña debe tener 8 caracteres un número, un símbolo, una letra mayúscula, letras minúsculas y no tener espacios en blanco" },
+      { type: "required", message: "*Por favor ingrese su contraseña." },
+      { type: "pattern", message: "*La contraseña debe tener 8 caracteres un número, un símbolo, una letra mayúscula, letras minúsculas y no tener espacios en blanco." },
 
     ],
     confirmacionContrasenia: [
-      { type: "required", message: "*Por favor confirme su contraseña" },
+      { type: "required", message: "*Por favor confirme su contraseña." },
     ],
   };
 

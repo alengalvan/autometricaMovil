@@ -33,7 +33,7 @@
     --background: black;
   }
 
-  ion-footer{
+  ion-footer {
     --background: black;
   }
 }
@@ -61,4 +61,16 @@ ion-modal::part(content) {
 
 input {
   background-color: white
+}
+
+.instruccion {
+  color: #8A8A8A;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.instruccion-chica {
+  color: #8A8A8A;
+  font-size: 9px;
+  font-weight: 400;
 }

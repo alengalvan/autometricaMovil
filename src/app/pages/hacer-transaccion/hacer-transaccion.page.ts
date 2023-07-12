@@ -18,7 +18,7 @@ export class HacerTransaccionPage implements OnInit {
   public metodoPagoSeleccionado = JSON.parse(localStorage.getItem('metodoPagoSeleccionado')!);
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
   public form: FormGroup = this.formBuilder.group({
-    codigo: [null, Validators.required],
+    codigo: [null, [Validators.required, Validators.minLength(9)]],
   });
   public mensajesValidacion = {
     codigo: [

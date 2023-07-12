@@ -34,7 +34,8 @@ export class ConsultaAutometricaPage implements OnInit {
   });
   licenciaActual: any = [];
   public hayInternet = this.route.snapshot.paramMap.get('id');
-  public LicenciasActivas: any = []
+  public LicenciasActivas: any = [];
+  public dollarUSLocale = Intl.NumberFormat('en-US');
 
   get marca() {
     return this.form.get("marca");
@@ -380,8 +381,13 @@ export class ConsultaAutometricaPage implements OnInit {
 
             let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
             console.log(respuesta)
+           
             if (respuesta.status == true) {
               if (respuesta.lineales.length > 0) {
+                respuesta.lineales = await this.validarCampoPrecio(respuesta.lineales)
+                // respuesta.kilometraje = await this.validarCampoPrecioKm(respuesta.kilometraje)
+                // respuesta.añadir = await this.validarCampoPrecioAnadir(respuesta.añadir)
+                
                 localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
                 localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
                 localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -415,6 +421,8 @@ export class ConsultaAutometricaPage implements OnInit {
       console.log(respuesta)
       if (respuesta.status == true) {
         if (respuesta.lineales.length > 0 && respuesta.kilometraje.length > 0) {
+          respuesta.lineales = await this.validarCampoPrecio(respuesta.lineales)
+          // respuesta.kilometraje = await this.validarCampoPrecioKm(respuesta.kilometraje)
           localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
           localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
           localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -489,7 +497,7 @@ export class ConsultaAutometricaPage implements OnInit {
             }
 
             console.log(valoresTotalesLinea)
-
+            valoresTotalesLinea = await this.validarCampoPrecioOffline(valoresTotalesLinea)
             // separar por linea
             let lineasNuevas = [];
             let cambioLinea = [];
@@ -551,7 +559,7 @@ export class ConsultaAutometricaPage implements OnInit {
       }
 
       console.log(valoresTotalesLinea)
-
+      valoresTotalesLinea = await this.validarCampoPrecioOffline(valoresTotalesLinea)
       // separar por linea
       let lineasNuevas = [];
       let cambioLinea = [];
@@ -681,7 +689,46 @@ export class ConsultaAutometricaPage implements OnInit {
   }
 
 
+  public async validarCampoPrecio(array: any){
+    console.log(array)
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < array[i].list.length; j++) {
+        if(array[i].list[j].sale.search("[a-zA-Z ]") == -1 && array[i].list[j].sale != "" ){
+          array[i].list[j].sale = "$" + this.dollarUSLocale.format(array[i].list[j].sale)
+          console.log(array[i].list[j].sale)
+        }
 
+        if(array[i].list[j].purchase.search("[a-zA-Z ]") == -1 && array[i].list[j].purchase != "" ){
+          array[i].list[j].purchase = "$" + this.dollarUSLocale.format(array[i].list[j].purchase)
+          console.log(array[i].list[j].purchase)
+        }
+      }
+    }
+    console.log(array)
+    return array
+    
+  }
+
+  
+  public async validarCampoPrecioOffline(array: any){
+    console.log(array)
+    for (let i = 0; i < array.length; i++) {
+      
+        if(array[i].sale.search("[a-zA-Z ]") == -1 && array[i].sale != "" ){
+          array[i].sale = "$" + this.dollarUSLocale.format(array[i].sale)
+          console.log(array[i].sale)
+        }
+
+        if(array[i].purchase.search("[a-zA-Z ]") == -1 && array[i].purchase != "" ){
+          array[i].purchase = "$" + this.dollarUSLocale.format(array[i].purchase)
+          console.log(array[i].purchase)
+        }
+      
+    }
+    console.log(array)
+    return array
+    
+  }
 
 
 }

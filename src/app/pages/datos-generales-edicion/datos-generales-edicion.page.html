@@ -80,6 +80,10 @@
           <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
           </ion-icon>
         </ion-item>
+        <span class="instruccion" *ngIf="contrasenia!.errors == null">
+          *Cree una contraseña de  al menos 8 caracteres, un número, un símbolo, una letra mayúscula y letras minúsculas.
+        </span>
+        
         <div *ngFor="let error of mensajesValidacion.contrasenia">
           <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
             <small class="errorValidation">{{error.message}}</small>
@@ -101,8 +105,11 @@
             <small class="errorValidation">{{error.message}}</small>
           </ng-container>
         </div>
-        <div
-          *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+        <span class="instruccion" *ngIf="confirmacionContrasenia!.errors == null && contraseniaComparacionValida">
+          *Por favor confirme su contraseña.
+        </span>
+
+        <div *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
           <ng-container>
             <small class="errorValidation">*Las contraseñas capturadas no coinciden.</small>
           </ng-container>

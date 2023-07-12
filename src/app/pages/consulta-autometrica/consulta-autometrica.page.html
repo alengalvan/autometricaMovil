@@ -33,9 +33,17 @@
           </ion-select>
 
         </ion-item>
+
+        <span class="instruccion-chica" *ngIf="marca!.errors == null">
+          *Seleccione la marca.
+        </span>
+        <span class="instruccion-chica" *ngIf="(marca!.dirty == false && marca!.touched == false)">
+          *Seleccione la marca.
+        </span>
+
         <div *ngFor="let error of mensajesValidacion.marca">
           <ng-container *ngIf="marca!.hasError(error.type) && (marca!.dirty || marca!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
@@ -56,9 +64,15 @@
           </ion-select>
 
         </ion-item>
+        <span class="instruccion-chica" *ngIf="anio!.errors == null">
+          *Seleccione el año.
+        </span>
+        <span class="instruccion-chica" *ngIf="(anio!.dirty == false && anio!.touched == false)">
+          *Seleccione el año.
+        </span>
         <div *ngFor="let error of mensajesValidacion.anio">
           <ng-container *ngIf="anio!.hasError(error.type) && (anio!.dirty || anio!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
@@ -77,9 +91,15 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <span class="instruccion-chica" *ngIf="submarca!.errors == null">
+          *Seleccione la submarca.
+        </span>
+        <span class="instruccion-chica" *ngIf="(submarca!.dirty == false && submarca!.touched == false)">
+          *Seleccione la submarca.
+        </span>
         <div *ngFor="let error of mensajesValidacion.submarca">
           <ng-container *ngIf="submarca!.hasError(error.type) && (submarca!.dirty || submarca!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
@@ -88,8 +108,11 @@
           <ion-input appTrim type="number" formControlName="kilometraje" placeholder="Kilometraje"
             autocomplete="off"></ion-input>
         </ion-item>
+        <span class="instruccion-chica" *ngIf="mensajeErrorKm == ''">
+          Ingrese el kilometraje.
+        </span>
         <div *ngIf="mensajeErrorKm != ''">
-          <small class="errorValidation">{{mensajeErrorKm}}</small>
+          <small class="errorValidation-chica">{{mensajeErrorKm}}</small>
         </div>
         <br><br>
 

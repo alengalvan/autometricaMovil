@@ -113,12 +113,17 @@
             {{busquedaAutometrica.submarca | titlecase }} {{busquedaAutometrica.anio}}
           </p>
 
-          <p class="text" *ngIf="busquedaAutometrica.kilometraje">
+          <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0">
             Kilometraje: {{ busquedaAutometrica.kilometraje }} km
           </p>
 
           <p class="text" style="text-decoration-line: underline;font-style: italic;"
-            *ngIf="!busquedaAutometrica.kilometraje">Se aplicó el kilometraje promedio para este año.
+            *ngIf="!busquedaAutometrica.kilometraje  && autosNuevos.length == 0">Se aplicó el kilometraje promedio
+            para este año.
+          </p>
+
+          <p class="text" style="text-decoration-line: underline;font-style: italic;" *ngIf="autosNuevos.length > 0">
+            Para autos nuevos no se calcula kilometraje.
           </p>
 
           <!-- autos que no tienen linea y que si tiene precios de compra y venta -->
@@ -135,8 +140,8 @@
               <tr *ngFor="let car of linea.list">
                 <td class="text-center"> {{car.km_group}} </td>
                 <td>{{car.version}}</td>
-                <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td>{{car.sale }}</td>
+                <td>{{car.purchase }}</td>
               </tr>
             </table>
 
@@ -150,8 +155,10 @@
               </tr>
               <tr *ngFor="let anadir of linea.anadires">
                 <td> {{anadir.add_version}} </td>
-                <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+                <td class="text-center">{{hayInternet ? (anadir.sale | currency : 'USD' : 'symbol' : '1.0-0') :
+                  anadir.sale}}</td>
+                <td class="text-center"> {{ hayInternet ? (anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'):
+                  anadir.purchase}} </td>
               </tr>
             </table>
 
@@ -182,10 +189,8 @@
               </tr>
               <tr *ngFor="let car of linea.list">
                 <td>{{car.version}}</td>
-                <td *ngIf="hayVenta > 0">{{car.sale != '' ? (car.sale | currency : 'USD' : 'symbol' : '1.0-0') : '' }}
-                </td>
-                <td *ngIf="hayCompra > 0">{{car.purchase != '' ? (car.purchase | currency : 'USD' : 'symbol' : '1.0-0')
-                  : '' }}</td>
+                <td *ngIf="hayVenta > 0">{{car.sale}}</td>
+                <td *ngIf="hayCompra > 0">{{car.purchase}}</td>
               </tr>
             </table>
 
@@ -198,8 +203,11 @@
               </tr>
               <tr *ngFor="let anadir of linea.anadires">
                 <td> {{anadir.add_version}} </td>
-                <td *ngIf="hayVenta > 0" class="text-center">{{ anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td *ngIf="hayCompra > 0" class="text-center"> {{ anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+
+                <td class="text-center" *ngIf="hayVenta > 0">{{hayInternet ? (anadir.sale | currency : 'USD' : 'symbol'
+                  : '1.0-0') : anadir.sale}}</td>
+                <td class="text-center" *ngIf="hayCompra > 0"> {{ hayInternet ? (anadir.purchase | currency : 'USD' :
+                  'symbol' : '1.0-0'): anadir.purchase}} </td>
               </tr>
             </table>
 
@@ -233,8 +241,8 @@
               <tr *ngFor="let car of linea.list">
                 <td class="text-center"> {{car.km_group}} </td>
                 <td>{{car.version}}</td>
-                <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td>{{car.sale }}</td>
+                <td>{{car.purchase }}</td>
               </tr>
             </table>
 
@@ -248,8 +256,10 @@
               </tr>
               <tr *ngFor="let anadir of linea.anadires">
                 <td> {{anadir.add_version}} </td>
-                <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+                <td class="text-center">{{hayInternet ? (anadir.sale | currency : 'USD' : 'symbol' : '1.0-0') :
+                  anadir.sale}}</td>
+                <td class="text-center"> {{ hayInternet ? (anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'):
+                  anadir.purchase}} </td>
               </tr>
             </table>
 
@@ -283,8 +293,8 @@
               <tr *ngFor="let car of linea.list">
                 <td class="text-center"> {{car.km_group}} </td>
                 <td>{{car.version}}</td>
-                <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td>{{car.sale}}</td>
+                <td>{{car.purchase}}</td>
               </tr>
             </table>
 
@@ -298,8 +308,10 @@
               </tr>
               <tr *ngFor="let anadir of linea.anadires">
                 <td> {{anadir.add_version}} </td>
-                <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+                <td class="text-center">{{hayInternet ? (anadir.sale | currency : 'USD' : 'symbol' : '1.0-0') :
+                  anadir.sale}}</td>
+                <td class="text-center"> {{ hayInternet ? (anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'):
+                  anadir.purchase}} </td>
               </tr>
             </table>
 
@@ -311,8 +323,8 @@
                 <th>Impacto de Kilometraje</th>
               </tr>
               <tr *ngFor="let km of linea?.kilometraje">
-                <td class="text-center"> {{km.grupo}} </td>
-                <td class="text-center"> {{km.valor | currency : 'USD' : 'symbol' : '1.0-0' }} </td>
+                <td class="text-center"> {{km.grupo }} </td>
+                <td class="text-center"> {{km.valor | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
               </tr>
             </table>
 
@@ -333,8 +345,8 @@
               <tr *ngFor="let car of linea.list">
                 <td class="text-center"> {{car.km_group}} </td>
                 <td>{{car.version}}</td>
-                <td>{{car.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td>{{car.purchase | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                <td>{{car.sale }}</td>
+                <td>{{car.purchase }}</td>
               </tr>
             </table>
 
@@ -348,8 +360,10 @@
               </tr>
               <tr *ngFor="let anadir of linea.anadires">
                 <td> {{anadir.add_version}} </td>
-                <td class="text-center">{{anadir.sale | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-                <td class="text-center"> {{anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'}} </td>
+                <td class="text-center">{{hayInternet ? (anadir.sale | currency : 'USD' : 'symbol' : '1.0-0') :
+                  anadir.sale}}</td>
+                <td class="text-center"> {{ hayInternet ? (anadir.purchase | currency : 'USD' : 'symbol' : '1.0-0'):
+                  anadir.purchase}} </td>
               </tr>
             </table>
 

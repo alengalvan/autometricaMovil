@@ -94,6 +94,12 @@
           <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
           </ion-icon>
         </ion-item>
+        <span class="instruccion" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
+          *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+        </span>
+        <span class="instruccion" *ngIf="contrasenia!.errors == null">
+          *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+        </span>
         <div *ngFor="let error of mensajesValidacion.contrasenia">
           <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
             <small class="errorValidation">{{error.message}}</small>
@@ -109,6 +115,12 @@
           <ion-icon name="eye-outline" slot="end" *ngIf="verContrasenaConfirm" (click)="mostrarContrasena(true)">
           </ion-icon>
         </ion-item>
+        <span class="instruccion" *ngIf="(confirmacionContrasenia!.dirty == false && confirmacionContrasenia!.touched == false)">
+          *Por favor confirme su contraseña.
+        </span>
+        <span class="instruccion" *ngIf="confirmacionContrasenia!.errors == null && contraseniaComparacionValida">
+          *Por favor confirme su contraseña.
+        </span>
         <div *ngFor="let error of mensajesValidacion.confirmacionContrasenia">
           <ng-container
             *ngIf="confirmacionContrasenia!.hasError(error.type) && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">

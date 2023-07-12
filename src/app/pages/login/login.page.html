@@ -16,6 +16,12 @@
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="text" formControlName="usuario" placeholder="Usuario"></ion-input>
           </ion-item>
+          <span class="instruccion" *ngIf="(usuario!.dirty == false && usuario!.touched == false)">
+            *Por favor ingrese su correo electrónico.
+          </span>
+          <span class="instruccion" *ngIf="usuario!.errors == null">
+            *Por favor ingrese su correo electrónico.
+          </span>
           <div *ngFor="let error of mensajesValidacion.usuario">
             <ng-container *ngIf="usuario!.hasError(error.type) && (usuario!.dirty || usuario!.touched)">
               <small class="errorValidation">{{error.message}}</small>
@@ -31,6 +37,12 @@
             <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
             </ion-icon>
           </ion-item>
+          <span class="instruccion" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
+            *Por favor ingrese su contraseña.
+          </span>
+          <span class="instruccion" *ngIf="usuario!.errors == null">
+            *Por favor ingrese su contraseña.
+          </span>
           <div *ngFor="let error of mensajesValidacion.contrasenia">
             <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
               <small class="errorValidation">{{error.message}}</small>
