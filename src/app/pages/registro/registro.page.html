@@ -17,16 +17,26 @@
 
       <form [formGroup]="form" autocomplete="off">
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Nombre(s):
+          </span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.nombre">
           <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Apellido Paterno
+          </span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
             autocomplete="off" maxlength="60"></ion-input>
@@ -34,11 +44,16 @@
         <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
           <ng-container
             *ngIf="apellidoPaterno!.hasError(error.type) && (apellidoPaterno!.dirty || apellidoPaterno!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Apellido Materno
+          </span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
             autocomplete="off" maxlength="60"></ion-input>
@@ -46,11 +61,16 @@
         <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
           <ng-container
             *ngIf="apellidoMaterno!.hasError(error.type) && (apellidoMaterno!.dirty || apellidoMaterno!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Estado
+          </span>
+        </div> 
         <ion-item class="ion-item-input" mode="md">
           <ion-select formControlName="estado" placeholder="Seleccione un Estado" autocomplete="off">
             <ion-select-option *ngFor="let item of estados" [value]="item.nombre">
@@ -60,28 +80,38 @@
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.estado">
           <ng-container *ngIf="estado!.hasError(error.type) && (estado!.dirty || estado!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Correo
+          </span>
+        </div> 
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="text" formControlName="correo" placeholder="Correo electrónico"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.correo">
           <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Teléfono (Opcional)
+          </span>
+        </div> 
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="number" formControlName="telefono" placeholder="Teléfono (Opcional)" autocomplete="off" maxlength="10"></ion-input>
         </ion-item>
         <div *ngFor="let error of mensajesValidacion.telefono">
           <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
@@ -94,15 +124,18 @@
           <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
           </ion-icon>
         </ion-item>
-        <span class="instruccion" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
-          *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
-        </span>
-        <span class="instruccion" *ngIf="contrasenia!.errors == null">
-          *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
-        </span>
-        <div *ngFor="let error of mensajesValidacion.contrasenia">
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
+            *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+          </span>
+          <span class="instruccion-chica" *ngIf="contrasenia!.errors == null">
+            *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+          </span>
+        </div>
+        
+        <div *ngFor="let error of mensajesValidacion.contrasenia" style="margin-left: 5px;">
           <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
@@ -115,21 +148,25 @@
           <ion-icon name="eye-outline" slot="end" *ngIf="verContrasenaConfirm" (click)="mostrarContrasena(true)">
           </ion-icon>
         </ion-item>
-        <span class="instruccion" *ngIf="(confirmacionContrasenia!.dirty == false && confirmacionContrasenia!.touched == false)">
-          *Por favor confirme su contraseña.
-        </span>
-        <span class="instruccion" *ngIf="confirmacionContrasenia!.errors == null && contraseniaComparacionValida">
-          *Por favor confirme su contraseña.
-        </span>
-        <div *ngFor="let error of mensajesValidacion.confirmacionContrasenia">
+       
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica" *ngIf="(confirmacionContrasenia!.dirty == false && confirmacionContrasenia!.touched == false)">
+            *Por favor confirme su contraseña.
+          </span>
+          <span class="instruccion-chica" *ngIf="confirmacionContrasenia!.errors == null && contraseniaComparacionValida">
+            *Por favor confirme su contraseña.
+          </span>
+        </div>
+        
+        <div *ngFor="let error of mensajesValidacion.confirmacionContrasenia" style="margin-left: 5px;">
           <ng-container
             *ngIf="confirmacionContrasenia!.hasError(error.type) && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
-        <div *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)">
+        <div *ngIf="!contraseniaComparacionValida && (confirmacionContrasenia!.dirty || confirmacionContrasenia!.touched)"  style="margin-left: 5px;">
           <ng-container>
-            <small class="errorValidation">*Las contraseñas capturadas no coinciden.</small>
+            <small class="errorValidation-chica">*Las contraseñas capturadas no coinciden.</small>
           </ng-container>
         </div>
 
@@ -141,10 +178,10 @@
           <p style="font-size: 14px;color: #616161;display: inline;"> y el </p><p style="font-size: 14px;color: #000;display: inline" (click)="openTrasnparentModal(false)"><b>Aviso de Privacidad.</b></p>
           </span> <br>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.heLeidoTerminosCondiciones">
+        <div *ngFor="let error of mensajesValidacion.heLeidoTerminosCondiciones" style="margin-left: 5px;">
           <ng-container
             *ngIf="heLeidoTerminosCondiciones!.hasError(error.type) && (heLeidoTerminosCondiciones!.dirty || heLeidoTerminosCondiciones!.touched)">
-            <small class="errorValidation">{{error.message}}</small>
+            <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 

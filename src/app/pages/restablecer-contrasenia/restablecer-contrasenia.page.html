@@ -23,15 +23,19 @@
             <ion-icon name="eye-outline" slot="end" *ngIf="verContrasena" (click)="mostrarContrasena()">
             </ion-icon>
           </ion-item>
-          <span class="instruccion" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
-            *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
-          </span>
-          <span class="instruccion" *ngIf="contrasenia!.errors == null">
-            *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
-          </span>
-          <div *ngFor="let error of mensajesValidacion.contrasenia">
+
+          <div style="margin-left: 5px;">
+            <span class="instruccion-chica" *ngIf="(contrasenia!.dirty == false && contrasenia!.touched == false)">
+              *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+            </span>
+            <span class="instruccion-chica" *ngIf="contrasenia!.errors == null">
+              *Cree una contraseña de al menos 8 caracteres, un caracter especial, un número, una letra mayúscula y letras minúsculas.
+            </span>
+          </div>
+          
+          <div *ngFor="let error of mensajesValidacion.contrasenia" style="margin-left: 5px;">
             <ng-container *ngIf="contrasenia!.hasError(error.type) && (contrasenia!.dirty || contrasenia!.touched)">
-              <small class="errorValidation">{{error.message}}</small>
+              <small class="errorValidation-chica">{{error.message}}</small>
             </ng-container>
           </div>
 
@@ -45,21 +49,24 @@
             </ion-icon>
           </ion-item>
 
-          <span class="instruccion" *ngIf="(confirmarContrasenia!.dirty == false && confirmarContrasenia!.touched == false)">
-            *Por favor confirme su contraseña.
-          </span>
-          <span class="instruccion" *ngIf="confirmarContrasenia!.errors == null && contraseniaComparacionValida">
-            *Por favor confirme su contraseña.
-          </span>
-          <div *ngFor="let error of mensajesValidacion.confirmarContrasenia">
+          <div style="margin-left: 5px;">
+            <span class="instruccion-chica" *ngIf="(confirmarContrasenia!.dirty == false && confirmarContrasenia!.touched == false)">
+              *Por favor confirme su contraseña.
+            </span>
+            <span class="instruccion-chica" *ngIf="confirmarContrasenia!.errors == null && contraseniaComparacionValida">
+              *Por favor confirme su contraseña.
+            </span>
+          </div>
+          
+          <div *ngFor="let error of mensajesValidacion.confirmarContrasenia" style="margin-left: 5px;">
             <ng-container
               *ngIf="confirmarContrasenia!.hasError(error.type) && (confirmarContrasenia!.dirty || confirmarContrasenia!.touched)">
-              <small class="errorValidation">{{error.message}}</small>
+              <small class="errorValidation-chica">{{error.message}}</small>
             </ng-container>
           </div>
-          <div *ngIf="!contraseniaComparacionValida && (confirmarContrasenia!.dirty || confirmarContrasenia!.touched)">
+          <div *ngIf="!contraseniaComparacionValida && (confirmarContrasenia!.dirty || confirmarContrasenia!.touched)" style="margin-left: 5px;">
             <ng-container>
-              <small class="errorValidation">*Las contraseñas capturadas no coinciden.</small>
+              <small class="errorValidation-chica">*Las contraseñas capturadas no coinciden.</small>
             </ng-container>
           </div>
 

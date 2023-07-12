@@ -53,16 +53,17 @@
                 maxlength="150"></ion-input>
             </ion-item>
 
-            <span class="instruccion-chica" *ngIf="(nombreTitular!.dirty == false && nombreTitular!.touched == false)">
-              *Ingrese su Nombre.
-            </span>
-            <span class="instruccion-chica" *ngIf="nombreTitular!.errors == null">
-              *Ingrese su Nombre.
-            </span>
-            <div *ngFor="let error of mensajesValidacionPago.nombreTitular">
+            <div style="margin-left: 5px;">
+              <span class="instruccion-chica"
+                *ngIf="(nombreTitular!.dirty == false && nombreTitular!.touched == false) || nombreTitular!.errors == null">
+                *Ingrese su Nombre.
+              </span>
+            </div>
+
+            <div *ngFor="let error of mensajesValidacionPago.nombreTitular" style="margin-left: 5px;">
               <ng-container
                 *ngIf="nombreTitular!.hasError(error.type) && (nombreTitular!.dirty || nombreTitular!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
+                <small class="errorValidation-chica">{{error.message}}</small>
               </ng-container>
             </div>
           </ion-col>
@@ -71,17 +72,17 @@
               style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
               formControlName="nombreTarjeta" placeholder="Número de Tarjeta" maxlength="19" credit-card>
 
-            <span class="instruccion-chica" *ngIf="nombreTarjeta!.errors == null">
-              *Ingrese su número de tarjeta.
-            </span>
-            <span class="instruccion-chica" *ngIf="(nombreTarjeta!.dirty == false && nombreTarjeta!.touched == false)">
-              *Ingrese su número de tarjeta.
-            </span>
+            <div style="margin-left: 5px;">
+              <span class="instruccion-chica" *ngIf="nombreTarjeta!.errors == null || (nombreTarjeta!.dirty == false && nombreTarjeta!.touched == false)">
+                *Ingrese su número de tarjeta.
+              </span>
+            </div>
 
-            <div *ngFor="let error of mensajesValidacionPago.nombreTarjeta">
+
+            <div *ngFor="let error of mensajesValidacionPago.nombreTarjeta" style="margin-left: 5px;">
               <ng-container
                 *ngIf="nombreTarjeta!.hasError(error.type) && (nombreTarjeta!.dirty || nombreTarjeta!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
+                <small class="errorValidation-chica">{{error.message}}</small>
               </ng-container>
             </div>
           </ion-col>
@@ -90,17 +91,16 @@
               style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
               placeholder="Fecha de Vencimiento" maxlength="7">
 
-            <span class="instruccion-chica" *ngIf="fechaVencimiento!.errors == null">
-              *Ingrese la fecha de vencimiento.
-            </span>
-            <span class="instruccion-chica" *ngIf="(fechaVencimiento!.dirty == false && fechaVencimiento!.touched == false)">
-              *Ingrese la fecha de vencimiento.
-            </span>
-
-            <div *ngFor="let error of mensajesValidacionPago.fechaVencimiento">
+            <div style="margin-left: 5px;">
+              <span class="instruccion-chica" *ngIf="fechaVencimiento!.errors == null || (fechaVencimiento!.dirty == false && fechaVencimiento!.touched == false)">
+                *Ingrese la fecha de vencimiento.
+              </span>
+            </div>
+           
+            <div *ngFor="let error of mensajesValidacionPago.fechaVencimiento" style="margin-left: 5px;">
               <ng-container
                 *ngIf="fechaVencimiento!.hasError(error.type) && (fechaVencimiento!.dirty || fechaVencimiento!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
+                <small class="errorValidation-chica">{{error.message}}</small>
               </ng-container>
             </div>
           </ion-col>
@@ -109,9 +109,9 @@
             <input appTrim type="number" formControlName="cvv" placeholder="CVV"
               onKeyPress="if(this.value.length==4) return false;"
               style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;">
-            <div *ngFor="let error of mensajesValidacionPago.cvv">
+            <div *ngFor="let error of mensajesValidacionPago.cvv" style="margin-left: 5px;">
               <ng-container *ngIf="cvv!.hasError(error.type) && (cvv!.dirty || cvv!.touched)">
-                <small class="errorValidation">{{error.message}}</small>
+                <small class="errorValidation-chica">{{error.message}}</small>
               </ng-container>
             </div>
           </ion-col>

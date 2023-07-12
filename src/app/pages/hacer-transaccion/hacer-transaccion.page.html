@@ -38,16 +38,16 @@
               <input appTrim credit-card type="text" formControlName="codigo" placeholder="Código" maxlength="9"
                 style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;">
 
-              <span class="instruccion-chica" *ngIf="codigo!.errors == null">
-                *Campo obligatorio.
-              </span>
-              <span class="instruccion-chica" *ngIf="(codigo!.dirty == false && codigo!.touched == false)">
-                *Campo obligatorio.
-              </span>
+              <div style="margin-left: 5px;">
+                <span class="instruccion-chica" *ngIf="codigo!.errors == null || (codigo!.dirty == false && codigo!.touched == false)">
+                  *Campo obligatorio.
+                </span>
+              </div>
+              
 
-              <div *ngFor="let error of mensajesValidacion.codigo">
+              <div *ngFor="let error of mensajesValidacion.codigo" style="margin-left: 5px;">
                 <ng-container *ngIf="codigo!.hasError(error.type) && (codigo!.dirty || codigo!.touched)">
-                  <small class="errorValidation">{{error.message}}</small>
+                  <small class="errorValidation-chica">{{error.message}}</small>
                 </ng-container>
               </div>
             </ion-col>

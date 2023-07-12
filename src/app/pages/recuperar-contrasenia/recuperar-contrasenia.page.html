@@ -19,15 +19,17 @@
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="text" formControlName="correo" placeholder="Usuario"></ion-input>
           </ion-item>
-          <span class="instruccion" *ngIf="(correo!.dirty == false && correo!.touched == false)">
-            *Por favor ingrese su correo electrónico.
-          </span>
-          <span class="instruccion" *ngIf="correo!.errors == null">
-            *Por favor ingrese su correo electrónico.
-          </span>
-          <div *ngFor="let error of mensajesValidacion.correo">
+
+          <div  style="margin-left: 5px;">
+            <span class="instruccion-chica" *ngIf="(correo!.dirty == false && correo!.touched == false) || correo!.errors == null">
+              *Por favor ingrese su correo electrónico.
+            </span>
+          </div>
+          
+          
+          <div *ngFor="let error of mensajesValidacion.correo"  style="margin-left: 5px;">
             <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">
-              <small class="errorValidation">{{error.message}}</small>
+              <small class="errorValidation-chica">{{error.message}}</small>
             </ng-container>
           </div>
           
