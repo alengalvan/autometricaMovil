@@ -370,5 +370,9 @@ export class UtilitiesService {
     return "c06c7c5f8b043518"
   }
 
+  public mensajeRegexContrasenia(){
+    let signo = '"';
+    return "*La contraseña debe tener al menos 8 caracteres, un número, un caracter especial ($ @ ! % * ? & _ - + # . ( / " + signo + " ' : ;), una letra mayúscula y letras minúsculas."
+  }
 
 }

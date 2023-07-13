@@ -86,7 +86,7 @@ export class DatosGeneralesEdicionPage implements OnInit {
     ],
     contrasenia: [
       { type: "required", message: "*Por favor ingrese su contraseña." },
-      { type: "pattern", message: "*La contraseña debe tener 8 caracteres un número, un símbolo, una letra mayúscula, letras minúsculas y no tener espacios en blanco." },
+      { type: "pattern", message: this.utilitiesService.mensajeRegexContrasenia() },
 
     ],
     confirmacionContrasenia: [

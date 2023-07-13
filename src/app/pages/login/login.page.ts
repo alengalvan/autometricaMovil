@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
     ],
     contrasenia: [
       { type: "required", message: "*Por favor ingrese su contraseña." },
-      { type: "pattern", message: "*La contraseña debe tener al menos 8 caracteres, un número, un carácter especial, una letra mayúscula y letras minúsculas." },
+      { type: "pattern", message: this.utilitiesService.mensajeRegexContrasenia() },
     ]
   };
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
