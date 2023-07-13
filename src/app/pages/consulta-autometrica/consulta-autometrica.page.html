@@ -17,6 +17,10 @@
       <form [formGroup]="form" autocomplete="off">
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-label">Marca</span>
+        </div>
+
         <ion-item class="ion-item-input" mode="md">
           <ion-select formControlName="marca" placeholder="Marca" autocomplete="off"
             (ionChange)="cambiosSelectOnline('marca')" *ngIf="hayInternet">
@@ -42,7 +46,7 @@
             *Seleccione la marca.
           </span>
         </div>
-        
+
         <div *ngFor="let error of mensajesValidacion.marca" style="margin-left: 5px;">
           <ng-container *ngIf="marca!.hasError(error.type) && (marca!.dirty || marca!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
@@ -50,6 +54,9 @@
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-label">Año</span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-select formControlName="anio" placeholder="Año" autocomplete="off"
             (ionChange)="cambiosSelectOnline('anio')" *ngIf="hayInternet">
@@ -74,7 +81,7 @@
             *Seleccione el año.
           </span>
         </div>
-        
+
         <div *ngFor="let error of mensajesValidacion.anio" style="margin-left: 5px;">
           <ng-container *ngIf="anio!.hasError(error.type) && (anio!.dirty || anio!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
@@ -82,8 +89,10 @@
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-label">Submarca</span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
-
           <ion-select formControlName="submarca" placeholder="Submarca" autocomplete="off" *ngIf="hayInternet">
             <ion-select-option *ngFor="let item of subMarcasOnline" [value]="item.subbrand">
               {{ item.subbrand }}
@@ -105,7 +114,7 @@
             *Seleccione la submarca.
           </span>
         </div>
-        
+
         <div *ngFor="let error of mensajesValidacion.submarca" style="margin-left: 5px;">
           <ng-container *ngIf="submarca!.hasError(error.type) && (submarca!.dirty || submarca!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
@@ -113,6 +122,9 @@
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-label">Kilometraje</span>
+        </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="number" formControlName="kilometraje" placeholder="Kilometraje"
             autocomplete="off"></ion-input>
@@ -123,7 +135,7 @@
             Ingrese el kilometraje.
           </span>
         </div>
-        
+
         <div *ngIf="mensajeErrorKm != ''" style="margin-left: 5px;">
           <small class="errorValidation-chica">{{mensajeErrorKm}}</small>
         </div>

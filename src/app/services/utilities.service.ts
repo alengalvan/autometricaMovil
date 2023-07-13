@@ -108,6 +108,9 @@ export class UtilitiesService {
         "nombre": "DURANGO"
       },
       {
+        "nombre": "ESTADO DE MEXICO"
+      },
+      {
         "nombre": "GUERRERO"
       },
       {
@@ -121,9 +124,6 @@ export class UtilitiesService {
       },
       {
         "nombre": "MICHOACAN"
-      },
-      {
-        "nombre": "ESTADO DE MEXICO"
       },
       {
         "nombre": "MORELOS"

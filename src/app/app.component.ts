@@ -322,10 +322,10 @@ export class AppComponent {
   public async ngOnInit() {
 
     this.haySesion = JSON.parse(localStorage.getItem('usuario')!) ? true : false;
-    console.log(this.haySesion);
+    console.log("tenemos una sesion activa ", this.haySesion);
 
     this.userChangedSubscription = this.userService.sesionActivaObs$.subscribe((valor) => {
-      console.log("valor sesion")
+      console.log("valor sesion ", valor)
       this.haySesion = valor
     })
 

@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserService {
 
-  public sesionActiva$ = new BehaviorSubject<boolean>(false);
+  public sesionActiva$ = new BehaviorSubject<boolean>(JSON.parse(localStorage.getItem('usuario')!) ? true : false);
   sesionActivaObs$ = this.sesionActiva$.asObservable();
 
   constructor(private navCtrl: NavController,

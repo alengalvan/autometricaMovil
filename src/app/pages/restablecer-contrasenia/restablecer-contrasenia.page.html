@@ -15,6 +15,11 @@
         <form [formGroup]="form" autocomplete="off">
 
           <br><br>
+          <div style="margin-left: 5px;">
+            <span class="instruccion-chica">
+              Contraseña
+            </span>
+          </div> 
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
               autocomplete="off"></ion-input>
@@ -40,6 +45,11 @@
           </div>
 
           <br><br>
+          <div style="margin-left: 5px;">
+            <span class="instruccion-chica">
+              Confirmar contraseña
+            </span>
+          </div>
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="password" formControlName="confirmarContrasenia" placeholder="Confirmar contraseña"
               #inputPasswordConfirm autocomplete="off"></ion-input>

@@ -19,13 +19,13 @@
         <br>
         <div style="margin-left: 5px;">
           <span class="instruccion-chica">
-            Nombre(s):
+            Nombre(s)
           </span>
         </div>
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="text" formControlName="nombre" placeholder="Nombre(s)" autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.nombre">
+        <div *ngFor="let error of mensajesValidacion.nombre" style="margin-left: 5px;">
           <ng-container *ngIf="nombre!.hasError(error.type) && (nombre!.dirty || nombre!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
@@ -41,7 +41,7 @@
           <ion-input appTrim type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.apellidoPaterno">
+        <div *ngFor="let error of mensajesValidacion.apellidoPaterno" style="margin-left: 5px;">
           <ng-container
             *ngIf="apellidoPaterno!.hasError(error.type) && (apellidoPaterno!.dirty || apellidoPaterno!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
@@ -58,7 +58,7 @@
           <ion-input appTrim type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.apellidoMaterno">
+        <div *ngFor="let error of mensajesValidacion.apellidoMaterno" style="margin-left: 5px;">
           <ng-container
             *ngIf="apellidoMaterno!.hasError(error.type) && (apellidoMaterno!.dirty || apellidoMaterno!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
@@ -78,7 +78,7 @@
             </ion-select-option>
           </ion-select>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.estado">
+        <div *ngFor="let error of mensajesValidacion.estado" style="margin-left: 5px;">
           <ng-container *ngIf="estado!.hasError(error.type) && (estado!.dirty || estado!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
@@ -94,7 +94,7 @@
           <ion-input appTrim type="text" formControlName="correo" placeholder="Correo electrónico"
             autocomplete="off" maxlength="60"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.correo">
+        <div *ngFor="let error of mensajesValidacion.correo" style="margin-left: 5px;">
           <ng-container *ngIf="correo!.hasError(error.type) && (correo!.dirty || correo!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
@@ -109,13 +109,18 @@
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="number" formControlName="telefono" placeholder="Teléfono (Opcional)" autocomplete="off" maxlength="10"></ion-input>
         </ion-item>
-        <div *ngFor="let error of mensajesValidacion.telefono">
+        <div *ngFor="let error of mensajesValidacion.telefono" style="margin-left: 5px;">
           <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
           </ng-container>
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Contraseña
+          </span>
+        </div> 
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña" #inputPassword
             autocomplete="off" maxlength="20"></ion-input>
@@ -140,6 +145,11 @@
         </div>
 
         <br>
+        <div style="margin-left: 5px;">
+          <span class="instruccion-chica">
+            Confirmar contraseña
+          </span>
+        </div> 
         <ion-item class="ion-item-input" mode="md">
           <ion-input appTrim type="password" formControlName="confirmacionContrasenia" placeholder="Confirmar contraseña"
             #inputPasswordConfirm autocomplete="off" maxlength="20"></ion-input>

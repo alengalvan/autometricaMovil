@@ -13,6 +13,9 @@
         <form [formGroup]="form" autocomplete="off">
 
           <br><br>
+          <div style="margin-left: 5px;">
+            <span class="instruccion-label">Usuario</span>
+          </div>
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="text" formControlName="usuario" placeholder="Usuario"></ion-input>
           </ion-item>
@@ -30,6 +33,9 @@
           </div>
 
           <br><br>
+          <div style="margin-left: 5px;">
+            <span class="instruccion-label">Contraseña</span>
+          </div>
           <ion-item class="ion-item-input" mode="md">
             <ion-input appTrim type="password" formControlName="contrasenia" placeholder="Contraseña"
               #inputPassword></ion-input>
