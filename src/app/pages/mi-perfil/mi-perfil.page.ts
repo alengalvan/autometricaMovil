@@ -19,6 +19,7 @@ export class MiPerfilPage implements OnInit {
   networkListener: PluginListenerHandle | undefined;
 
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
+  licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
   public licenciaActual: any[] = []
   public historicoLicencias: any[] = [];
   public mesActual: any = new Date();
@@ -36,6 +37,9 @@ export class MiPerfilPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+
+  console.log("esta es la licencia que se ha descargado ",this.licenciaConsulta)
+
    this.hayInternet = (await Network.getStatus()).connected;
 
     Network.addListener('networkStatusChange', status => {
@@ -68,6 +72,9 @@ export class MiPerfilPage implements OnInit {
       return
     }
 
+    if (!this.hayInternet) {
+      return;
+    }
 
     let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + this.usuario.id)
     if (respuesta.status == 401) {
@@ -106,6 +113,7 @@ export class MiPerfilPage implements OnInit {
         await modal.present();
       }
     }
+    
     if (respuesta.status == true) {
       this.navCtrl.navigateRoot(ruta);
     }

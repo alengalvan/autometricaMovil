@@ -75,7 +75,7 @@
           </ion-col>
 
           <ion-col size="12" (click)="prueba()">
-            
+
             <div style="margin-left: 5px;">
               <span class="instruccion-label">Número de Tarjeta</span>
             </div>
@@ -100,9 +100,9 @@
             <br>
           </ion-col>
 
-          
+
           <ion-col size="6">
-            
+
             <div style="margin-left: 5px;">
               <span class="instruccion-label">Fecha de Vencimiento</span>
             </div>
@@ -145,12 +145,18 @@
         </ion-row>
       </div>
       <br>
-      <ion-button mode="md" expand="block" style=" --background: #FF3E44;"><span style="font-size: 12px;"
-          (click)="id ? edicionTarjeta() : altaTarjeta()"> Aceptar
-        </span></ion-button> <br>
-      <ion-button mode="md" expand="block" style=" --background: #8A8A8A;"><span style="font-size: 12px;"
-          (click)="regresar()"> Cancelar
-        </span></ion-button>
+      <ion-button mode="md" expand="block" style=" --background: #FF3E44;"
+        (click)="id ? edicionTarjeta() : altaTarjeta()">
+        <span style="font-size: 12px;">
+          Aceptar
+        </span>
+      </ion-button>
+      <br>
+      <ion-button mode="md" expand="block" style=" --background: #8A8A8A;" (click)="regresar()">
+        <span style="font-size: 12px;">
+          Cancelar
+        </span>
+      </ion-button>
     </form>
 
   </div>

@@ -141,8 +141,9 @@
         </div>
         <br><br>
 
-        <ion-button mode="md" expand="block" style="--background: #FF3E44;">
-          <span style="font-size: 12px;" (click)="hayInternet ? realizarConsultaOnline() : realizarConsulta()">
+        <ion-button mode="md" expand="block" style="--background: #FF3E44;"
+          (click)="hayInternet ? realizarConsultaOnline() : realizarConsulta()">
+          <span style="font-size: 12px;">
             Buscar
           </span>
         </ion-button>

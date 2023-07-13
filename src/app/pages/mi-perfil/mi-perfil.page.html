@@ -34,27 +34,29 @@
       <ion-row>
         <ion-col size="1"></ion-col>
         <ion-col size="10">
-          <div class="contenedor-licencias" *ngFor="let licencia of licenciaActual" style="margin-bottom: 10px">
+
+          <div class="contenedor-licencias" style="margin-bottom: 10px" *ngIf="!hayInternet && licenciaConsulta != null">
             <ion-row>
               <ion-col size="2">
                 <ion-icon src="assets/icon/perfil-persona.svg" style="zoom: 2;"></ion-icon>
               </ion-col>
               <ion-col size="8">
-                <span style="color: #8A8A8A;font-size: 20px;font-family: Roboto;font-weight: 600;"> <b>{{licencia?.name
+                <span style="color: #8A8A8A;font-size: 20px;font-family: Roboto;font-weight: 600;">
+                  <b>{{licenciaConsulta?.name
                     | titlecase }}</b></span><br>
                 <span style="font-size: 12px;color: #8A8A8A;"> Estatus: </span>
-                <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 1">Activa</span>
-                <span style="font-size: 12px;color: #A6A12C;" *ngIf="licencia.active == 2">Pendiente</span>
+                <span style="font-size: 12px;color: #4ACB48;" *ngIf="licenciaConsulta.active == 1">Activa</span>
                 <br>
-                <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date |
+                <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licenciaConsulta.expiration_date |
                   date:'dd/MM/yyyy' }} </span>
                 <br>
-                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">
-                  Edición {{licencia.mes | lowercase }} {{licencia.year_hire}}
+                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licenciaConsulta.duration_month == 1">
+                  Edición {{licenciaConsulta.mes | lowercase }} {{licenciaConsulta.year_hire}}
                 </span>
-                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month > 1">
-                  Edición {{licencia.mes | lowercase }} {{licencia.year_hire}} - {{licencia.mesFinString | lowercase}}
-                  {{licencia.year_hire}}
+                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licenciaConsulta.duration_month > 1">
+                  Edición {{licenciaConsulta.mes | lowercase }} {{licenciaConsulta.year_hire}} -
+                  {{licenciaConsulta.mesFinString | lowercase}}
+                  {{licenciaConsulta.year_hire}}
                 </span>
 
               </ion-col>
@@ -65,46 +67,112 @@
 
             <ion-row>
               <ion-col size="1"></ion-col>
-              <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 1">
+              <ion-col size="9" style="text-align: start;">
 
                 <div>
-                  <ion-icon src="assets/icon/material-symbols_download-for-offline-rounded.svg"
-                    style="zoom: 1;margin-bottom: -4px;" *ngIf="hayInternet"></ion-icon>
                   <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
-                    style="zoom: 1;margin-bottom: -4px;" *ngIf="!hayInternet"></ion-icon>
+                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
 
-                  <span style="font-size: 12px;" *ngIf="licencia.duration_month == 1"
-                    [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
-                    Descargar la edición de {{licencia.mes}} {{licencia.year_hire}}
+                  <span style="font-size: 12px;" *ngIf="licenciaConsulta.duration_month == 1"
+                    [ngStyle]="{'color': hayInternet ? '#8A8A8A' : '#8A8A8A' }">
+                    Descargar la edición de {{licenciaConsulta.mes}} {{licenciaConsulta.year_hire}}
                   </span>
 
-                  <span *ngIf="licencia.duration_month > 1" style="font-size: 12px;"
-                    [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
-                    Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
-                    lowercase}} {{licencia.year_hire}}
+                  <span *ngIf="licenciaConsulta.duration_month > 1" style="font-size: 12px;"
+                    [ngStyle]="{'color': hayInternet ? '#8A8A8A' : '#8A8A8A' }">
+                    Descargar la edición de {{licenciaConsulta.mes}} {{licenciaConsulta.year_hire}} -
+                    {{licenciaConsulta.mesFinString|
+                    lowercase}} {{licenciaConsulta.year_hire}}
                   </span>
                 </div>
 
               </ion-col>
-              <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 2">
-                <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
-                  style="zoom: 1;margin-bottom: -4px;"></ion-icon>
-                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">
-                  Descargar la edición de {{licencia.mes}} {{licencia.year_hire}}
-                </span>
-                <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month > 1">
-                  Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
-                  lowercase}} {{licencia.year_hire}}
-                </span>
-              </ion-col>
+
             </ion-row>
             <br>
           </div>
 
-          <div *ngIf="licenciaActual.length == 0">
-            <span style="size: 20x;color:#8A8A8A;">No cuenta con licencias activas.</span>
+          <div *ngIf="hayInternet">
+            <div class="contenedor-licencias" *ngFor="let licencia of licenciaActual" style="margin-bottom: 10px">
+              <ion-row>
+                <ion-col size="2">
+                  <ion-icon src="assets/icon/perfil-persona.svg" style="zoom: 2;"></ion-icon>
+                </ion-col>
+                <ion-col size="8">
+                  <span style="color: #8A8A8A;font-size: 20px;font-family: Roboto;font-weight: 600;">
+                    <b>{{licencia?.name
+                      | titlecase }}</b></span><br>
+                  <span style="font-size: 12px;color: #8A8A8A;"> Estatus: </span>
+                  <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 1">Activa</span>
+                  <span style="font-size: 12px;color: #A6A12C;" *ngIf="licencia.active == 2">Pendiente</span>
+                  <br>
+                  <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date |
+                    date:'dd/MM/yyyy' }} </span>
+                  <br>
+                  <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">
+                    Edición {{licencia.mes | lowercase }} {{licencia.year_hire}}
+                  </span>
+                  <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month > 1">
+                    Edición {{licencia.mes | lowercase }} {{licencia.year_hire}} - {{licencia.mesFinString | lowercase}}
+                    {{licencia.year_hire}}
+                  </span>
+
+                </ion-col>
+                <ion-col size="2">
+                  <ion-icon src="assets/icon/perfil-insignia.svg" style="zoom: 2;"></ion-icon>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col size="1"></ion-col>
+                <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 1">
+
+                  <div>
+                    <ion-icon src="assets/icon/material-symbols_download-for-offline-rounded.svg"
+                      style="zoom: 1;margin-bottom: -4px;" *ngIf="hayInternet"></ion-icon>
+                    <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
+                      style="zoom: 1;margin-bottom: -4px;" *ngIf="!hayInternet"></ion-icon>
+
+                    <span style="font-size: 12px;" *ngIf="licencia.duration_month == 1"
+                      [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
+                      Descargar la edición de {{licencia.mes}} {{licencia.year_hire}}
+                    </span>
+
+                    <span *ngIf="licencia.duration_month > 1" style="font-size: 12px;"
+                      [ngStyle]="{'color': hayInternet ? '#4ACB48' : '#8A8A8A' }" (click)="descargarBd(licencia)">
+                      Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
+                      lowercase}} {{licencia.year_hire}}
+                    </span>
+                  </div>
+
+                </ion-col>
+                <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 2">
+                  <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
+                    style="zoom: 1;margin-bottom: -4px;"></ion-icon>
+                  <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">
+                    Descargar la edición de {{licencia.mes}} {{licencia.year_hire}}
+                  </span>
+                  <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month > 1">
+                    Descargar la edición de {{licencia.mes}} {{licencia.year_hire}} - {{licencia.mesFinString|
+                    lowercase}} {{licencia.year_hire}}
+                  </span>
+                </ion-col>
+              </ion-row>
+              <br>
+            </div>
           </div>
 
+          <div *ngIf="hayInternet">
+            <div *ngIf="licenciaActual.length == 0">
+              <span style="size: 20x;color:#8A8A8A;">No cuenta con licencias activas.</span>
+            </div>
+          </div>
+
+          <div *ngIf="!hayInternet">
+            <div *ngIf="licenciaConsulta == null">
+              <span style="size: 20x;color:#8A8A8A;">No cuenta con licencias activas.</span>
+            </div>
+          </div>
         </ion-col>
       </ion-row>
 
@@ -113,8 +181,8 @@
       <ion-row>
         <ion-col size="1"></ion-col>
         <ion-col size="10">
-          <ion-button mode="md" expand="block">
-            <span style="font-size: 12px;" (click)="navegarA('pagos')" *ngIf="mostrarAdquirirLicencia > 0">
+          <ion-button mode="md" expand="block" (click)="navegarA('pagos')">
+            <span style="font-size: 12px;" *ngIf="mostrarAdquirirLicencia > 0">
               Adquirir Licencia
             </span>
             <span style="font-size: 12px;" (click)="navegarA('hacer-transaccion/2')"
