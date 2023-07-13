@@ -21,7 +21,7 @@ export class DatosGeneralesEdicionPage implements OnInit {
   @ViewChild('inputPasswordConfirm', { static: false })
   inputPasswordConfirm!: IonInput;
   public verContrasenaConfirm: boolean = false;
-  public regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.#])([A-Za-z\d$@$!%*?&.#]|[^ ]){8,20}$/;
+  public regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?#"'(/.:;+&_-])([A-Za-z\d$@$!%*?#"'(/.:;+&_-]|[^ ]){8,20}$/;
   public contraseniaComparacionValida: boolean = false;
 
   public form: FormGroup = this.formBuilder.group({

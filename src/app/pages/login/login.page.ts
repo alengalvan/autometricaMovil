@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
   @ViewChild('inputPassword', { static: false })
   inputPassword!: IonInput;
   public verContrasena: boolean = false;
-  public regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.#])([A-Za-z\d$@$!%*?&.#]|[^ ]){8,20}$/;
+  public regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?#"'(/.:;+&_-])([A-Za-z\d$@$!%*?#"'(/.:;+&_-]|[^ ]){8,20}$/;
   public form: FormGroup = this.formBuilder.group({
     usuario: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")]],
     contrasenia: [null, [Validators.required, Validators.pattern(this.regexContrasenia)]],
