@@ -114,7 +114,7 @@
           </p>
 
           <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0">
-            Kilometraje: {{ busquedaAutometrica.kilometraje }} km
+            Kilometraje: {{ busquedaAutometrica.kilometraje | number }} km
           </p>
 
           <p class="text" style="text-decoration-line: underline;font-style: italic;"
