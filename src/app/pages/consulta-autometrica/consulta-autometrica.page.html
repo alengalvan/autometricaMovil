@@ -25,14 +25,14 @@
           <ion-select formControlName="marca" placeholder="Marca" autocomplete="off"
             (ionChange)="cambiosSelectOnline('marca')" *ngIf="hayInternet">
             <ion-select-option *ngFor="let item of marcasOnline" [value]="item.brand">
-              {{ item.brand | titlecase }}
+              {{ item.brand }}
             </ion-select-option>
           </ion-select>
 
           <ion-select formControlName="marca" placeholder="Marca" autocomplete="off"
             (ionChange)="cambiosSelect('marca')" *ngIf="!hayInternet">
             <ion-select-option *ngFor="let item of marcasOffline" [value]="item">
-              {{ item | titlecase }}
+              {{ item }}
             </ion-select-option>
           </ion-select>
 
@@ -125,10 +125,9 @@
         <div style="margin-left: 5px;">
           <span class="instruccion-label">Kilometraje</span>
         </div>
-        <ion-item class="ion-item-input" mode="md">
-          <ion-input appTrim type="number" formControlName="kilometraje" placeholder="Kilometraje"
-            autocomplete="off"></ion-input>
-        </ion-item>
+
+        <input appTrim appCurrencyMask type="text" formControlName="kilometraje" placeholder="Kilometraje" maxlength="7"
+          style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;">
 
         <div style="margin-left: 5px;">
           <span class="instruccion-chica" *ngIf="mensajeErrorKm == ''">
