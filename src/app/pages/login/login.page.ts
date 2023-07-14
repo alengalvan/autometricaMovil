@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http'
 import { BehaviorSubject } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { Device } from '@capacitor/device';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-login',
@@ -59,14 +60,19 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
-    await this.descargarArchivo(1);
-    await this.descargarArchivo(2);
-    this.idMobile = (await Device.getId()).identifier;
-    await this.utilitiesService.obtenerInfo();
     let datosPersonales = JSON.parse(localStorage.getItem('datosPersonales')!);
     console.log(datosPersonales)
+
     if (datosPersonales) {
-      await this.iniciarSesionAutomatico(datosPersonales)
+      if ((await Network.getStatus()).connected) {
+        await this.iniciarSesionAutomatico(datosPersonales)
+        await this.descargarArchivo(1);
+        await this.descargarArchivo(2);
+        this.idMobile = (await Device.getId()).identifier;
+        await this.utilitiesService.obtenerInfo();
+      } else {
+        this.navCtrl.navigateRoot("mi-perfil")
+      }
     }
   }
 
@@ -194,23 +200,23 @@ export class LoginPage implements OnInit {
     }
   }
 
-  public async descargarArchivo(tipo: number){
+  public async descargarArchivo(tipo: number) {
     let objeto = {
       type: tipo
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.descargarPDF, objeto)
-    if(respuesta.status == 200){
+    if (respuesta.status == 200) {
       let resp = respuesta.error?.text;
-      if(tipo == 1){
+      if (tipo == 1) {
         localStorage.setItem("glosario", resp)
       }
 
-      if(tipo == 2){
+      if (tipo == 2) {
         localStorage.setItem("kilometraje", resp)
       }
     }
     console.log(respuesta)
-    
+
 
   }
 

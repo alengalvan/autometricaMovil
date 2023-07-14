@@ -24,14 +24,14 @@
           <span style="font-size: 12px;color: #438EFF;">{{usuario.email}} </span><br>
         </div>
         <br>
-        <ion-row *ngFor="let forma of tiposFormasPago" style="margin-bottom: 15px;">
+        <ion-row *ngFor="let forma of tiposFormasPago" style="margin-bottom: 15px;" (click)="irFormaPago(forma)">
           <ion-col size="9">
             <span style="font-size: 20px;color:#616161;"> {{forma.nombre}} </span> <br>
             <span style="font-size: 12px;color:#616161;"> {{forma.desc}} </span> <br>
             <span style="font-size: 12px;color:#438EFF;" *ngIf="forma.id == 2" (click)="ingresarTarjetas()"> {{forma.textoTarjeta}} </span>
             <span style="font-size: 12px;color:#438EFF;" *ngIf="forma.id != 2"> {{forma.textoTarjeta}} </span>
           </ion-col>
-          <ion-col size="3" style="text-align: end;padding-top: 20px;" (click)="irFormaPago(forma)">
+          <ion-col size="3" style="text-align: end;padding-top: 20px;">
             <ion-icon name="chevron-forward-outline" style="zoom: 1.5;"></ion-icon>
           </ion-col>
         </ion-row>
