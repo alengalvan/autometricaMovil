@@ -87,13 +87,13 @@ export class UtilitiesService {
         "nombre": "BAJA CALIFORNIA SUR"
       },
       {
-        "nombre": "CHIHUAHUA"
+        "nombre": "CAMPECHE"
       },
       {
         "nombre": "CHIAPAS"
       },
       {
-        "nombre": "CAMPECHE"
+        "nombre": "CHIHUAHUA"
       },
       {
         "nombre": "CIUDAD DE MEXICO"
@@ -111,10 +111,10 @@ export class UtilitiesService {
         "nombre": "ESTADO DE MEXICO"
       },
       {
-        "nombre": "GUERRERO"
+        "nombre": "GUANAJUATO"
       },
       {
-        "nombre": "GUANAJUATO"
+        "nombre": "GUERRERO"
       },
       {
         "nombre": "HIDALGO"
@@ -141,16 +141,16 @@ export class UtilitiesService {
         "nombre": "PUEBLA"
       },
       {
-        "nombre": "QUINTANA ROO"
-      },
-      {
         "nombre": "QUERETARO"
       },
       {
-        "nombre": "SINALOA"
+        "nombre": "QUINTANA ROO"
       },
       {
         "nombre": "SAN LUIS POTOSI"
+      },
+      {
+        "nombre": "SINALOA"
       },
       {
         "nombre": "SONORA"
@@ -159,10 +159,10 @@ export class UtilitiesService {
         "nombre": "TABASCO"
       },
       {
-        "nombre": "TLAXCALA"
+        "nombre": "TAMAULIPAS"
       },
       {
-        "nombre": "TAMAULIPAS"
+        "nombre": "TLAXCALA"
       },
       {
         "nombre": "VERACRUZ"
