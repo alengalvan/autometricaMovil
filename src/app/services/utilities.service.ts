@@ -372,7 +372,7 @@ export class UtilitiesService {
 
   public mensajeRegexContrasenia(){
     let signo = '"';
-    return "*La contraseña debe tener al menos 8 caracteres, un número, un caracter especial ($ @ ! % * ? & _ - + # . ( / " + signo + " ' : ;), una letra mayúscula y letras minúsculas."
+    return "*La contraseña debe tener al menos 8 caracteres, un número, un caracter especial $ @ ! % * ? & _ - + # . ( / " + signo + " ' : ; una letra mayúscula y letras minúsculas."
   }
 
 }
