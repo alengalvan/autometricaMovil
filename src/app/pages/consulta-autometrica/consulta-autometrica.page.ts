@@ -36,6 +36,7 @@ export class ConsultaAutometricaPage implements OnInit {
   public hayInternet = this.route.snapshot.paramMap.get('id');
   public LicenciasActivas: any = [];
   public dollarUSLocale = Intl.NumberFormat('en-US');
+  licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
 
   get marca() {
     return this.form.get("marca");
@@ -80,6 +81,8 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async ngOnInit() {
     console.log(this.hayInternet)
+    let n:any = null
+    localStorage.setItem("kilometraje", n)
     if (this.hayInternet) {
       await this.obtenerHistoricoLicencias()
     } else {
@@ -206,6 +209,19 @@ export class ConsultaAutometricaPage implements OnInit {
     this.marcasOffline = [];
 
     // agregamos las lineas
+    // for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
+    //   if (this.obtenerTodasLineas[i].subbrand.includes('(cambio de línea') 
+    //   || this.obtenerTodasLineas[i].subbrand.includes('(línea anterior')
+    //   || this.obtenerTodasLineas[i].subbrand.includes('(línea nueva')) {
+    //     let comienza = this.obtenerTodasLineas[i].subbrand.indexOf("(")
+    //     let final = this.obtenerTodasLineas[i].subbrand.indexOf(")")
+    //     this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand.slice(0, comienza).trim();
+    //   } else {
+    //     this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand
+    //   }
+
+    // }
+
     for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
       if (this.obtenerTodasLineas[i].subbrand.includes('(') && this.obtenerTodasLineas[i].subbrand.includes(')')) {
         let comienza = this.obtenerTodasLineas[i].subbrand.indexOf("(")
@@ -224,6 +240,7 @@ export class ConsultaAutometricaPage implements OnInit {
     for (let i = 0; i < array.length; i++) {
       this.marcasOffline.push(array[i].brand)
     }
+    this.marcasOffline = this.marcasOffline.sort();
     console.log(this.marcasOffline)
     console.log(this.obtenerTodasLineas)
   }
@@ -249,7 +266,7 @@ export class ConsultaAutometricaPage implements OnInit {
     for (let i = 0; i < arrayFiltrado.length; i++) {
       this.aniosOffline.push(arrayFiltrado[i].year)
     }
-    this.aniosOffline.sort(function(a: number, b: number){return b - a});
+    this.aniosOffline.sort(function (a: number, b: number) { return b - a });
     console.log(this.aniosOffline)
   }
 
@@ -274,7 +291,7 @@ export class ConsultaAutometricaPage implements OnInit {
     for (let i = 0; i < arrayFiltrado.length; i++) {
       this.subMarcasOffline.push(arrayFiltrado[i].subbrandSinLinea)
     }
-
+    this.subMarcasOffline = this.subMarcasOffline.sort();
     console.log("resultado de submarca,", this.subMarcasOffline)
   }
 
@@ -351,14 +368,22 @@ export class ConsultaAutometricaPage implements OnInit {
       return;
     }
 
+
     let objetoPrincipal = this.licenciaActual[0];
     console.log(objetoPrincipal)
+
     var anio: any = this.form.controls['anio'].value;
     var marca = this.form.controls['marca'].value;
     var submarca = this.form.controls['submarca'].value;
     var kilometraje = this.form.controls['kilometraje'].value;
+    var kil: any;
+    if (kilometraje) {
+      kil = kilometraje.includes(",") ? Number(kilometraje.replace(",", "")) : Number(kilometraje)
+    } else {
+      kil = 0;
+    }
 
-    if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
+    if (kil == 0 || kil == "" || !kil) {
       localStorage.setItem("opcionAlerta", "kilometraje-vacio")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
@@ -374,20 +399,17 @@ export class ConsultaAutometricaPage implements OnInit {
               year_period: objetoPrincipal.year_hire,
               brand: marca,
               sub_brand: submarca,
-              mileage: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje,
+              mileage: kil == 0 || kil == "" || !kil ? 0 : kilometraje,
               year_car: anio,
               mobile_identifier: await this.utilitiesService.idTelefono()
             }
 
             let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
             console.log(respuesta)
-           
+
             if (respuesta.status == true) {
               if (respuesta.lineales.length > 0) {
                 respuesta.lineales = await this.validarCampoPrecio(respuesta.lineales)
-                // respuesta.kilometraje = await this.validarCampoPrecioKm(respuesta.kilometraje)
-                // respuesta.añadir = await this.validarCampoPrecioAnadir(respuesta.añadir)
-                
                 localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
                 localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
                 localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -395,9 +417,8 @@ export class ConsultaAutometricaPage implements OnInit {
                   anio: anio,
                   marca: marca,
                   submarca: submarca,
-                  kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+                  kilometraje: kil == 0 || kil == "" || !kil ? 0 : kil
                 }
-
                 localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
                 this.navCtrl.navigateRoot("resultados-consulta/1")
               }
@@ -406,13 +427,14 @@ export class ConsultaAutometricaPage implements OnInit {
         });
       await modal.present();
     } else {
+
       let objeto = {
         client_id: this.usuario.id,
         month_period: objetoPrincipal.month_hire,
         year_period: objetoPrincipal.year_hire,
         brand: marca,
         sub_brand: submarca,
-        mileage: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje,
+        mileage: kil == 0 || kil == "" || !kil ? 0 : kil,
         year_car: anio,
         mobile_identifier: await this.utilitiesService.idTelefono()
       }
@@ -420,9 +442,14 @@ export class ConsultaAutometricaPage implements OnInit {
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
       console.log(respuesta)
       if (respuesta.status == true) {
-        if (respuesta.lineales.length > 0 && respuesta.kilometraje.length > 0) {
+
+        if(respuesta.kilometraje.length == 0){
+          localStorage.setItem("kilometraje", "1")
+        }else{
+          localStorage.setItem("kilometraje", "2")
+        }
+        if (respuesta.lineales.length > 0) {
           respuesta.lineales = await this.validarCampoPrecio(respuesta.lineales)
-          // respuesta.kilometraje = await this.validarCampoPrecioKm(respuesta.kilometraje)
           localStorage.setItem("resultadosCars", JSON.stringify(respuesta.lineales))
           localStorage.setItem("resultadosAñadir", JSON.stringify(respuesta.añadir))
           localStorage.setItem("resultadosKilometraje", JSON.stringify(respuesta.kilometraje))
@@ -430,9 +457,9 @@ export class ConsultaAutometricaPage implements OnInit {
             anio: anio,
             marca: marca,
             submarca: submarca,
-            kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+            kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje.includes(",") ? Number(kilometraje.replace(",", "")) : Number(kilometraje)
           }
-
+          console.log(objetoBusqueda)
           localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
           this.navCtrl.navigateRoot("resultados-consulta/1")
         } else {
@@ -444,7 +471,6 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async realizarConsulta() {
-    
     if (!this.form.valid) {
       await this.utilitiesService.validaCamposFormulario([this.form])
       localStorage.setItem("opcionAlerta", "campos-requeridos")
@@ -468,12 +494,14 @@ export class ConsultaAutometricaPage implements OnInit {
       anio: anio,
       marca: marca,
       submarca: submarca,
-      kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje
+      kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje.includes(",") ?
+        Number(kilometraje.replace(",", "")) : Number(kilometraje)
     }
+
 
     localStorage.setItem("busquedaAutometrica", JSON.stringify(objetoBusqueda))
 
-    if (kilometraje == 0 || kilometraje == "" || !kilometraje) {
+    if (objetoBusqueda.kilometraje == 0) {
       localStorage.setItem("opcionAlerta", "kilometraje-vacio")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
@@ -496,8 +524,9 @@ export class ConsultaAutometricaPage implements OnInit {
               }
             }
 
-            console.log(valoresTotalesLinea)
+
             valoresTotalesLinea = await this.validarCampoPrecioOffline(valoresTotalesLinea)
+            console.log("despues de colocarles los valores ", valoresTotalesLinea)
             // separar por linea
             let lineasNuevas = [];
             let cambioLinea = [];
@@ -505,15 +534,15 @@ export class ConsultaAutometricaPage implements OnInit {
             let sinInformacion = [];
 
             for (let i = 0; i < valoresTotalesLinea.length; i++) {
-              if (valoresTotalesLinea[i].subbrand.includes('(línea nueva)')) {
+              if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(línea nueva)')) {
                 lineasNuevas.push(valoresTotalesLinea[i])
               }
 
-              if (valoresTotalesLinea[i].subbrand.includes('(cambio de línea)')) {
+              if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(cambio de línea)')) {
                 cambioLinea.push(valoresTotalesLinea[i])
               }
 
-              if (valoresTotalesLinea[i].subbrand.includes('(línea anterior)')) {
+              if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(línea anterior)')) {
                 lineaAnterior.push(valoresTotalesLinea[i])
               }
 
@@ -522,6 +551,7 @@ export class ConsultaAutometricaPage implements OnInit {
               }
 
             }
+
 
             let respuesta = [];
 
@@ -538,8 +568,12 @@ export class ConsultaAutometricaPage implements OnInit {
               }
             }
 
-            localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
-            this.navCtrl.navigateRoot("resultados-consulta")
+            if (respuestaFiltrada.length > 0) {
+              localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
+              this.navCtrl.navigateRoot("resultados-consulta")
+            } else {
+              console.log("no existen registros")
+            }
             console.log(respuestaFiltrada);
           }
         });
@@ -568,15 +602,15 @@ export class ConsultaAutometricaPage implements OnInit {
 
       // iteracion para que se generen los grupos
       for (let i = 0; i < valoresTotalesLinea.length; i++) {
-        if (valoresTotalesLinea[i].subbrand.includes('(línea nueva)')) {
+        if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(línea nueva)')) {
           lineasNuevas.push(valoresTotalesLinea[i])
         }
 
-        if (valoresTotalesLinea[i].subbrand.includes('(cambio de línea)')) {
+        if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(cambio de línea)')) {
           cambioLinea.push(valoresTotalesLinea[i])
         }
 
-        if (valoresTotalesLinea[i].subbrand.includes('(línea anterior)')) {
+        if (valoresTotalesLinea[i].subbrand.toLowerCase().includes('(línea anterior)')) {
           lineaAnterior.push(valoresTotalesLinea[i])
         }
 
@@ -638,27 +672,23 @@ export class ConsultaAutometricaPage implements OnInit {
         }
       }
 
-      if (noExistenKilometros == 0) {
-        localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
-        this.navCtrl.navigateRoot("resultados-consulta")
+
+      if(noExistenKilometros == 0){
+        localStorage.setItem("kilometraje", "1")
       }else{
-        this.mensajeErrorKm = "Kilometraje inválido.";
-        return;
+        localStorage.setItem("kilometraje", "2")
       }
 
       console.log(respuestaFiltrada);
-      // localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
-      // this.navCtrl.navigateRoot("resultados-consulta")
-
-      //   console.log(this.obtenerTodasLineas)
-      // console.log(this.obtenerTodasMillas)
-      // console.log(this.obtenerTodasImagenes)
+      localStorage.setItem("resultadosConsulta", JSON.stringify(respuestaFiltrada))
+      this.navCtrl.navigateRoot("resultados-consulta")
     }
 
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ordenarRespuesta(arrayLinea: any) {
+    console.log(arrayLinea)
     if (arrayLinea.length == 0) return null;
 
     let lineas = [];
@@ -666,7 +696,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
     for (let i = 0; i < arrayLinea.length; i++) {
       // debugger
-      if (arrayLinea[i].add_version == "") {
+      if (arrayLinea[i].add_version != "5") {
         lineas.push(arrayLinea[i])
       } else {
         anadires.push(arrayLinea[i])
@@ -689,16 +719,20 @@ export class ConsultaAutometricaPage implements OnInit {
   }
 
 
-  public async validarCampoPrecio(array: any){
+  public async validarCampoPrecio(array: any) {
     console.log(array)
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < array[i].list.length; j++) {
-        if(array[i].list[j].sale.search("[a-zA-Z ]") == -1 && array[i].list[j].sale != "" ){
+        console.log(array[i].list[j].sale)
+        console.log(array[i].list[j].sale.search("[a-zA-Z ]"))
+        if (array[i].list[j].sale.search("[a-zA-Z ]") == -1 && array[i].list[j].sale != "" && !array[i].list[j].sale.includes("$")) {
           array[i].list[j].sale = "$" + this.dollarUSLocale.format(array[i].list[j].sale)
           console.log(array[i].list[j].sale)
         }
-
-        if(array[i].list[j].purchase.search("[a-zA-Z ]") == -1 && array[i].list[j].purchase != "" ){
+        console.log(array[i].list[j].purchase)
+        console.log(array[i].list[j].purchase.search("[a-zA-Z ]"))
+        // debugger
+        if (array[i].list[j].purchase.search("[a-zA-Z ]") == -1 && array[i].list[j].purchase != "" && !array[i].list[j].purchase.includes("$")) {
           array[i].list[j].purchase = "$" + this.dollarUSLocale.format(array[i].list[j].purchase)
           console.log(array[i].list[j].purchase)
         }
@@ -706,28 +740,28 @@ export class ConsultaAutometricaPage implements OnInit {
     }
     console.log(array)
     return array
-    
+
   }
 
-  
-  public async validarCampoPrecioOffline(array: any){
+
+  public async validarCampoPrecioOffline(array: any) {
     console.log(array)
     for (let i = 0; i < array.length; i++) {
-      
-        if(array[i].sale.search("[a-zA-Z ]") == -1 && array[i].sale != "" ){
-          array[i].sale = "$" + this.dollarUSLocale.format(array[i].sale)
-          console.log(array[i].sale)
-        }
 
-        if(array[i].purchase.search("[a-zA-Z ]") == -1 && array[i].purchase != "" ){
-          array[i].purchase = "$" + this.dollarUSLocale.format(array[i].purchase)
-          console.log(array[i].purchase)
-        }
-      
+      if (array[i].sale.search("[a-zA-Z ]") == -1 && array[i].sale != "" && !array[i].sale.includes("$")) {
+        console.log(array[i].sale)
+        array[i].sale = "$" + this.dollarUSLocale.format(array[i].sale)
+        console.log(array[i].sale)
+      }
+      if (array[i].purchase.search("[a-zA-Z ]") == -1 && array[i].purchase != "" && !array[i].purchase.includes("$")) {
+        array[i].purchase = "$" + this.dollarUSLocale.format(array[i].purchase)
+        console.log(array[i].purchase)
+      }
+
     }
     console.log(array)
     return array
-    
+
   }
 
 

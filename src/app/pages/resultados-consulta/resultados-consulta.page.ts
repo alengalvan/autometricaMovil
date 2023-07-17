@@ -26,6 +26,7 @@ export class ResultadosConsultaPage implements OnInit {
 
   public hayVenta: number = 0;
   public hayCompra: number = 0;
+  public hayKilometraje: string = localStorage.getItem('kilometraje')!;
 
   constructor(public navCtrl: NavController,
     public utilitiesService: UtilitiesService,
@@ -33,12 +34,7 @@ export class ResultadosConsultaPage implements OnInit {
 
   public async ngOnInit() {
 
-    // console.log(this.resultasCarsConsulta)
-    // console.log(this.resultadosAnadir)
-    // console.log(this.resultadosKilometraje)
-    // console.log(this.busquedaAutometrica)
-    // console.log(this.licenciaConsulta)
-    console.log(this.hayInternet)
+    console.log(this.hayKilometraje)
 
     if (this.hayInternet) {
       await this.acomodarDatos()
