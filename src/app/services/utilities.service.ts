@@ -96,7 +96,7 @@ export class UtilitiesService {
         "nombre": "CHIHUAHUA"
       },
       {
-        "nombre": "CIUDAD DE MEXICO"
+        "nombre": "CIUDAD DE MÉXICO"
       },
       {
         "nombre": "COAHUILA"
@@ -108,7 +108,7 @@ export class UtilitiesService {
         "nombre": "DURANGO"
       },
       {
-        "nombre": "ESTADO DE MEXICO"
+        "nombre": "ESTADO DE MÉXICO"
       },
       {
         "nombre": "GUANAJUATO"
@@ -123,7 +123,7 @@ export class UtilitiesService {
         "nombre": "JALISCO"
       },
       {
-        "nombre": "MICHOACAN"
+        "nombre": "MICHOACÁN"
       },
       {
         "nombre": "MORELOS"
@@ -132,7 +132,7 @@ export class UtilitiesService {
         "nombre": "NAYARIT"
       },
       {
-        "nombre": "NUEVO LEON"
+        "nombre": "NUEVO LEÓN"
       },
       {
         "nombre": "OAXACA"
@@ -141,13 +141,13 @@ export class UtilitiesService {
         "nombre": "PUEBLA"
       },
       {
-        "nombre": "QUERETARO"
+        "nombre": "QUERÉTARO"
       },
       {
         "nombre": "QUINTANA ROO"
       },
       {
-        "nombre": "SAN LUIS POTOSI"
+        "nombre": "SAN LUIS POTOSÍ"
       },
       {
         "nombre": "SINALOA"
@@ -168,7 +168,7 @@ export class UtilitiesService {
         "nombre": "VERACRUZ"
       },
       {
-        "nombre": "YUCATAN"
+        "nombre": "YUCATÁN"
       },
       {
         "nombre": "ZACATECAS"

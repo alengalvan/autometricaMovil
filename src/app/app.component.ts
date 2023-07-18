@@ -321,6 +321,17 @@ export class AppComponent {
       }
     }
 
+    if (respuesta!.statusText! == 'Unauthorized') {
+      localStorage.setItem("opcionAlerta", "login-sesion-activa")
+      const modal = await this.modalController.create({
+        component: ModalAlertasCustomPage,
+        cssClass: 'transparent-modal',
+        componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
+      })
+      await modal.present();
+      await this.cerrarSesion();
+    }
+
     if (respuesta.status == true) {
       this.licenciaActiva = 3;
     }
