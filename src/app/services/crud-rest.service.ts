@@ -103,17 +103,6 @@ export class WebRestService {
         if (showLoading) {
           loading.dismiss();
         }
-        if (err!.statusText! == 'Unauthorized') {
-          localStorage.setItem("opcionAlerta", "login-sesion-activa")
-          const modal = await this.modalController.create({
-            component: ModalAlertasCustomPage,
-            cssClass: 'transparent-modal',
-            componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
-          })
-          await modal.present();
-          await this.cerrarSesion();
-        }
-
         return resolve(err);
       });
     });
@@ -142,15 +131,6 @@ export class WebRestService {
         return resolve(null);
       });
     });
-  }
-
-  public async cerrarSesion() {
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("datosPersonales");
-    localStorage.removeItem("token");
-    localStorage.removeItem("recordarContrasenia");
-    this.userService.cerrarSesion();
-    await this.navCtrl.navigateRoot('/login');
   }
 
 }

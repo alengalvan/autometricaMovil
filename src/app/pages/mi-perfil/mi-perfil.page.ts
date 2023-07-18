@@ -9,6 +9,7 @@ import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-cu
 import { Device } from '@capacitor/device'
 import { Network } from '@capacitor/network';
 import { PluginListenerHandle } from '@capacitor/core';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-mi-perfil',
   templateUrl: './mi-perfil.page.html',
@@ -33,7 +34,8 @@ export class MiPerfilPage implements OnInit {
     public webService: WebRestService,
     public utilitiesServices: UtilitiesService,
     public sqliteService: sqliteService,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    public userService: UserService) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
@@ -145,6 +147,19 @@ export class MiPerfilPage implements OnInit {
       }
     }
 
+    if (respuesta!.statusText! == 'Unauthorized') {
+      localStorage.setItem("opcionAlerta", "login-sesion-activa")
+      const modal = await this.modalController.create({
+        component: ModalAlertasCustomPage,
+        cssClass: 'transparent-modal',
+        componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
+      })
+      await modal.present();
+      await this.cerrarSesion();
+    }
+
+    // if(respuesta.)
+
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -228,5 +243,13 @@ export class MiPerfilPage implements OnInit {
     }
   }
 
+  public async cerrarSesion() {
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("datosPersonales");
+    localStorage.removeItem("token");
+    localStorage.removeItem("recordarContrasenia");
+    this.userService.cerrarSesion();
+    await this.navCtrl.navigateRoot('/login');
+  }
 
 }
