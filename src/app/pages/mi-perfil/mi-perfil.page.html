@@ -120,7 +120,7 @@
 
                     <span *ngIf="licenciaConsulta">
                       Edición {{licencia.mes | lowercase }} {{licencia.year_hire}}
-                      <span style="color:#8a8a8a" *ngIf="licenciaConsulta.license_id == licencia.license_id">
+                      <span style="color:#8a8a8a" *ngIf="licenciaConsulta.history_id == licencia.history_id">
                         <b>descargada</b>
                       </span>
                     </span>
@@ -134,7 +134,7 @@
                       Edición {{licencia.mes | lowercase }} {{licencia.year_hire}} - {{licencia.mesFinString |
                       lowercase}}
                       {{licencia.year_hire}}
-                      <span style="color:#8a8a8a" *ngIf="licenciaConsulta.license_id == licencia.license_id">
+                      <span style="color:#8a8a8a" *ngIf="licenciaConsulta.history_id == licencia.history_id">
                         <b>descargada</b>
                       </span>
                     </span>

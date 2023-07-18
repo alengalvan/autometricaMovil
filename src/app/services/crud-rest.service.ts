@@ -1,13 +1,19 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilitiesService } from './utilities.service';
+import { ModalAlertasCustomPage } from '../pages/modal-alertas-custom/modal-alertas-custom.page';
+import { ModalController, NavController } from '@ionic/angular';
+import { UserService } from './user.service';
 
 
 @Injectable()
 export class WebRestService {
 
   constructor(public http: HttpClient,
-    public servicioUtilidades: UtilitiesService) {
+    public servicioUtilidades: UtilitiesService,
+    public modalController: ModalController,
+    private navCtrl: NavController,
+    public userService: UserService) {
 
   }
 
@@ -85,17 +91,29 @@ export class WebRestService {
       loading = await this.servicioUtilidades.presentLoading(msg);
     }
     return new Promise(resolve => {
-      let subs = this.http.post(url, objeto, options ).subscribe(data => {
+      let subs = this.http.post(url, objeto, options).subscribe(data => {
         subs.unsubscribe();
         if (showLoading) {
           loading.dismiss();
         }
         return resolve(data);
-      }, err => {
+      }, async err => {
+        console.log("este es el error", err.statusText)
         subs.unsubscribe();
         if (showLoading) {
           loading.dismiss();
         }
+        if (err!.statusText! == 'Unauthorized') {
+          localStorage.setItem("opcionAlerta", "login-sesion-activa")
+          const modal = await this.modalController.create({
+            component: ModalAlertasCustomPage,
+            cssClass: 'transparent-modal',
+            componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
+          })
+          await modal.present();
+          await this.cerrarSesion();
+        }
+
         return resolve(err);
       });
     });
@@ -126,6 +144,14 @@ export class WebRestService {
     });
   }
 
+  public async cerrarSesion() {
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("datosPersonales");
+    localStorage.removeItem("token");
+    localStorage.removeItem("recordarContrasenia");
+    this.userService.cerrarSesion();
+    await this.navCtrl.navigateRoot('/login');
+  }
 
 }
 

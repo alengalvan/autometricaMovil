@@ -33,6 +33,7 @@ export class AppComponent {
   userChangedSubscription: Subscription | undefined;
   hayInternet: boolean = false;
   pagesChangedSubscription: Subscription | undefined;
+  public cuantasLicenciasTenemosActivas: number = 0;
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private navCtrl: NavController,
@@ -131,15 +132,22 @@ export class AppComponent {
           }
 
           if (this.licenciaActiva == 3) {
-            await this.validarTransferencia();
-            let mensaje = this.mostrarAdquirirLicencia > 0 ? "Adquirir Licencia" : "Canjear Código";
-            localStorage.setItem("mensaje-modal-consulta", mensaje)
-            localStorage.setItem("opcionAlerta", "no-tiene-licencia-activa")
-            const modal = await this.modalController.create({
-              component: ModalAlertasCustomPage,
-              cssClass: 'transparent-modal',
-            })
-            await modal.present();
+            await this.revisarCuantasLicenciasTenemos();
+            
+
+            if (this.cuantasLicenciasTenemosActivas > 0) {
+              this.navCtrl.navigateRoot("consulta-autometrica/1");
+            } else {
+              await this.validarTransferencia();
+              let mensaje = this.mostrarAdquirirLicencia > 0 ? "Adquirir Licencia" : "Canjear Código";
+              localStorage.setItem("mensaje-modal-consulta", mensaje)
+              localStorage.setItem("opcionAlerta", "no-tiene-licencia-activa")
+              const modal = await this.modalController.create({
+                component: ModalAlertasCustomPage,
+                cssClass: 'transparent-modal',
+              })
+              await modal.present();
+            }
           }
 
         } else {
@@ -488,5 +496,27 @@ export class AppComponent {
       }
       return;
     }
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+  public async revisarCuantasLicenciasTenemos() {
+    this.cuantasLicenciasTenemosActivas = 0;
+    let usuario = JSON.parse(localStorage.getItem('usuario')!);
+    let objeto = {
+      client_id: usuario.id,
+      mobile_identifier: await this.utilitiesService.idTelefono()
+    }
+    let respuesta = await this.webService.postAsync(API.endpoints.historialLicencias, objeto)
+    console.log(respuesta)
+
+    if (respuesta.status == true) {
+      for (let i = 0; i < respuesta!.data!.length; i++) {
+        if (respuesta.data[i].active == 1) {
+          this.cuantasLicenciasTenemosActivas++
+        }
+      }
+
+    }
+
   }
 }
