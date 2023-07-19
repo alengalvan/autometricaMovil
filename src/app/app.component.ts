@@ -133,8 +133,6 @@ export class AppComponent {
 
           if (this.licenciaActiva == 3) {
             await this.revisarCuantasLicenciasTenemos();
-            
-
             if (this.cuantasLicenciasTenemosActivas > 0) {
               this.navCtrl.navigateRoot("consulta-autometrica/1");
             } else {
@@ -308,6 +306,21 @@ export class AppComponent {
     this.mensajeNavegacionConsultaError = "";
     let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
     console.log(respuesta);
+
+    if (respuesta!.statusText! == 'Unauthorized') {
+      console.log("vamos a sacarlo")
+      localStorage.setItem("opcionAlerta", "login-sesion-activa")
+      const modal = await this.modalController.create({
+        component: ModalAlertasCustomPage,
+        cssClass: 'transparent-modal',
+        componentProps: { mensaje: "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
+      })
+      await modal.present();
+      await this.cerrarSesion()
+      return;
+    }
+
+
     if (respuesta.status == false || respuesta.status == 401) {
       // licencia pendiente
       if (respuesta.error.message.includes("realiza una")) {
@@ -319,17 +332,6 @@ export class AppComponent {
         this.mensajeNavegacionConsultaError = respuesta.error.message;
         this.licenciaActiva = 1;
       }
-    }
-
-    if (respuesta!.statusText! == 'Unauthorized') {
-      localStorage.setItem("opcionAlerta", "login-sesion-activa")
-      const modal = await this.modalController.create({
-        component: ModalAlertasCustomPage,
-        cssClass: 'transparent-modal',
-        componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
-      })
-      await modal.present();
-      await this.cerrarSesion();
     }
 
     if (respuesta.status == true) {

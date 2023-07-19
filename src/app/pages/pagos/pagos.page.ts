@@ -68,33 +68,50 @@ export class PagosPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
-    console.log(this.usuario)
     let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
-    console.log(respuesta)
     if (respuesta.status == true) {
-      this.tiposLicencias = respuesta?.licenses;
-      this.fechaPeriodo = respuesta?.period;
+      this.tiposLicencias = [];
+      respuesta?.period.forEach((periodo: any) => {
+        let mes = periodo.month_period?.split('-')[1];
+        let anio = periodo.month_period?.split('-')[0];
+        mes = this.utilitiesServices.obtenerMesStringActual(mes)
+        respuesta?.licenses.forEach((licencia: any) => {
+          let objeto = {
+            mes: mes,
+            anio: anio,
+            licencia: licencia,
+            mesNumero: periodo.month_period?.split('-')[1],
+            mesFin: 0,
+            mesFinString: ""
+          }
 
-      if (this.fechaPeriodo) {
-        this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
-        this.anio = this.fechaPeriodo[0]?.month_period?.split('-')[0];
-      }
+          if (objeto.licencia.duration_month > 1) {
+            objeto.mesFin = Number(objeto.mesNumero) + (objeto.licencia.duration_month - 1)
+            objeto.mesFinString = this.utilitiesServices.obtenerMesStringActual(objeto.mesFin)
+          }
 
-      if (this.mes && this.anio) {
-        this.mes = this.utilitiesServices.obtenerMesStringActual(this.mes)
-      }
-
-      for (let i = 0; i < this.tiposLicencias.length; i++) {
-        this.tiposLicencias[i].mes = this.mes;
-        this.tiposLicencias[i].anio = this.anio;
-        this.tiposLicencias[i].metodosPago = respuesta?.paymet_method;
-        this.tiposLicencias[i].mesNumero = this.fechaPeriodo[0]?.month_period?.split('-')[1];
-
-        if (this.tiposLicencias[i].duration_month > 1) {
-          this.tiposLicencias[i].mesFin = Number(this.tiposLicencias[i].mesNumero) + (this.tiposLicencias[i].duration_month - 1)
-          this.tiposLicencias[i].mesFinString = this.utilitiesServices.obtenerMesStringActual(this.tiposLicencias[i].mesFin)
-        }
-      }
+          let objeto2 = {
+            active: objeto.licencia.active,
+            created_at: objeto.licencia.created_at,
+            credit_card: objeto.licencia.credit_card,
+            duration_month: objeto.licencia.duration_month,
+            id: objeto.licencia.id,
+            name: objeto.licencia.name,
+            prepaid_card: objeto.licencia.prepaid_card,
+            price: objeto.licencia.price,
+            transfer: objeto.licencia.transfer,
+            updated_at: objeto.licencia.updated_at,
+            user_id: objeto.licencia.user_id,
+            mesNumero: objeto.mesNumero,
+            mes: objeto.mes,
+            anio: objeto.anio,
+            mesFin: objeto.mesFin,
+            mesFinString: objeto.mesFinString
+          }
+          console.log(objeto2)
+          this.tiposLicencias.push(objeto2)
+        });
+      });
 
     } else {
       localStorage.setItem("opcionAlerta", "error-general")

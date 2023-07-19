@@ -40,9 +40,9 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
-  console.log("esta es la licencia que se ha descargado ",this.licenciaConsulta)
+    console.log("esta es la licencia que se ha descargado ", this.licenciaConsulta)
 
-   this.hayInternet = (await Network.getStatus()).connected;
+    this.hayInternet = (await Network.getStatus()).connected;
 
     Network.addListener('networkStatusChange', status => {
       console.log('Network status changed', status);
@@ -115,7 +115,7 @@ export class MiPerfilPage implements OnInit {
         await modal.present();
       }
     }
-    
+
     if (respuesta.status == true) {
       this.navCtrl.navigateRoot(ruta);
     }
@@ -152,7 +152,7 @@ export class MiPerfilPage implements OnInit {
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
         cssClass: 'transparent-modal',
-        componentProps: { mensaje:  "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
+        componentProps: { mensaje: "Ya tiene una sesión activa en otro dispositivo, si desea sustituirlo por favor comuníquese a contacto@autometrica.com.mx" }
       })
       await modal.present();
       await this.cerrarSesion();
@@ -233,12 +233,13 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async handleRefresh(event: any) {
     if ((await Network.getStatus()).connected == true) {
+      this.licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
       this.licenciaActual = [];
       this.historicoLicencias = [];
       await this.recargar();
       await this.sqliteService.listaModulos$.next(true);
       event.target.complete();
-    }else{
+    } else {
       event.target.complete();
     }
   }

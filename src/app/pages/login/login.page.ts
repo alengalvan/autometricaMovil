@@ -193,11 +193,6 @@ export class LoginPage implements OnInit {
       this.navCtrl.navigateRoot("mi-perfil");
       return;
     }
-
-    if (respuesta.status == 401) {
-      await this.utilitiesService.alert("", respuesta.error.message)
-      return;
-    }
   }
 
   public async descargarArchivo(tipo: number) {
