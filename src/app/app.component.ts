@@ -307,7 +307,7 @@ export class AppComponent {
     let respuesta = await this.webService.getAsync(API.endpoints.validarLicencia + '?client_id=' + JSON.parse(localStorage.getItem('usuario')!).id);
     console.log(respuesta);
 
-    if (respuesta!.error!.message == "Unauthenticated.") {
+    if (respuesta?.error?.message == "Unauthenticated.") {
       console.log("vamos a sacarlo")
       localStorage.setItem("opcionAlerta", "login-sesion-activa")
       const modal = await this.modalController.create({

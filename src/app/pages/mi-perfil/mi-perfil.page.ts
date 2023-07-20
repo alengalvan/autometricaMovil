@@ -147,7 +147,7 @@ export class MiPerfilPage implements OnInit {
       }
     }
 
-    if (respuesta!.statusText! == 'Unauthorized') {
+    if (respuesta?.error?.message == "Unauthenticated.") {
       localStorage.setItem("opcionAlerta", "login-sesion-activa")
       const modal = await this.modalController.create({
         component: ModalAlertasCustomPage,
