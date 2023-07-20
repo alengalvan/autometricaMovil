@@ -15,6 +15,9 @@ export class ResultadosConsultaPage implements OnInit {
   public resultadosKilometraje = JSON.parse(localStorage.getItem('resultadosKilometraje')!);
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
   public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+  public licenciaConsultaOnline = JSON.parse(localStorage.getItem('licenciaConsultaOnline')!);
+
+  
   public hayInternet = this.route.snapshot.paramMap.get('id');
   public sinLinea: any = [];
 
@@ -34,7 +37,7 @@ export class ResultadosConsultaPage implements OnInit {
 
   public async ngOnInit() {
 
-    console.log(this.hayKilometraje)
+    console.log(this.licenciaConsulta)
 
     if (this.hayInternet) {
       await this.acomodarDatos()

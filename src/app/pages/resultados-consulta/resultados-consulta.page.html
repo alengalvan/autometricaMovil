@@ -20,9 +20,14 @@
       <ion-col size="1"></ion-col>
       <ion-col size="10">
 
-        <div style="text-align: center;">
-          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{licenciaConsulta.mes}}
-            {{licenciaConsulta.year_hire}}</span><br>
+        <div style="text-align: center;" *ngIf="hayInternet">
+          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{licenciaConsultaOnline?.mes}}
+            {{licenciaConsultaOnline?.year_hire}}</span><br>
+        </div>
+
+        <div style="text-align: center;" *ngIf="!hayInternet">
+          <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{licenciaConsulta?.mes}}
+            {{licenciaConsulta?.year_hire}}</span><br>
         </div>
         <br>
 

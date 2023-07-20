@@ -26,6 +26,7 @@ export class ConsultaAutometricaPage implements OnInit {
   public respuestaBusquedaOffline: any = [];
   public networkStatus: ConnectionStatus | undefined;
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
+  public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
   public form: FormGroup = this.formBuilder.group({
     marca: [null, [Validators.required]],
     submarca: [null, [Validators.required]],
@@ -36,7 +37,6 @@ export class ConsultaAutometricaPage implements OnInit {
   public hayInternet = this.route.snapshot.paramMap.get('id');
   public LicenciasActivas: any = [];
   public dollarUSLocale = Intl.NumberFormat('en-US');
-  licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
 
   get marca() {
     return this.form.get("marca");
@@ -337,7 +337,7 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerMarcasOnline() {
     let objetoPrincipal = this.licenciaActual[0];
     console.log(objetoPrincipal)
-
+    localStorage.setItem("licenciaConsultaOnline", JSON.stringify(objetoPrincipal))
     let objeto: any = {
       month_period: objetoPrincipal.month_hire,
       year_period: objetoPrincipal.year_hire,
