@@ -103,7 +103,7 @@ export class ResultadosConsultaPage implements OnInit {
 
       if (!this.resultasCarsConsulta[i].name.includes("(cambio de línea)")
         && !this.resultasCarsConsulta[i].name.includes("(línea anterior)")
-          && !this.resultasCarsConsulta[i].name.includes("(línea nueva)")) {
+        && !this.resultasCarsConsulta[i].name.includes("(línea nueva)")) {
         this.sinLinea.push(this.resultasCarsConsulta[i])
       }
 

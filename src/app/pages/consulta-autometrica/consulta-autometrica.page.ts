@@ -81,7 +81,7 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async ngOnInit() {
     console.log(this.hayInternet)
-    let n:any = null
+    let n: any = null
     localStorage.setItem("kilometraje", n)
     if (this.hayInternet) {
       await this.obtenerHistoricoLicencias()
@@ -337,7 +337,6 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerMarcasOnline() {
     let objetoPrincipal = this.licenciaActual[0];
     console.log(objetoPrincipal)
-    localStorage.setItem("licenciaConsulta", JSON.stringify(objetoPrincipal))
 
     let objeto: any = {
       month_period: objetoPrincipal.month_hire,
@@ -443,9 +442,9 @@ export class ConsultaAutometricaPage implements OnInit {
       console.log(respuesta)
       if (respuesta.status == true) {
 
-        if(respuesta.kilometraje.length == 0){
+        if (respuesta.kilometraje.length == 0) {
           localStorage.setItem("kilometraje", "1")
-        }else{
+        } else {
           localStorage.setItem("kilometraje", "2")
         }
         if (respuesta.lineales.length > 0) {
@@ -673,9 +672,9 @@ export class ConsultaAutometricaPage implements OnInit {
       }
 
 
-      if(noExistenKilometros == 0){
+      if (noExistenKilometros == 0) {
         localStorage.setItem("kilometraje", "1")
-      }else{
+      } else {
         localStorage.setItem("kilometraje", "2")
       }
 
@@ -764,5 +763,10 @@ export class ConsultaAutometricaPage implements OnInit {
 
   }
 
+  public async ngOnDestroy(){
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    backDrop.click();
+  }
 
 }

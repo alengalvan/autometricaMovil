@@ -242,5 +242,10 @@ export class RegistroPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async quitarEspacios() {}
 
+  public async ngOnDestroy(){
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    backDrop.click();
+  }
 
 }

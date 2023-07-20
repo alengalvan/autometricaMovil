@@ -367,7 +367,9 @@ export class UtilitiesService {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async idTelefono(){
     // return (await Device.getId()).identifier;
-    return "c06c7c5f8b043518"
+    return "c06c7c5f8b043518" // alen
+    // return "8a06f9c1f35fa1c3" // andres
+
   }
 
   public mensajeRegexContrasenia(){

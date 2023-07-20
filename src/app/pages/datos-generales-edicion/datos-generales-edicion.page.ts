@@ -256,4 +256,10 @@ export class DatosGeneralesEdicionPage implements OnInit {
     this.form.controls['contrasenia'].setValue(this.datosPersonales.password)
     this.form.controls['confirmacionContrasenia'].setValue(this.datosPersonales.password)
   }
+
+  public async ngOnDestroy(){
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    backDrop.click();
+  }
 }
