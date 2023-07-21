@@ -6,12 +6,9 @@ import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ModalAlertasCustomPage } from './pages/modal-alertas-custom/modal-alertas-custom.page';
 import { WebRestService } from './services/crud-rest.service';
 import { API } from './endpoints';
-import { Capacitor } from '@capacitor/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { LoginPage } from './pages/login/login.page';
+import { Subscription } from 'rxjs';
 import { UserService } from './services/user.service';
-import { Device } from '@capacitor/device';
-import { Network, ConnectionStatus } from '@capacitor/network'
+import { Network } from '@capacitor/network'
 import { sqliteService } from './services/sqlite.service';
 
 @Component({

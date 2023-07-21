@@ -260,6 +260,8 @@ export class DatosGeneralesEdicionPage implements OnInit {
   public async ngOnDestroy(){
     console.log("se destruye")
     let backDrop: any = document.querySelector('ion-backdrop');
-    backDrop.click();
+    if(backDrop != null){
+      backDrop.click();
+    }
   }
 }
