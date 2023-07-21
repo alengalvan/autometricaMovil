@@ -107,9 +107,13 @@ export class HacerTransaccionPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   public async pagarPrepago() {
-    console.log(this.licenciaSeleccionadaAutomatica)
+    if (!this.form.valid) {
+      this.utilitiesServices.validaCamposFormulario([this.form]);
+      return;
+    }
+
     let objetoPrincipal = {
-      code: this.form.controls["codigo"].value,
+      code: this.form.controls["codigo"].value.toUpperCase(),
       license_id: this.id ? this.licenciaSeleccionadaAutomatica.id : this.licenciaSeleccionada.id,
       client_id: this.usuario.id,
       month: this.id ? this.licenciaSeleccionadaAutomatica.mesNumero : Number(this.licenciaSeleccionada.mesNumero),
