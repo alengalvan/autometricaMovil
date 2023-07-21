@@ -454,9 +454,9 @@ export class AppComponent {
             email: correo,
             token: token
           }
+          this.navCtrl.navigateRoot("login");
           let respuesta = await this.webService.postAsync(API.endpoints.verificarCuenta, objeto)
           console.log(respuesta)
-
           if (respuesta.status == true) {
             localStorage.setItem("opcionPopup", "2")
             this.navCtrl.navigateRoot("poppups");

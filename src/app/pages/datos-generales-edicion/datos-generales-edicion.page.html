@@ -87,10 +87,11 @@
             Teléfono (Opcional)
           </span>
         </div>
-        <ion-item class="ion-item-input">
-          <ion-input appTrim type="number" formControlName="telefono" placeholder="Teléfono" autocomplete="off"
-            maxlength="10"></ion-input>
-        </ion-item>
+        <input appTrim numbersOnly
+          style="height: 55px;border-radius: 10px;font-size: 12px;color: #000;border: solid 1px #848484;width: 100%; padding: 10px;"
+          type="text" formControlName="telefono" placeholder="Teléfono (Opcional)" autocomplete="off" maxlength="10">
+
+
         <div *ngFor="let error of mensajesValidacion.telefono" style="margin-left: 5px;">
           <ng-container *ngIf="telefono!.hasError(error.type) && (telefono!.dirty || telefono!.touched)">
             <small class="errorValidation-chica">{{error.message}}</small>
