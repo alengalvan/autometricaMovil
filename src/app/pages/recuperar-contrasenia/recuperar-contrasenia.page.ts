@@ -14,7 +14,7 @@ import { ModalAlertasCustomPage } from '../modal-alertas-custom/modal-alertas-cu
 export class RecuperarContraseniaPage implements OnInit {
 
   public form: FormGroup = this.formBuilder.group({
-    correo: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")]],
+    correo: [null, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")]],
   });
 
   get correo() {

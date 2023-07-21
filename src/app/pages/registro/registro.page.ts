@@ -28,7 +28,7 @@ export class RegistroPage implements OnInit {
     apellidoPaterno: [null, Validators.required],
     apellidoMaterno: [null, Validators.required],
     estado: [null, Validators.required],
-    correo: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")]],
+    correo: [null, [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")]],
     telefono: [null, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
     contrasenia: [null, [Validators.required, Validators.pattern(this.regexContrasenia)]],
     confirmacionContrasenia: [null, Validators.required],

@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
   public verContrasena: boolean = false;
   public regexContrasenia = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?#"'(/.:;+&_-])([A-Za-z\d$@$!%*?#"'(/.:;+&_-]|[^ ]){8,20}$/;
   public form: FormGroup = this.formBuilder.group({
-    usuario: ["", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")]],
+    usuario: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")]],
     contrasenia: [null, [Validators.required, Validators.pattern(this.regexContrasenia)]],
     recordarContrasenia: [null]
   });
