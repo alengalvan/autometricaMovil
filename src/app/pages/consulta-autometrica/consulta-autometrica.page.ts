@@ -80,7 +80,6 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async ngOnInit() {
-    console.log(this.hayInternet)
     let n: any = null
     localStorage.setItem("kilometraje", n)
     if (this.hayInternet) {
@@ -96,62 +95,53 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   public async obtenerHistoricoLicencias() {
-    let objeto = {
-      client_id: this.usuario.id,
-      mobile_identifier: await this.utilitiesService.idTelefono()
-    }
-    let respuesta = await this.webRestService.postAsync(API.endpoints.historialLicencias, objeto)
-    console.log(respuesta)
-
-    if (respuesta.status == true) {
-      for (let i = 0; i < respuesta?.data.length; i++) {
-        respuesta.data[i].mes = this.utilitiesService.obtenerMesStringActual(respuesta.data[i].month_hire)
-
-        if (respuesta.data[i].duration_month > 1) {
-          respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
-          respuesta.data[i].mesFinString = this.utilitiesService.obtenerMesStringActual(respuesta.data[i].mesFin)
-        }
-
-        if (respuesta.data[i].active == 1) {
-          this.LicenciasActivas.push(respuesta.data[i])
+    let respuestaServicio = await this.webRestService.getAsync(API.endpoints.verificarLicenciasActivas + this.usuario.id)
+    console.log(respuestaServicio)
+    let periodos: any = [];
+    if (respuestaServicio.status == true) {
+      // recorremos las licencias
+      for (let i = 0; i < respuestaServicio?.data.length; i++) {
+        for (let j = 0; j < respuestaServicio?.data[i].period.length; j++) {
+          console.log(respuestaServicio?.data[i].period[j])
+          let objeto = {
+            mesNumero: Number(respuestaServicio?.data[i].period[j].month_period.split("-")[1]),
+            anioNumero: Number(respuestaServicio?.data[i].period[j].month_period.split("-")[0]),
+            mes: await this.utilitiesService.obtenerMesStringActual(Number(respuestaServicio?.data[i].period[j].month_period.split("-")[1])),
+          }
+          periodos.push(objeto)
         }
       }
 
-
-      if (this.LicenciasActivas.length == 1) {
-        this.licenciaActual.push(this.LicenciasActivas[0]);
+      // una licencia
+      if (periodos.length == 1) {
+        this.LicenciasActivas.push(periodos);
         await this.obtenerMarcasOnline();
       }
 
-      if (this.LicenciasActivas.length > 1) {
-        this.LicenciasActivas = this.LicenciasActivas.sort(((a: { month_hire: number; }, b: { month_hire: number; }) => a.month_hire - b.month_hire));
-        this.utilitiesService.validaCamposFormulario([this.form]);
+      // mas de una licencia, no puede haber 3
+      if (periodos.length > 1) {
+
+        //ordenamos por mes
+        periodos = periodos.sort(((a: { mesNumero: number; }, b: { mesNumero: number; }) => a.mesNumero - b.mesNumero))
         localStorage.setItem("opcionAlerta", "selecciona-licencia")
-        localStorage.setItem("primeraLicencia", JSON.stringify(this.LicenciasActivas[0]))
-        localStorage.setItem("segundaLicencia", JSON.stringify(this.LicenciasActivas[1]))
-
-        console.log(this.LicenciasActivas[0])
-        console.log(this.LicenciasActivas[1])
-
+        localStorage.setItem("primeraLicencia", JSON.stringify(periodos[0]))
+        localStorage.setItem("segundaLicencia", JSON.stringify(periodos[1]))
         const modal = await this.modalController.create({
           component: ModalAlertasCustomPage,
           cssClass: 'transparent-modal',
           componentProps: { mensaje: "¿Qué edición desea consultar?" }
         })
-        modal.onDidDismiss()
-          .then(async (data) => {
-            if (data.data) {
-              this.licenciaActual.push(this.LicenciasActivas[1]);
-            } else {
-              this.licenciaActual.push(this.LicenciasActivas[0]);
-            }
-            await this.obtenerMarcasOnline();
-          })
+        modal.onDidDismiss().then(async (data) => {
+          if (data.data) {
+            this.licenciaActual.push(periodos[1]);
+          } else {
+            this.licenciaActual.push(periodos[0]);
+          }
+          await this.obtenerMarcasOnline();
+        })
         await modal.present();
       }
-
     }
-
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
@@ -207,20 +197,6 @@ export class ConsultaAutometricaPage implements OnInit {
   public async obtenerMarcasOffline() {
     if (this.obtenerTodasLineas.length == 0) return;
     this.marcasOffline = [];
-
-    // agregamos las lineas
-    // for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
-    //   if (this.obtenerTodasLineas[i].subbrand.includes('(cambio de línea') 
-    //   || this.obtenerTodasLineas[i].subbrand.includes('(línea anterior')
-    //   || this.obtenerTodasLineas[i].subbrand.includes('(línea nueva')) {
-    //     let comienza = this.obtenerTodasLineas[i].subbrand.indexOf("(")
-    //     let final = this.obtenerTodasLineas[i].subbrand.indexOf(")")
-    //     this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand.slice(0, comienza).trim();
-    //   } else {
-    //     this.obtenerTodasLineas[i].subbrandSinLinea = this.obtenerTodasLineas[i].subbrand
-    //   }
-
-    // }
 
     for (let i = 0; i < this.obtenerTodasLineas.length; i++) {
       if (this.obtenerTodasLineas[i].subbrand.includes('(') && this.obtenerTodasLineas[i].subbrand.includes(')')) {
@@ -300,8 +276,8 @@ export class ConsultaAutometricaPage implements OnInit {
     this.aniosOnline = []
     let objetoPrincipal = this.licenciaActual[0];
     let objeto: any = {
-      month_period: objetoPrincipal.month_hire,
-      year_period: objetoPrincipal.year_hire,
+      month_period: objetoPrincipal.mesNumero,
+      year_period: objetoPrincipal.anioNumero,
       brand: marca
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.listaAnios, objeto)
@@ -319,8 +295,8 @@ export class ConsultaAutometricaPage implements OnInit {
     this.subMarcasOnline = []
     let objetoPrincipal = this.licenciaActual[0];
     let objeto: any = {
-      month_period: objetoPrincipal.month_hire,
-      year_period: objetoPrincipal.year_hire,
+      month_period: objetoPrincipal.mesNumero,
+      year_period: objetoPrincipal.anioNumero,
       brand: marca,
       year: this.form.controls['anio'].value
     }
@@ -336,11 +312,10 @@ export class ConsultaAutometricaPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async obtenerMarcasOnline() {
     let objetoPrincipal = this.licenciaActual[0];
-    console.log(objetoPrincipal)
     localStorage.setItem("licenciaConsultaOnline", JSON.stringify(objetoPrincipal))
     let objeto: any = {
-      month_period: objetoPrincipal.month_hire,
-      year_period: objetoPrincipal.year_hire,
+      month_period: objetoPrincipal.mesNumero,
+      year_period: objetoPrincipal.anioNumero,
     }
     let respuesta = await this.webRestService.postAsync(API.endpoints.listaMarcas, objeto)
     console.log("marcas online", respuesta)
@@ -394,8 +369,8 @@ export class ConsultaAutometricaPage implements OnInit {
           if (data.data) {
             let objeto = {
               client_id: this.usuario.id,
-              month_period: objetoPrincipal.month_hire,
-              year_period: objetoPrincipal.year_hire,
+              month_period: objetoPrincipal.mesNumero,
+              year_period: objetoPrincipal.anioNumero,
               brand: marca,
               sub_brand: submarca,
               mileage: kil == 0 || kil == "" || !kil ? 0 : kilometraje,
@@ -429,8 +404,8 @@ export class ConsultaAutometricaPage implements OnInit {
 
       let objeto = {
         client_id: this.usuario.id,
-        month_period: objetoPrincipal.month_hire,
-        year_period: objetoPrincipal.year_hire,
+        month_period: objetoPrincipal.mesNumero,
+        year_period: objetoPrincipal.anioNumero,
         brand: marca,
         sub_brand: submarca,
         mileage: kil == 0 || kil == "" || !kil ? 0 : kil,
@@ -763,7 +738,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
   }
 
-  public async ngOnDestroy(){
+  public async ngOnDestroy() {
     console.log("se destruye")
     let backDrop: any = document.querySelector('ion-backdrop');
     backDrop.click();
