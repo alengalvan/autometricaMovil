@@ -341,7 +341,6 @@ export class AppComponent {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
-
     this.haySesion = JSON.parse(localStorage.getItem('usuario')!) ? true : false;
     console.log("tenemos una sesion activa ", this.haySesion);
 
@@ -425,15 +424,38 @@ export class AppComponent {
       this.zone.run(async () => {
 
         if (event.url.includes('restablecer')) {
-          localStorage.setItem("datosRedireccionamiento", event.url)
-          this.navCtrl.navigateRoot("restablecer-contrasenia");
+
+          // antes de mandarlo se debe validar api/user/valid-token
+          let correo = event.url.split("/")[4];
+          let token = event.url.split("/")[5];
+          let objeto = {
+            email: correo,
+            token: token
+          }
+          let respuesta = await this.webService.postAsync(API.endpoints.verificarContrasenia, objeto)
+          console.log(respuesta)
+          if (respuesta?.status == true) {
+            localStorage.setItem("datosRedireccionamiento", event.url)
+            this.navCtrl.navigateRoot("restablecer-contrasenia");
+          } else {
+            localStorage.setItem("opcionAlerta", "usuario-inactivo")
+            const modal = await this.modalController.create({
+              component: ModalAlertasCustomPage,
+              cssClass: 'transparent-modal',
+              componentProps: { mensaje: respuesta?.error?.message }
+            })
+            await modal.present();
+          }
         }
+
 
         if (event.url.includes('validar')) {
 
           let correo = event.url.split("/")[4];
+          let token = event.url.split("/")[5];
           let objeto = {
-            email: correo
+            email: correo,
+            token: token
           }
           let respuesta = await this.webService.postAsync(API.endpoints.verificarCuenta, objeto)
           console.log(respuesta)
@@ -446,7 +468,7 @@ export class AppComponent {
             const modal = await this.modalController.create({
               component: ModalAlertasCustomPage,
               cssClass: 'transparent-modal',
-              componentProps: { mensaje: "Error inesperado por favor intente más tarde" }
+              componentProps: { mensaje: respuesta?.error?.message }
             })
             await modal.present();
           }

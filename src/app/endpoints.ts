@@ -29,7 +29,9 @@ export const API = {
       listaSubmarcas: environment.proyectoBase + '/api/car/list-subbrand',
       listaAnios: environment.proyectoBase + '/api/car/list-year',
       consultaAuto: environment.proyectoBase + '/api/car/consult-car',
-      cancelarLicencia: environment.proyectoBase + "/api/license/cancel-license"
+      cancelarLicencia: environment.proyectoBase + "/api/license/cancel-license",
+      verificarContrasenia: environment.proyectoBase + "/api/user/valid-token",
+      verificarLicenciasActivas: environment.proyectoBase + "/api/license/period-licenses?client_id="
     }
   };
   
