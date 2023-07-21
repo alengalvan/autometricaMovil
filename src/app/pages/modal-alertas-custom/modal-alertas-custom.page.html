@@ -271,6 +271,9 @@
         <div style="text-align: center;">
           <ion-icon src="assets/icon/material-symbols_check-circle-rounded.svg" style="zoom: 2;"></ion-icon><br>
           <div class="mensaje-error" [innerHTML]="mensajeInnerDescargaExitosa"></div>
+          <span style="font-size: 9px;color: #000;">
+            Para visualizar los cambios, por favor deslice la pantalla Mi perfil hacia abajo.
+          </span>
         </div>
         <br>
       </ion-col>
@@ -588,7 +591,8 @@
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'compra-exitosa-tarjeta' ">
       <ion-col size="12" no-padding>
         <div style="text-align: end;">
-          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;" (click)="cerrarModalReturnData(true)"></ion-icon><br>
+          <ion-icon src="assets/icon/cerrar-modal.svg" style="zoom: 1;"
+            (click)="cerrarModalReturnData(true)"></ion-icon><br>
         </div>
       </ion-col>
       <ion-col size="1"></ion-col>
@@ -725,7 +729,7 @@
     </ion-row>
 
 
-    
+
     <ion-row style="padding: 10px;" *ngIf="opcionAlerta == 'selecciona-licencia' ">
       <br><br><br>
       <ion-col size="1"></ion-col>
