@@ -114,7 +114,7 @@ export class ConsultaAutometricaPage implements OnInit {
 
       // una licencia
       if (periodos.length == 1) {
-        this.LicenciasActivas.push(periodos);
+        this.licenciaActual = periodos
         await this.obtenerMarcasOnline();
       }
 

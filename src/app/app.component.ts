@@ -51,6 +51,20 @@ export class AppComponent {
     let usuario = JSON.parse(localStorage.getItem('usuario')!);
     if (usuario == null) {
 
+      
+      if (ruta == "terminos-condiciones") {
+        let hayInternet = (await Network.getStatus()).connected;
+        if (hayInternet) {
+          this.navCtrl.navigateRoot(ruta);
+          return;
+        } else {
+          console.log("no tiene internet")
+          this.menu.close()
+          return;
+        }
+        return
+      }
+
       if (ruta == "glosario") {
         this.hayInternet = (await Network.getStatus()).connected;
         if (this.hayInternet) {
@@ -171,6 +185,7 @@ export class AppComponent {
           return;
         } else {
           console.log("no tiene internet")
+          this.menu.close()
           return;
         }
       }

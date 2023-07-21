@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonInput, ModalController, NavController } from '@ionic/angular';
+import { IonInput, MenuController, ModalController, NavController } from '@ionic/angular';
 import { API } from 'src/app/endpoints';
 import { WebRestService } from 'src/app/services/crud-rest.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
@@ -56,24 +56,31 @@ export class LoginPage implements OnInit {
     public webRestService: WebRestService,
     public modalController: ModalController,
     public http: HttpClient,
-    public userService: UserService) { }
+    public userService: UserService,
+    private menu: MenuController) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
     let datosPersonales = JSON.parse(localStorage.getItem('datosPersonales')!);
-    console.log(datosPersonales)
+    let hayInternet = (await Network.getStatus()).connected;
 
-    if (datosPersonales) {
-      if ((await Network.getStatus()).connected) {
-        await this.iniciarSesionAutomatico(datosPersonales)
-        await this.descargarArchivo(1);
-        await this.descargarArchivo(2);
-        this.idMobile = (await Device.getId()).identifier;
-        await this.utilitiesService.obtenerInfo();
-      } else {
+    if (hayInternet) {
+      if (datosPersonales) {
+        let recordarContrasenia = localStorage.getItem('recordarContrasenia')!;
+        if (recordarContrasenia) {
+          this.navCtrl.navigateRoot("mi-perfil")
+        } else {
+          await this.cerrarSesion()
+          console.log("tenia sesion iniciada pero no puso recordar contraseña")
+        }
+      }
+    } else {
+      if (datosPersonales) {
         this.navCtrl.navigateRoot("mi-perfil")
       }
     }
+
+
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -177,6 +184,12 @@ export class LoginPage implements OnInit {
       password: valores.password,
       mobile_identifier: await this.utilitiesService.idTelefono()
     }
+    let recordarContrasenia = localStorage.getItem('recordarContrasenia')!;
+
+    if (recordarContrasenia) {
+      this.form.controls["recordarContrasenia"].setValue(true)
+    }
+
 
     let respuesta = await this.webRestService.postAsync(API.endpoints.login, objeto)
     console.log(respuesta)
@@ -215,5 +228,19 @@ export class LoginPage implements OnInit {
 
   }
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async cerrarSesion() {
+
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("datosPersonales");
+    localStorage.removeItem("token");
+    localStorage.removeItem("recordarContrasenia");
+
+    this.userService.cerrarSesion();
+    await this.navCtrl.navigateRoot('/login');
+    setTimeout(() => {
+      this.menu.close();
+    }, 1000);
+  }
 
 }
