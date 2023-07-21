@@ -209,15 +209,18 @@
       <ion-row>
         <ion-col size="1"></ion-col>
         <ion-col size="10">
-          <ion-button mode="md" expand="block" (click)="navegarA('pagos')">
-            <span style="font-size: 12px;" *ngIf="mostrarAdquirirLicencia > 0">
+
+          <ion-button mode="md" expand="block">
+            <span style="font-size: 12px;width: 100%;" *ngIf="mostrarAdquirirLicencia > 0" 
+              (click)="navegarA('pagos')">
               Adquirir Licencia
             </span>
-            <span style="font-size: 12px;" (click)="navegarA('hacer-transaccion/2')"
+            <span style="font-size: 12px;width: 100%;" (click)="navegarA('hacer-transaccion/2')"
               *ngIf="mostrarCanjear > 0 && mostrarAdquirirLicencia == 0">
               Canjear Código
             </span>
           </ion-button>
+
         </ion-col>
       </ion-row>
 

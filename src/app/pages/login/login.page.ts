@@ -61,6 +61,13 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+
+    //vamos a revisar si existe un inicio de sesion 
+    let existeInicioSesion = JSON.parse(localStorage.getItem('existeInicioSesion')!);
+    if(!existeInicioSesion){
+      localStorage.clear()
+    }
+
     let datosPersonales = JSON.parse(localStorage.getItem('datosPersonales')!);
     let hayInternet = (await Network.getStatus()).connected;
 
@@ -113,6 +120,7 @@ export class LoginPage implements OnInit {
     console.log(respuesta)
 
     if (respuesta.status == true) {
+      localStorage.setItem('existeInicioSesion', "inicioSesion");
       this.userService.iniciarSesion(true)
       localStorage.setItem("datosPersonales", JSON.stringify(objeto))
       localStorage.setItem("usuario", JSON.stringify(respuesta.user))
