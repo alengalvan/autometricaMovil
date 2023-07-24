@@ -63,7 +63,7 @@ export class LoginPage implements OnInit {
   public async ngOnInit() {
 
     //vamos a revisar si existe un inicio de sesion 
-    let existeInicioSesion = JSON.parse(localStorage.getItem('existeInicioSesion')!);
+    let existeInicioSesion = localStorage.getItem('existeInicioSesion')!;
     if(!existeInicioSesion){
       localStorage.clear()
     }
