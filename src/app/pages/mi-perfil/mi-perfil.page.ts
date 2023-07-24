@@ -27,6 +27,7 @@ export class MiPerfilPage implements OnInit {
   public mostrarAdquirirLicencia: number = 0;
   public mostrarCanjear: number = 0;
   public hayInternet: boolean = false;
+  public acomodoAsc: boolean = true;
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private menu: MenuController,
@@ -252,5 +253,17 @@ export class MiPerfilPage implements OnInit {
     this.userService.cerrarSesion();
     await this.navCtrl.navigateRoot('/login');
   }
+
+  public async acomodar(){
+    if(this.historicoLicencias.length == 0 ) return;
+    this.acomodoAsc = !this.acomodoAsc;
+    
+    if(this.acomodoAsc){ 
+      this.historicoLicencias.sort((x, y) => x.history_id - y.history_id).reverse();
+    }else{
+      this.historicoLicencias.sort((x, y) => x.history_id - y.history_id);
+    }    
+  }
+
 
 }
