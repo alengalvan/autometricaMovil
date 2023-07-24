@@ -80,6 +80,11 @@ export class ConsultaAutometricaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   async ngOnInit() {
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
+    
     let n: any = null
     localStorage.setItem("kilometraje", n)
     if (this.hayInternet) {

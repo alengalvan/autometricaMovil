@@ -66,7 +66,10 @@ export class AltaNuevaTarjetaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
-    console.log(this.id)
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
     if (this.id) {
       this.setearEdicion();
     }

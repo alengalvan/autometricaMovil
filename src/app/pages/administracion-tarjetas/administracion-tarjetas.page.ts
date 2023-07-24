@@ -25,6 +25,12 @@ export class AdministracionTarjetasPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
+
     localStorage.removeItem("tarjetaSeleccionada")
     await this.obtenerTarjetas()
   }

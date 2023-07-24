@@ -42,6 +42,11 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
+    
     console.log("esta es la licencia que se ha descargado ", this.edicionDescargada)
 
     this.hayInternet = (await Network.getStatus()).connected;

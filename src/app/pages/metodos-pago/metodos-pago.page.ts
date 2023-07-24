@@ -23,7 +23,10 @@ export class MetodosPagoPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
-    console.log(this.licenciaSeleccionada)
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
     this.tiposFormasPago = [];
 
     if(this.licenciaSeleccionada.prepaid_card == 1){

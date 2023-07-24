@@ -37,6 +37,10 @@ export class ResultadosConsultaPage implements OnInit {
 
   public async ngOnInit() {
 
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
     console.log(this.hayKilometraje)
     console.log(this.licenciaConsultaOnline)
     console.log(this.busquedaAutometrica)

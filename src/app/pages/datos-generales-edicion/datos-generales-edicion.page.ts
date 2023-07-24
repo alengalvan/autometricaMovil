@@ -103,6 +103,11 @@ export class DatosGeneralesEdicionPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
+    
     await this.setearValores()
     this.estados = await this.utilitiesService.obtenerEstadosRepublica();
     this.form.controls['confirmacionContrasenia'].valueChanges.subscribe(value => {

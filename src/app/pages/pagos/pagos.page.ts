@@ -68,6 +68,11 @@ export class PagosPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
+    
     let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
     if (respuesta.status == true) {
       this.tiposLicencias = [];

@@ -35,6 +35,10 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    if(!this.usuario){
+      this.navCtrl.navigateRoot("login");
+      return
+    }
     console.log(this.licenciaSeleccionada);
     console.log(this.metodoPagoSeleccionado);
     console.log(this.tarjetaSeleccionada)
