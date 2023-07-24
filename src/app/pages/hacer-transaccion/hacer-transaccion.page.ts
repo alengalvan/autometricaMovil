@@ -28,7 +28,7 @@ export class HacerTransaccionPage implements OnInit {
   };
   mes: any;
   anio: any;
-  tiposLicencias: any;
+  tiposLicencias: any[] = [];
   fechaPeriodo: any;
   licenciaSeleccionadaAutomatica: any;
   get codigo() {
@@ -49,11 +49,23 @@ export class HacerTransaccionPage implements OnInit {
     console.log(this.id)
 
     if (this.id) {
-      console.log(this.usuario)
       let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
-      console.log(respuesta)
+      
       if (respuesta.status == true) {
-        this.tiposLicencias = respuesta?.licenses;
+
+
+        for (let i = 0; i < respuesta?.licenses.length; i++) {
+          if(respuesta?.licenses[i].duration_month == 1){
+            this.tiposLicencias.push(respuesta?.licenses[i])
+          }
+        }
+
+        console.log(this.tiposLicencias)
+        if(this.tiposLicencias.length == 0){
+          this.navCtrl.navigateRoot("mi-perfil");
+          return;
+        } 
+
         this.fechaPeriodo = respuesta?.period;
         if (this.fechaPeriodo) {
           this.mes = this.fechaPeriodo[0]?.month_period?.split('-')[1];
