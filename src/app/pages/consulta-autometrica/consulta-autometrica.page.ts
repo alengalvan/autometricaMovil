@@ -460,6 +460,9 @@ export class ConsultaAutometricaPage implements OnInit {
     this.mensajeErrorKm = "";
 
     let anio: any = this.form.controls['anio'].value;
+    let marcaSinAlterar = this.form.controls['marca'].value;
+    let subMarcaSinAlterar = this.form.controls['submarca'].value;
+
     let marca = this.form.controls['marca'].value.toLowerCase();
     let submarca = this.form.controls['submarca'].value.toLowerCase();
     let kilometraje = this.form.controls['kilometraje'].value;
@@ -468,6 +471,8 @@ export class ConsultaAutometricaPage implements OnInit {
       anio: anio,
       marca: marca,
       submarca: submarca,
+      marcaSinAlterar: marcaSinAlterar,
+      subMarcaSinAlterar: subMarcaSinAlterar,
       kilometraje: kilometraje == 0 || kilometraje == "" || !kilometraje ? 0 : kilometraje.includes(",") ?
         Number(kilometraje.replace(",", "")) : Number(kilometraje)
     }
@@ -741,10 +746,9 @@ export class ConsultaAutometricaPage implements OnInit {
   public async ngOnDestroy() {
     console.log("se destruye")
     let backDrop: any = document.querySelector('ion-backdrop');
-    if(backDrop != null){
+    if (backDrop != null) {
       backDrop.click();
     }
-    
   }
 
 }

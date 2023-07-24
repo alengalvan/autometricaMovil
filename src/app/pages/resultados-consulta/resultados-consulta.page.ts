@@ -37,6 +37,9 @@ export class ResultadosConsultaPage implements OnInit {
 
   public async ngOnInit() {
 
+    console.log(this.hayKilometraje)
+    console.log(this.licenciaConsultaOnline)
+    console.log(this.busquedaAutometrica)
     console.log(this.licenciaConsulta)
 
     if (this.hayInternet) {

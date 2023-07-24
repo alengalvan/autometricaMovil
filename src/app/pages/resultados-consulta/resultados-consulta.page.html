@@ -12,7 +12,9 @@
       </ion-col>
 
       <ion-col size="8" style="padding-top: 10px;">
-        <span style="font-size: 15px;color: #616161;margin-top: 7px;margin-left: 7px">Nueva Valuación</span>
+        <span style="font-size: 15px;color: #616161;margin-top: 7px;margin-left: 7px"
+          (click)="hayInternet? reygresar('consulta-autometrica/1') : reygresar('consulta-autometrica')">Nueva
+          Valuación</span>
       </ion-col>
     </ion-row>
 
@@ -22,7 +24,7 @@
 
         <div style="text-align: center;" *ngIf="hayInternet">
           <span style="font-size: 30px;color: #616161;font-weight: 600;">Valores de {{licenciaConsultaOnline?.mes}}
-            {{licenciaConsultaOnline?.year_hire}}</span><br>
+            {{licenciaConsultaOnline?.anioNumero}}</span><br>
         </div>
 
         <div style="text-align: center;" *ngIf="!hayInternet">
@@ -45,16 +47,26 @@
         <br>
 
         <div class="contenedo-clase">
-          <p class="title">{{busquedaAutometrica.marca }} </p>
-          <p class="text">
-            {{busquedaAutometrica.submarca }} {{busquedaAutometrica.anio}}
-          </p>
+          <div *ngIf="hayInternet">
+            <p class="title">{{busquedaAutometrica.marca }} </p>
+            <p class="text">
+              {{busquedaAutometrica.submarca }} {{busquedaAutometrica.anio}}
+            </p>
+          </div>
 
-          <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0 && hayKilometraje == '1' ">
+          <div *ngIf="!hayInternet">
+            <p class="title">{{busquedaAutometrica?.marcaSinAlterar }} </p>
+            <p class="text">
+              {{busquedaAutometrica?.subMarcaSinAlterar }} {{busquedaAutometrica?.anio}}
+            </p>
+          </div>
+
+          <!-- hayKilometraje es igual a 2, no hay kilometraje -->
+          <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0 && hayKilometraje == '2' ">
             Kilometraje excesivo, revise las condiciones del vehículo.
           </p>
 
-          <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0 && hayKilometraje != '1'">
+          <p class="text" *ngIf="busquedaAutometrica.kilometraje && autosNuevos.length == 0 && hayKilometraje != '2'">
             Kilometraje: {{ busquedaAutometrica.kilometraje | number }} km
           </p>
 
