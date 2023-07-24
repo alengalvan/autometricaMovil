@@ -14,7 +14,7 @@ export class ResultadosConsultaPage implements OnInit {
   public resultadosAnadir = JSON.parse(localStorage.getItem('resultadosAñadir')!);
   public resultadosKilometraje = JSON.parse(localStorage.getItem('resultadosKilometraje')!);
   public busquedaAutometrica = JSON.parse(localStorage.getItem('busquedaAutometrica')!);
-  public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+  public edicionDescargada = JSON.parse(localStorage.getItem('edicionDescargada')!);
   public licenciaConsultaOnline = JSON.parse(localStorage.getItem('licenciaConsultaOnline')!);
 
   
@@ -40,7 +40,7 @@ export class ResultadosConsultaPage implements OnInit {
     console.log(this.hayKilometraje)
     console.log(this.licenciaConsultaOnline)
     console.log(this.busquedaAutometrica)
-    console.log(this.licenciaConsulta)
+    console.log(this.edicionDescargada)
 
     if (this.hayInternet) {
       await this.acomodarDatos()

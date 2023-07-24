@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Network, ConnectionStatus } from '@capacitor/network'
 import { ModalAlertasCustomPage } from '../pages/modal-alertas-custom/modal-alertas-custom.page';
 import { Capacitor } from '@capacitor/core';
+import { UtilitiesService } from './utilities.service';
 
 
 @Injectable({
@@ -72,7 +73,8 @@ export class sqliteService {
     private loadingController: LoadingController,
     public alertController: AlertController,
     public modalController: ModalController,
-    public webRestService: WebRestService
+    public webRestService: WebRestService,
+    public utilitiesService: UtilitiesService
   ) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,68 +130,33 @@ export class sqliteService {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
-
-  //   let objeto = {
-  //     month: 1,
-  //     year: anio,
-  //     client_id: this.usuario.id
-  //   }
-
-  //   let respuesta = await this.webRestService.postAsync(API.endpoints.traerBD, objeto);
-  //   console.log(respuesta)
-  //   if (respuesta.status == true) {
-  //     if (diferentePerfil) {
-  //       this.navCtrl.navigateRoot("mi-perfil")
-  //     }
-  //     this.totalDescarga$.next((respuesta.lineals.length + respuesta.mileages.length + respuesta.images.length));
-  //     console.log(this.totalDescarga$)
-  //     this.estaGenerandoBase$.next(true);
-
-  //     if (respuesta.lineals.length > 0) {
-  //       await this.crearLineas(respuesta.lineals);
-  //     }
-  //     if (respuesta.mileages.length > 0) {
-  //       await this.crearMileages(respuesta.mileages);
-  //     }
-  //     if (respuesta.images.length > 0) {
-  //       await this.crearImages(respuesta.images);
-  //     }
-
-  //     this.estaGenerandoBase$.next(false);
-  //     this.totalDescarga$.next(0)
-  //     this.totalCargados$.next(0)
-  //     localStorage.setItem("opcionAlerta", "descarga-exitosa")
-  //     const modal = await this.modalController.create({
-  //       component: ModalAlertasCustomPage,
-  //       cssClass: 'transparent-modal',
-  //       componentProps: {
-  //         mensaje: ""
-  //       }
-  //     })
-  //     await modal.present();
-  //   } else {
-
-  //   }
-  // }
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async procesoDescarga(mes: number, anio: number, diferentePerfil?: boolean) {
 
     // actulizamos descarga
    await  this.descargarArchivos(1)
     await this.descargarArchivos(2)
     
-    console.log(JSON.parse(localStorage.getItem('usuario')!))
+    
     let objeto = {
       month: mes,
       year: anio,
       client_id: JSON.parse(localStorage.getItem('usuario')!).id
     }
 
+    console.log(objeto, " se descargo")
     let respuesta = await this.webRestService.postAsync(API.endpoints.traerBD, objeto);
     console.log(respuesta)
     if (respuesta.status == true) {
+      let objetoGuardar = {
+        month: mes,
+        year: anio,
+        client_id: JSON.parse(localStorage.getItem('usuario')!).id,
+        mes:  this.utilitiesService.obtenerMesStringActual(mes),
+        year_hire: anio
+      }
+
+      localStorage.setItem("edicionDescargada", JSON.stringify(objetoGuardar))
+      console.log("se descargo esta wea")
       if (diferentePerfil) {
         this.navCtrl.navigateRoot("mi-perfil")
       }

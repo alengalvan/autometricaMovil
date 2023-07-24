@@ -20,7 +20,8 @@ export class MiPerfilPage implements OnInit {
   networkListener: PluginListenerHandle | undefined;
 
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
-  licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+
+  edicionDescargada = JSON.parse(localStorage.getItem('edicionDescargada')!);
   public licenciaActual: any[] = []
   public historicoLicencias: any[] = [];
   public mesActual: any = new Date();
@@ -41,7 +42,7 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
 
-    console.log("esta es la licencia que se ha descargado ", this.licenciaConsulta)
+    console.log("esta es la licencia que se ha descargado ", this.edicionDescargada)
 
     this.hayInternet = (await Network.getStatus()).connected;
 
@@ -144,6 +145,34 @@ export class MiPerfilPage implements OnInit {
         } else {
           this.historicoLicencias.push(respuesta.data[i])
         }
+      }
+      console.log("edicion descargada ", this.edicionDescargada)
+      for (let i = 0; i < this.licenciaActual.length; i++) {
+        if (this.edicionDescargada) {
+
+          // para mensual
+          if (this.licenciaActual[i].duration_month == 1) {
+            if (this.edicionDescargada.month == this.licenciaActual[i].month_hire) {
+              this.licenciaActual[i].edicionDescargada = this.utilitiesServices.obtenerMesStringActual(this.licenciaActual[i].month_hire)
+            }
+          }
+
+          // para mayor a mensual
+          if (this.licenciaActual[i].duration_month > 1) {
+            let fin = (this.licenciaActual[i].month_hire + this.licenciaActual[i].duration_month - 1)
+            let inicio = this.licenciaActual[i].month_hire;
+            let contenido = this.edicionDescargada.month
+            console.log("fin ", fin)
+            console.log("inicio ", inicio)
+            console.log("contenido ", contenido)
+
+
+            if (contenido >= inicio && contenido <= fin) {
+              this.licenciaActual[i].edicionDescargada = this.utilitiesServices.obtenerMesStringActual(this.licenciaActual[i].month_hire)
+            }
+          }
+
+        }
 
       }
     }
@@ -172,7 +201,7 @@ export class MiPerfilPage implements OnInit {
     }
 
     console.log(licencia)
-    
+
     localStorage.setItem("opcionAlerta", "aviso-borrado-licencias")
     const modal = await this.modalController.create({
       component: ModalAlertasCustomPage,
@@ -183,7 +212,6 @@ export class MiPerfilPage implements OnInit {
     modal.onDidDismiss()
       .then(async (data) => {
         if (data.data) {
-          localStorage.setItem("licenciaConsulta", JSON.stringify(licencia))
           await this.sqliteService.verificacionConexion(licencia.month_hire, licencia.year_hire);
         } else {
           this.modalController.dismiss();
@@ -234,7 +262,7 @@ export class MiPerfilPage implements OnInit {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async handleRefresh(event: any) {
     if ((await Network.getStatus()).connected == true) {
-      this.licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+      this.edicionDescargada = JSON.parse(localStorage.getItem('edicionDescargada')!);
       this.licenciaActual = [];
       this.historicoLicencias = [];
       await this.recargar();
@@ -254,15 +282,15 @@ export class MiPerfilPage implements OnInit {
     await this.navCtrl.navigateRoot('/login');
   }
 
-  public async acomodar(){
-    if(this.historicoLicencias.length == 0 ) return;
+  public async acomodar() {
+    if (this.historicoLicencias.length == 0) return;
     this.acomodoAsc = !this.acomodoAsc;
-    
-    if(this.acomodoAsc){ 
+
+    if (this.acomodoAsc) {
       this.historicoLicencias.sort((x, y) => x.history_id - y.history_id).reverse();
-    }else{
+    } else {
       this.historicoLicencias.sort((x, y) => x.history_id - y.history_id);
-    }    
+    }
   }
 
 

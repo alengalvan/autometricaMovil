@@ -26,7 +26,7 @@ export class ConsultaAutometricaPage implements OnInit {
   public respuestaBusquedaOffline: any = [];
   public networkStatus: ConnectionStatus | undefined;
   public usuario = JSON.parse(localStorage.getItem('usuario')!);
-  public licenciaConsulta = JSON.parse(localStorage.getItem('licenciaConsulta')!);
+  public edicionDescargada = JSON.parse(localStorage.getItem('edicionDescargada')!);
   public form: FormGroup = this.formBuilder.group({
     marca: [null, [Validators.required]],
     submarca: [null, [Validators.required]],
