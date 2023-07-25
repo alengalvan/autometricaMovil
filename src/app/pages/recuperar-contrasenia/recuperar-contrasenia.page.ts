@@ -33,7 +33,11 @@ export class RecuperarContraseniaPage implements OnInit {
     public webRestService: WebRestService,
     public modalController: ModalController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
   }
 
   public async recuperarContrasenia() {

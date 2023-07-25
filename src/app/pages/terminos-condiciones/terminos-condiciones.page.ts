@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { API } from 'src/app/endpoints';
 import { WebRestService } from 'src/app/services/crud-rest.service';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
   selector: 'app-terminos-condiciones',
@@ -16,9 +17,16 @@ export class TerminosCondicionesPage implements OnInit {
   zoom: number = 1.0;
 
   constructor(private menu: MenuController,
-    public webService: WebRestService) { }
+    public webService: WebRestService,
+    public modalController: ModalController,
+    public utilitiesServices: UtilitiesService) { }
 
   public async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
+
     this.menu.close();
     let objeto = {
       type: 4

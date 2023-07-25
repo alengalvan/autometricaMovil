@@ -72,6 +72,10 @@ export class PagosPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
     
     let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
     if (respuesta.status == true) {
@@ -87,7 +91,8 @@ export class PagosPage implements OnInit {
             licencia: licencia,
             mesNumero: periodo.month_period?.split('-')[1],
             mesFin: 0,
-            mesFinString: ""
+            mesFinString: "",
+            priceFormant: licencia.priceFormant
           }
 
           if (objeto.licencia.duration_month > 1) {
@@ -111,7 +116,8 @@ export class PagosPage implements OnInit {
             mes: objeto.mes,
             anio: objeto.anio,
             mesFin: objeto.mesFin,
-            mesFinString: objeto.mesFinString
+            mesFinString: objeto.mesFinString,
+            priceFormant: objeto.priceFormant
           }
           console.log(objeto2)
           this.tiposLicencias.push(objeto2)

@@ -442,6 +442,11 @@ export class AppComponent {
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       this.zone.run(async () => {
 
+        const modal = await this.modalController.getTop();
+        if (modal) {
+          await this.utilitiesService.cerrarModal();
+        }
+
         if (event.url.includes('restablecer')) {
 
           // antes de mandarlo se debe validar api/user/valid-token

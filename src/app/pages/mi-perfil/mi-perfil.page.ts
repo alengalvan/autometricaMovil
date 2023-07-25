@@ -46,6 +46,12 @@ export class MiPerfilPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
+    
     
     console.log("esta es la licencia que se ha descargado ", this.edicionDescargada)
 
@@ -145,7 +151,7 @@ export class MiPerfilPage implements OnInit {
           respuesta.data[i].mesFin = Number(respuesta.data[i].month_hire) + (respuesta.data[i].duration_month - 1)
           respuesta.data[i].mesFinString = this.utilitiesServices.obtenerMesStringActual(respuesta.data[i].mesFin)
         }
-        if (respuesta.data[i].active == 1 || respuesta.data[i].active == 2) {
+        if (respuesta.data[i].active == 1 || respuesta.data[i].active == 2 || respuesta.data[i].active == 4) {
           this.licenciaActual.push(respuesta.data[i])
         } else {
           this.historicoLicencias.push(respuesta.data[i])

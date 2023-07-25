@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { Device } from '@capacitor/device';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class UtilitiesService {
     private toastController: ToastController,
     private loadingController: LoadingController,
     public alertController: AlertController,
-
+    public modalController: ModalController
     // private androidPermissions: AndroidPermissions,
     // private uid: Uid
 
@@ -333,7 +333,7 @@ export class UtilitiesService {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async numeroAMes(numero: number){
+  public async numeroAMes(numero: number) {
     switch (numero) {
       case 1:
         return "Enero";
@@ -365,16 +365,22 @@ export class UtilitiesService {
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  public async idTelefono(){
+  public async idTelefono() {
     // return (await Device.getId()).identifier;
     return "c06c7c5f8b043518" // alen
     // return "8a06f9c1f35fa1c3" // andres
 
   }
 
-  public mensajeRegexContrasenia(){
+  public mensajeRegexContrasenia() {
     let signo = '"';
     return "*La contraseña debe tener al menos 8 caracteres, un número, un caracter especial $ @ ! % * ? & _ - + # . ( / " + signo + " ' : ; una letra mayúscula y letras minúsculas."
   }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public async cerrarModal() {
+    this.modalController.dismiss();
+  }
+
 
 }

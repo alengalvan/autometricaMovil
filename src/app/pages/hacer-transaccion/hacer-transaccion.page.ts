@@ -52,6 +52,11 @@ export class HacerTransaccionPage implements OnInit {
       return
     }
 
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
+
     if (this.id) {
       let respuesta = await this.webRestService.getAsync(API.endpoints.getListado + this.usuario.id)
       

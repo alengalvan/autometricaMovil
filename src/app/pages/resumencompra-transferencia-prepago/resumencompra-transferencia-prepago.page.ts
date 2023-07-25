@@ -39,6 +39,10 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
     console.log(this.licenciaSeleccionada);
     console.log(this.metodoPagoSeleccionado);
     console.log(this.tarjetaSeleccionada)

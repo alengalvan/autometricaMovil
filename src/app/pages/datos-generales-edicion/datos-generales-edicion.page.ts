@@ -107,6 +107,11 @@ export class DatosGeneralesEdicionPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
+    }
     
     await this.setearValores()
     this.estados = await this.utilitiesService.obtenerEstadosRepublica();

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
@@ -33,13 +33,19 @@ export class ResultadosConsultaPage implements OnInit {
 
   constructor(public navCtrl: NavController,
     public utilitiesService: UtilitiesService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    public modalController: ModalController) { }
 
   public async ngOnInit() {
 
     if(!this.usuario){
       this.navCtrl.navigateRoot("login");
       return
+    }
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
     }
     console.log(this.hayKilometraje)
     console.log(this.licenciaConsultaOnline)

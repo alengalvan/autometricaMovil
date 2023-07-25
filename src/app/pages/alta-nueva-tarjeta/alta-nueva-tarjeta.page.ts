@@ -70,6 +70,11 @@ export class AltaNuevaTarjetaPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
+    await this.utilitiesServices.cerrarModal();
     if (this.id) {
       this.setearEdicion();
     }

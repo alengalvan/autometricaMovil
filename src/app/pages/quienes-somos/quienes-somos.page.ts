@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
   selector: 'app-quienes-somos',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuienesSomosPage implements OnInit {
 
-  constructor() { }
+  constructor(public utilitiesServices: UtilitiesService,
+    public modalController: ModalController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
   }
 
   public async ngOnDestroy() {

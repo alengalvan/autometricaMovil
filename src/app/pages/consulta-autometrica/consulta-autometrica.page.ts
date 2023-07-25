@@ -84,6 +84,10 @@ export class ConsultaAutometricaPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
+    }
     
     let n: any = null
     localStorage.setItem("kilometraje", n)
@@ -421,11 +425,10 @@ export class ConsultaAutometricaPage implements OnInit {
       let respuesta = await this.webRestService.postAsync(API.endpoints.consultaAuto, objeto)
       console.log(respuesta)
       if (respuesta.status == true) {
-
         if (respuesta.kilometraje.length == 0) {
-          localStorage.setItem("kilometraje", "1")
-        } else {
           localStorage.setItem("kilometraje", "2")
+        } else {
+          localStorage.setItem("kilometraje", "1")
         }
         if (respuesta.lineales.length > 0) {
           respuesta.lineales = await this.validarCampoPrecio(respuesta.lineales)

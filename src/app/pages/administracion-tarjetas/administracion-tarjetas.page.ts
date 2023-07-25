@@ -30,6 +30,10 @@ export class AdministracionTarjetasPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
 
     localStorage.removeItem("tarjetaSeleccionada")
     await this.obtenerTarjetas()

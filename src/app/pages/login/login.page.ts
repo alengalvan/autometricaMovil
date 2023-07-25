@@ -61,6 +61,10 @@ export class LoginPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
+    }
 
     //vamos a revisar si existe un inicio de sesion 
     let existeInicioSesion = localStorage.getItem('existeInicioSesion')!;

@@ -70,33 +70,37 @@
                   <span style="color: #8A8A8A;font-size: 20px;font-family: Roboto;font-weight: 600;">
                     <b>{{licencia?.name
                       | titlecase }}</b></span><br>
-                  <span style="font-size: 12px;color: #8A8A8A;"> Estatus: </span>
+                  <span style="font-size: 12px;color: #8A8A8A;" [ngClass]="{'opaco': licencia.active == 4}"> Estatus: </span>
+                 
                   <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 1">Activa</span>
                   <span style="font-size: 12px;color: #A6A12C;" *ngIf="licencia.active == 2">Pendiente</span>
+                  <span style="font-size: 12px;color: #4ACB48;" *ngIf="licencia.active == 4" class="opaco">Activa</span>
                   <br>
-                  <span style="font-size: 12px;color: #8A8A8A;"> Fecha de expiración: {{licencia.expiration_date |
-                    date:'dd/MM/yyyy' }} </span>
+                  
+                  <span style="font-size: 12px;color: #8A8A8A;" [ngClass]="{'opaco': licencia.active == 4}"> 
+                    Fecha de expiración: {{licencia.expiration_date | date:'dd/MM/yyyy' }} 
+                  </span>
+
                   <br>
+
                   <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">
-                    <span>
+                    <span [ngClass]="{'opaco': licencia.active == 4}">
                       Edición {{licencia.mes | lowercase }} {{licencia.year_hire}}
                     </span>
                     <br>
-                    <span style="color:#8a8a8a" *ngIf="licencia.edicionDescargada">
+                    <span style="color:#8a8a8a" *ngIf="licencia.edicionDescargada" [ngClass]="{'opaco': licencia.active == 4}">
                       <b>Se descargó {{licencia.edicionDescargada}}</b>
                     </span>
 
                   </span>
-
-
                   <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month > 1">
-                    <span>
+                    <span [ngClass]="{'opaco': licencia.active == 4}">
                       Edición {{licencia.mes | lowercase }} {{licencia.year_hire}} - {{licencia.mesFinString |
                       lowercase}}
                       {{licencia.year_hire}}
                     </span>
                     <br>
-                    <span style="color:#8a8a8a" *ngIf="licencia.edicionDescargada">
+                    <span style="color:#8a8a8a" *ngIf="licencia.edicionDescargada" [ngClass]="{'opaco': licencia.active == 4}">
                       <b>Se descargó {{licencia.edicionDescargada}}</b>
                     </span>
                   </span>
@@ -130,7 +134,7 @@
                   </div>
 
                 </ion-col>
-                <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 2">
+                <ion-col size="9" style="text-align: start;" *ngIf="licencia.active == 2 || licencia.active == 4" [ngClass]="{'opaco': licencia.active == 4}">
                   <ion-icon src="assets/icon/material-symbols_download-for-offfline-rounded.svg"
                     style="zoom: 1;margin-bottom: -4px;"></ion-icon>
                   <span style="font-size: 12px;color: #8A8A8A;" *ngIf="licencia.duration_month == 1">

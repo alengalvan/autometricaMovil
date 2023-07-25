@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { API } from 'src/app/endpoints';
 import { WebRestService } from 'src/app/services/crud-rest.service';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
   selector: 'app-glosario',
@@ -18,7 +19,9 @@ export class GlosarioPage implements OnInit {
   zoom: number = 1.0;
   constructor(private menu: MenuController,
     public webService: WebRestService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    public utilitiesService: UtilitiesService,
+    public modalController: ModalController) { }
 
   public async ngOnInit() {
     
@@ -27,6 +30,11 @@ export class GlosarioPage implements OnInit {
       await this.descargarArchivos(1)
     }else{
       this.stringPDFGlosario = localStorage.getItem("glosario")
+    }
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
     }
     
   }

@@ -10,7 +10,7 @@
     </ion-col>
 
     <ion-col size="8">
-      <span style="font-size: 15px;color: #616161;margin-top: 3px;margin-left: 7px">Regresar</span>
+      <span style="font-size: 15px;color: #616161;margin-top: 3px;margin-left: 7px"  (click)="reygresar()">Regresar</span>
     </ion-col>
   </ion-row>
 
@@ -33,7 +33,7 @@
           <ion-row style="padding: 10px;" (click)="irMetodosPago(licencia)">
             <ion-col size="8">
               <span style="font-size: 16px;color: #438EFF;"><b>{{licencia.name}}</b> </span> <br>
-              <span style="font-size: 15px;color: #393939;"><b>${{licencia.price}}</b></span> <br>
+              <span style="font-size: 15px;color: #393939;"><b>${{licencia.priceFormant}}</b></span> <br>
               <span style="font-size: 12px;color: #616161;">
                 Métodos de pago aceptados: <br>
               </span>

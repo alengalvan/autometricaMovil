@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { UtilitiesService } from 'src/app/services/utilities.service';
 
 @Component({
   selector: 'app-contactanos',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactanosPage implements OnInit {
 
-  constructor() { }
+  constructor(public modalController: ModalController,
+    public utilitiesService: UtilitiesService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
+    }
   }
 
   public async ngOnDestroy() {

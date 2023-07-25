@@ -112,10 +112,16 @@ export class RegistroPage implements OnInit {
     public utilitiesService: UtilitiesService,
     public modalController: ModalController,
     public webService: WebRestService,
-    private navCtrl: NavController) { }
+    private navCtrl: NavController,
+    public utilitiesServices: UtilitiesService) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
 
     if (Network) {
       Network.getStatus().then((status) => {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { WebRestService } from 'src/app/services/crud-rest.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 
@@ -19,7 +19,8 @@ export class MetodosPagoPage implements OnInit {
   constructor(private navCtrl: NavController,
     private formBuilder: FormBuilder,
     public utilitiesServices: UtilitiesService,
-    public webRestService: WebRestService) { }
+    public webRestService: WebRestService,
+    public modalController: ModalController) { }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
@@ -27,6 +28,12 @@ export class MetodosPagoPage implements OnInit {
       this.navCtrl.navigateRoot("login");
       return
     }
+
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesServices.cerrarModal();
+    }
+
     this.tiposFormasPago = [];
 
     if(this.licenciaSeleccionada.prepaid_card == 1){

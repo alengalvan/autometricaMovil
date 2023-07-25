@@ -55,6 +55,11 @@ export class RestablecerContraseniaPage implements OnInit {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    const modal = await this.modalController.getTop();
+    if(modal){
+      await this.utilitiesService.cerrarModal();
+    }
+
     this.datosCorreo = localStorage.getItem("datosRedireccionamiento");
     this.correo = this.datosCorreo.split("/")[4];
 
