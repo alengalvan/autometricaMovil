@@ -132,4 +132,12 @@ export class AdministracionTarjetasPage implements OnInit {
     this.navCtrl.navigateRoot("alta-nueva-tarjeta/2")
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 }

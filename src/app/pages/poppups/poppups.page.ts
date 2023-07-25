@@ -19,4 +19,12 @@ export class PoppupsPage implements OnInit {
     this.navCtrl.navigateRoot("login");
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 }

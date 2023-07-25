@@ -212,4 +212,12 @@ export class HacerTransaccionPage implements OnInit {
     await modal.present();
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 }

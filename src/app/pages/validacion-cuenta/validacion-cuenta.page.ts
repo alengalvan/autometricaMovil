@@ -13,5 +13,12 @@ export class ValidacionCuentaPage implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
   }
-
+  
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
 }

@@ -223,4 +223,12 @@ export class AltaNuevaTarjetaPage implements OnInit {
     console.log(this.nombreTarjeta)
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 }

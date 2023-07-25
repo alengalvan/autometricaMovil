@@ -193,5 +193,13 @@ export class ResumencompraTransferenciaPrepagoPage implements OnInit {
 
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 
 }

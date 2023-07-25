@@ -12,4 +12,12 @@ export class ContactanosPage implements OnInit {
   ngOnInit() {
   }
 
+  public async ngOnDestroy() {
+    console.log("se destruye")
+    let backDrop: any = document.querySelector('ion-backdrop');
+    if (backDrop != null) {
+      backDrop.click();
+    }
+  }
+
 }
