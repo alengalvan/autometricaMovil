@@ -31,6 +31,7 @@ export class AppComponent {
   hayInternet: boolean = false;
   pagesChangedSubscription: Subscription | undefined;
   public cuantasLicenciasTenemosActivas: number = 0;
+  existeConexion: boolean = false;
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   constructor(private navCtrl: NavController,
@@ -353,6 +354,12 @@ export class AppComponent {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public async ngOnInit() {
+    this.existeConexion = (await Network.getStatus()).connected;
+    Network.addListener('networkStatusChange', status => {
+      console.log('Network status desde app component', status);
+      this.existeConexion = status.connected;
+    });
+    
     this.haySesion = JSON.parse(localStorage.getItem('usuario')!) ? true : false;
     console.log("tenemos una sesion activa ", this.haySesion);
 

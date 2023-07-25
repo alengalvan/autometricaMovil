@@ -16,7 +16,9 @@
   <ion-footer style="background: black;">
 
     <div style="text-align: center;">
-      <span style="color:#FFFFFF;font-size: 14px;line-height: 20px;font-weight: 600;" (click)="navegarMenu('terminos-condiciones')">
+      <span style="font-size: 14px;line-height: 20px;font-weight: 600;"
+      [ngStyle]="{'color': existeConexion ? '#FFFFFF' : '#8A8A8A' }"
+        (click)="navegarMenu('terminos-condiciones')">
         Aviso de Privacidad y<br>
         Términos y Condiciones
       </span>
