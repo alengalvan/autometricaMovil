@@ -41,6 +41,12 @@ export class RecuperarContraseniaPage implements OnInit {
   }
 
   public async recuperarContrasenia() {
+
+    if (!this.form.valid) {
+      this.utilitiesServices.validaCamposFormulario([this.form]);
+      return;
+    }
+
     let objeto = {
       email: this.form.controls['correo'].value
     }
